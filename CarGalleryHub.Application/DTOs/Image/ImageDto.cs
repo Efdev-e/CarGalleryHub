@@ -19,7 +19,7 @@ namespace CarGalleryHub.Application.DTOs.Image
         // FK
 
         public int? UserId { get; set; }
-        public UserDto? User { get; set; }
+        public UserDetailDto? User { get; set; }
 
         public int? CarId { get; set; }
         public CarDto? Car { get; set; }

@@ -19,7 +19,7 @@ namespace CarGalleryHub.Application.DTOs.Advert
         public required int CarId { get; set; }
 
         // ----- //
-        public UserDto Seller { get; set; } = null!;
+        public UserDetailDto Seller { get; set; } = null!;
         public CarDto Car { get; set; } = null!;
 
         // ----- //

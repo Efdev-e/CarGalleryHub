@@ -1,10 +1,5 @@
 ﻿using CarGalleryHub.Application.Common.BaseDTOs;
 using CarGalleryHub.Application.DTOs.User;
-using CarGalleryHub.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace CarGalleryHub.Application.DTOs.Address
 {
@@ -17,6 +12,6 @@ namespace CarGalleryHub.Application.DTOs.Address
         public required string District { get; set; } 
         public required string PostalCode { get; set; } 
         public required string FullAddress { get; set; } 
-        public ICollection<UserDto> Users { get; set; } = new List<UserDto>();
+        public ICollection<UserDetailDto> Users { get; set; } = new List<UserDetailDto>();
     }
 }

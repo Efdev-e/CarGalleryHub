@@ -6,8 +6,8 @@ namespace CarGalleryHub.Domain.Entities
 {
     public abstract class BaseDateEntity : BaseEntity
     {
-        public DateTime CreatedAt { get; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; private set; }
+        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
 
         protected void Updated() => UpdatedAt = DateTime.UtcNow;
     }

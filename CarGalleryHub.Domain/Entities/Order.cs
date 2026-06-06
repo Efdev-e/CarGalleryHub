@@ -14,7 +14,7 @@ namespace CarGalleryHub.Domain.Entities
         public required string UserFullName { get; set; }
         public required string UserPhone { get; set; }
         public required string UserEmail { get; set; }
-        public decimal TotalCost => OrderItems.Sum(x => x.UnitPrice * x.Quantity);
+        public decimal TotalCost => OrderItems is null ? 0 : OrderItems.Sum(x => x.UnitPrice * x.Quantity);
 
 
         // ----- //

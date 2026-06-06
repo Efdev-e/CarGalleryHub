@@ -36,6 +36,6 @@ namespace CarGalleryHub.Application.DTOs.Order
         // ----- //
         public ICollection<OrderItemDto> OrderItems { get; init; } = new List<OrderItemDto>();
         public PaymentDto Payment { get; set; } = null!;
-        public UserDto User { get; set; } = null!;
+        public UserDetailDto User { get; set; } = null!;
     }
 }

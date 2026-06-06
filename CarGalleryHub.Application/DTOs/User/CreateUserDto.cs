@@ -10,19 +10,19 @@ using System.Text;
 
 namespace CarGalleryHub.Application.DTOs.User
 {
-    public class UserDto : BaseDateEntityDto
+    public class CreateUserDto : BaseDateEntityDto
     {
         // Profile
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
+        public required string FirstName { get; set; }  
+        public required string LastName { get; set; }  
         public int? ImageId { get; set; }
         public ImageDto? ProfilePicture { get; set; }
 
         // Güvenlik
 
-        public string Email { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
+        public required string Email { get; set; } 
+        public required string PhoneNumber { get; set; } 
+        public required string PasswordHash { get; set; } 
 
         // Diğer
 

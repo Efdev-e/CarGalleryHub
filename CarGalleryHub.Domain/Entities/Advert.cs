@@ -21,6 +21,6 @@ namespace CarGalleryHub.Domain.Entities
 
         // ----- //
 
-        public decimal UnitPrice => Car.UnitPrice;
+        public decimal UnitPrice => Car is null ? 0 : Car.UnitPrice;
     }
 }
