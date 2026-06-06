@@ -11,6 +11,9 @@ namespace CarGalleryHub.Domain.Entities
         public required string AdvertTitle { get; set; } = string.Empty;
         public List<Image> Thumbnails { get; set; } = new List<Image>();
         public required string Description { get; set; } = string.Empty;
+
+        public required bool Warranty { get; set; }
+        public required decimal UnitPrice { get; set; }
         // ----- //
         public required int SellerId { get; set; }
         public required int CarId { get; set; }
@@ -19,8 +22,5 @@ namespace CarGalleryHub.Domain.Entities
         public User Seller { get; set; } = null!;
         public Car Car { get; set; } = null!;
 
-        // ----- //
-
-        public decimal UnitPrice => Car is null ? 0 : Car.UnitPrice;
     }
 }

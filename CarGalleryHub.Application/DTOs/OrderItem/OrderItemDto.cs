@@ -2,6 +2,7 @@
 using CarGalleryHub.Application.DTOs.Advert;
 using CarGalleryHub.Application.DTOs.Cart;
 using CarGalleryHub.Application.DTOs.Image;
+using CarGalleryHub.Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,18 +11,22 @@ namespace CarGalleryHub.Application.DTOs.OrderItem
 {
     public class OrderItemDto : BaseDateEntityDto
     {
-        public string ItemName => Advert.AdvertTitle;
+        public string ItemName {get; set;} = null!;
         public ImageDto? Thumbnail { get; set; } = null!;
-        public decimal UnitPrice => Advert.UnitPrice;
+        public decimal UnitPrice { get; set;}
         public required int Quantity { get; set; }
+
+        public int CarYear { get; set; }
+        public string CarKM { get; set; } = string.Empty;
+        public ColorType CarColor { get; set; }
+        public string BrandName { get; set; } = string.Empty;
+        public string ModelName { get; set; } = string.Empty;
 
         // ----- //
         public int? ImageId { get; set; }
-        public required int AdvertId { get; set; }
-        public required int CartId { get; set; }
+        public int? AdvertId { get; set; }
 
         // ----- //
-        public AdvertDto Advert { get; set; } = null!;
-        public CartDto Cart { get; set; } = null!;
+        public AdvertDto? Advert { get; set; }
     }
 }

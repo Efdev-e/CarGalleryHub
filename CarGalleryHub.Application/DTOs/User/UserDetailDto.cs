@@ -22,9 +22,6 @@ namespace CarGalleryHub.Application.DTOs.User
 
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
-
-        // Diğer
 
         // Todo: OrderDto Implement
         public ICollection<AddressDto> Addresses { get; set; } = new List<AddressDto>();

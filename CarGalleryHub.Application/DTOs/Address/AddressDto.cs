@@ -12,6 +12,6 @@ namespace CarGalleryHub.Application.DTOs.Address
         public required string District { get; set; } 
         public required string PostalCode { get; set; } 
         public required string FullAddress { get; set; } 
-        public ICollection<UserDetailDto> Users { get; set; } = new List<UserDetailDto>();
+
     }
 }

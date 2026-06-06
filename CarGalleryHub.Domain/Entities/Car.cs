@@ -30,8 +30,6 @@ namespace CarGalleryHub.Domain.Entities
         public required ColorType Color { get; set; }
         public required CarStatus Status { get; set; }
         public required CarAvailability Availability { get; set; }
-        public required bool Warranty { get; set; }
-        public required decimal UnitPrice { get; set; }
 
         #endregion
 

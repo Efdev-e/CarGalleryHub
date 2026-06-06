@@ -20,6 +20,5 @@ namespace CarGalleryHub.Application.DTOs.Payment
         public required int OrderId { get; init; }
 
         // ----- //
-        public OrderDto Order { get; init; } = null!;
     }
 }
