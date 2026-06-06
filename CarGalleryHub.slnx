@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="CarGalleryHub.Api/CarGalleryHub.Api.csproj" />
+  <Project Path="CarGalleryHub.Application/CarGalleryHub.Application.csproj" />
+  <Project Path="CarGalleryHub.Domain/CarGalleryHub.Domain.csproj" />
+  <Project Path="CarGalleryHub.Infrastructure/CarGalleryHub.Infrastructure.csproj" />
+  <Project Path="CarGalleryHub.MVC/CarGalleryHub.MVC.csproj" />
+  <Project Path="CarGalleryHub.Persistence/CarGalleryHub.Persistence.csproj" />
+</Solution>
