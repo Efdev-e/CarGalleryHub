@@ -21,6 +21,8 @@ namespace CarGalleryHub.Domain.Entities
         public string PhoneNumber { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
 
+        public RefreshToken RefreshToken { get; set; } = null!;
+
         // Diğer
 
         public ICollection<Address> Addresses { get; set; } = new List<Address>();

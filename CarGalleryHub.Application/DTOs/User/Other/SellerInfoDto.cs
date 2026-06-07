@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime;
 using System.Text;
 
-namespace CarGalleryHub.Application.DTOs.User
+namespace CarGalleryHub.Application.DTOs.User.Other
 {
     public class SellerInfoDto : BaseDateEntityDto
     {

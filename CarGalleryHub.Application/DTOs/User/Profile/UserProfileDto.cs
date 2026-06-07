@@ -1,7 +1,7 @@
 ﻿using CarGalleryHub.Application.Common.BaseDTOs;
 using CarGalleryHub.Application.DTOs.Image;
 
-namespace CarGalleryHub.Application.DTOs.User
+namespace CarGalleryHub.Application.DTOs.User.Profile
 {
     public class UserProfileDto : BaseDateEntityDto 
     {

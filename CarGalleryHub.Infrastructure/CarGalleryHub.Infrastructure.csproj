@@ -12,4 +12,16 @@
     <Folder Include="Services\Payment\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Iyzipay" Version="2.1.78" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.19.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CarGalleryHub.Application\CarGalleryHub.Application.csproj" />
+    <ProjectReference Include="..\CarGalleryHub.Domain\CarGalleryHub.Domain.csproj" />
+    <ProjectReference Include="..\CarGalleryHub.Persistence\CarGalleryHub.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

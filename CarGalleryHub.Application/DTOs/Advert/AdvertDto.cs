@@ -1,7 +1,7 @@
 ﻿using CarGalleryHub.Application.Common.BaseDTOs;
 using CarGalleryHub.Application.DTOs.Car;
 using CarGalleryHub.Application.DTOs.Image;
-using CarGalleryHub.Application.DTOs.User;
+using CarGalleryHub.Application.DTOs.User.Other;
 using CarGalleryHub.Domain.Entities;
 using System;
 using System.Collections.Generic;

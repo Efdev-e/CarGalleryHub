@@ -1,15 +1,9 @@
 ﻿using CarGalleryHub.Application.Common.BaseDTOs;
-using CarGalleryHub.Application.DTOs.Address;
-using CarGalleryHub.Application.DTOs.Cart;
 using CarGalleryHub.Application.DTOs.Image;
-using CarGalleryHub.Application.DTOs.Order;
-using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Domain.Enum;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using CarGalleryHub.Application.DTOs.Token;
 
-namespace CarGalleryHub.Application.DTOs.User
+namespace CarGalleryHub.Application.DTOs.User.Token
 {
     public class CreateUserDto : BaseDateEntityDto
     {
@@ -18,7 +12,7 @@ namespace CarGalleryHub.Application.DTOs.User
         public required string LastName { get; set; }  
         public int? ImageId { get; set; }
         public ImageDto? ProfilePicture { get; set; }
-        public UserRoles Role { get; set; } 
+        public UserRoles Role { get; set; }
 
         // Güvenlik
 

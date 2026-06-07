@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CarGalleryHub.Application.DTOs.User
+namespace CarGalleryHub.Application.DTOs.User.Profile
 {
-    public class UpdateUserProfileDto : BaseDateEntityDto
+    public class UserProfileUpdateRequest : BaseDateEntityDto
     {
         // Profile
         public string? FirstName { get; set; }

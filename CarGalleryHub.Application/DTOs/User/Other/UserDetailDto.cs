@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CarGalleryHub.Application.DTOs.User
+namespace CarGalleryHub.Application.DTOs.User.Other
 {
     public class UserDetailDto : BaseDateEntityDto
     {
@@ -25,7 +25,6 @@ namespace CarGalleryHub.Application.DTOs.User
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
 
-        // Todo: OrderDto Implement
         public ICollection<AddressDto> Addresses { get; set; } = new List<AddressDto>();
         public ICollection<CartDto> Carts { get; set; } = new List<CartDto>();
         public ICollection<OrderDto> Orders { get; set; } = new List<OrderDto>();

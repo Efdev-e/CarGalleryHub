@@ -5,7 +5,7 @@ using CarGalleryHub.Application.DTOs.Image;
 using CarGalleryHub.Application.DTOs.Order;
 using CarGalleryHub.Domain.Enum;
 
-namespace CarGalleryHub.Application.DTOs.User
+namespace CarGalleryHub.Application.DTOs.User.Other
 {
     public class UserInfoDto : BaseDateEntityDto 
     {
@@ -18,8 +18,5 @@ namespace CarGalleryHub.Application.DTOs.User
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
 
-        public ICollection<AddressDto>? Addresses { get; set; }
-        public ICollection<CartDto>? Carts { get; set; }
-        public ICollection<OrderDto>? Orders { get; set; }
     }
 }

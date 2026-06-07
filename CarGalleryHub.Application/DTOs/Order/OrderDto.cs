@@ -1,7 +1,7 @@
 ﻿using CarGalleryHub.Application.Common.BaseDTOs;
 using CarGalleryHub.Application.DTOs.OrderItem;
 using CarGalleryHub.Application.DTOs.Payment;
-using CarGalleryHub.Application.DTOs.User;
+using CarGalleryHub.Application.DTOs.User.Other;
 using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Domain.Enum;
 using System;

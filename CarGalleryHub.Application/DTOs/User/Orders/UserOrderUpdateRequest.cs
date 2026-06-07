@@ -1,9 +1,9 @@
 ﻿using CarGalleryHub.Application.Common.BaseDTOs;
 using CarGalleryHub.Application.DTOs.Order;
 
-namespace CarGalleryHub.Application.DTOs.User
+namespace CarGalleryHub.Application.DTOs.User.Orders
 {
-    public class UpdateUserOrderDto : BaseDateEntityDto 
+    public class UserOrderUpdateRequest : BaseDateEntityDto 
     {
         public ICollection<OrderDto>? Orders { get; set; }
     }
