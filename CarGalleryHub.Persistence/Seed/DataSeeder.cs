@@ -1,4 +1,5 @@
 ﻿using CarGalleryHub.Domain.Entities;
+using CarGalleryHub.Domain.Enum;
 using CarGalleryHub.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
@@ -31,7 +32,7 @@ namespace CarGalleryHub.Persistence.Seed
 
             var Users = new List<User>()
             {
-                new User() { FirstName = "Abdul", LastName="Hamid", PasswordHash = BCrypt.Net.BCrypt.HashPassword("12345Test"), Email="Kingston@gmail.com" , PhoneNumber = "+9054879872025"}
+                new User() { FirstName = "Abdul", LastName="Hamid",Role = UserRoles.Admin, PasswordHash = BCrypt.Net.BCrypt.HashPassword("12345Test"), Email="Kingston@gmail.com" , PhoneNumber = "+9054879872025"}
             };
 
             await context.Users.AddRangeAsync(Users);

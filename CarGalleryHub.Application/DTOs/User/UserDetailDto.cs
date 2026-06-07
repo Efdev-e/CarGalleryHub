@@ -4,6 +4,7 @@ using CarGalleryHub.Application.DTOs.Cart;
 using CarGalleryHub.Application.DTOs.Image;
 using CarGalleryHub.Application.DTOs.Order;
 using CarGalleryHub.Domain.Entities;
+using CarGalleryHub.Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +18,7 @@ namespace CarGalleryHub.Application.DTOs.User
         public string LastName { get; set; } = string.Empty;
         public int? ImageId { get; set; }
         public ImageDto? ProfilePicture { get; set; }
+        public UserRoles Role { get; set; }
 
         // Güvenlik
 

@@ -21,6 +21,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.Property(x => x.Email).HasMaxLength(255).IsRequired(true);
             builder.Property(x => x.PhoneNumber).HasMaxLength(20);
             builder.Property(x => x.PasswordHash).IsRequired(true);
+            builder.Property(x => x.Role).IsRequired();
 
             builder.HasMany(x => x.Addresses)
                    .WithMany(x => x.Users);

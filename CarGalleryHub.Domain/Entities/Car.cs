@@ -26,7 +26,7 @@ namespace CarGalleryHub.Domain.Entities
         #region Değişir
 
         public required int Year { get; set; }
-        public required string KM { get; set; } 
+        public required int KM { get; set; } 
         public required ColorType Color { get; set; }
         public required CarStatus Status { get; set; }
         public required CarAvailability Availability { get; set; }

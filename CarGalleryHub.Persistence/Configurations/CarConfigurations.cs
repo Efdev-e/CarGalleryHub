@@ -22,7 +22,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.Property(x => x.MotorPower).HasMaxLength(255);
 
             builder.Property(x => x.Year).HasMaxLength(9999).IsRequired();
-            builder.Property(x => x.KM).HasMaxLength(999).IsRequired();
+            builder.Property(x => x.KM).HasMaxLength(int.MaxValue).IsRequired();
             builder.Property(x => x.Color).IsRequired();
             builder.Property(x => x.Status).IsRequired();
             builder.Property(x => x.Availability).IsRequired();

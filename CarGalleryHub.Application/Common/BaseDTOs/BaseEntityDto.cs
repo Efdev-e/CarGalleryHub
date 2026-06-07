@@ -10,8 +10,5 @@ namespace CarGalleryHub.Application.Common.BaseDTOs
         [Required]
         [Range(0, int.MaxValue)]
         public int Id { get; set; }
-
-        [Required]
-        public bool IsDeleted { get; set; }
     }
 }

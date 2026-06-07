@@ -8,7 +8,7 @@ using System.Text;
 
 namespace CarGalleryHub.Application.DTOs.Car
 {
-    public class UpdateCarDto : BaseDateEntityDto
+    public class UpdateCarDto
     {
         public string? BrandName { get; set; } = string.Empty;
         public string? ModelName { get; set; } = string.Empty;
@@ -18,7 +18,7 @@ namespace CarGalleryHub.Application.DTOs.Car
 
         // --------------------------------------------
         public int? Year { get; set; }
-        public string? KM { get; set; } = string.Empty;
+        public int? KM { get; set; }
         public ColorType? Color { get; set; }
         public CarStatus? Status { get; set; }
         public CarAvailability? Availability { get; set; }
@@ -29,6 +29,5 @@ namespace CarGalleryHub.Application.DTOs.Car
         public int? CarModelId { get; set; }
 
         // ----- //
-        public CarModelDto CarModel { get; set; } = null!;
     }
 }

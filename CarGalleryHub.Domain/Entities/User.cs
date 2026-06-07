@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CarGalleryHub.Domain.Enum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,6 +13,7 @@ namespace CarGalleryHub.Domain.Entities
 
         public int? ImageId { get; set; }
         public Image? ProfilePicture { get; set; }
+        public UserRoles Role { get; set; } = UserRoles.Customer;
 
         // Güvenlik
 

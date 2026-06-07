@@ -3,6 +3,7 @@ using CarGalleryHub.Application.DTOs.Address;
 using CarGalleryHub.Application.DTOs.Cart;
 using CarGalleryHub.Application.DTOs.Image;
 using CarGalleryHub.Application.DTOs.Order;
+using CarGalleryHub.Domain.Enum;
 
 namespace CarGalleryHub.Application.DTOs.User
 {
@@ -12,6 +13,7 @@ namespace CarGalleryHub.Application.DTOs.User
         public string? LastName { get; set; }
         public int? ImageId { get; set; }
         public ImageDto? ProfilePicture { get; set; }
+        public UserRoles Role { get; set; }
 
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
