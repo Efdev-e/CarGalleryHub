@@ -1,4 +1,5 @@
-﻿using CarGalleryHub.Domain.Entities;
+﻿using CarGalleryHub.Application.Interfaces;
+using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Persistence.Context;
 using CarGalleryHub.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

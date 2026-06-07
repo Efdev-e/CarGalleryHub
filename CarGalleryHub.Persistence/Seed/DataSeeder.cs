@@ -3,6 +3,7 @@ using CarGalleryHub.Domain.Enum;
 using CarGalleryHub.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,8 +14,10 @@ namespace CarGalleryHub.Persistence.Seed
     public class DataSeeder
     {
         private readonly AppDbContext _context;
-        public DataSeeder(AppDbContext context)
+        private readonly string _secretPass;
+        public DataSeeder(AppDbContext context, IConfiguration configuration)
         {
+            _secretPass = configuration.GetSection("SecretPass").Value ?? throw new Exception();
             _context = context;
         }
 
@@ -71,8 +74,8 @@ namespace CarGalleryHub.Persistence.Seed
                 new Brand() { BrandName = "BYD" }
             };
 
-            await _context.AddRangeAsync(Brands);
-            await _context.SaveChangesAsync();
+            await context.AddRangeAsync(Brands);
+            await context.SaveChangesAsync();
         }
 
         public async Task SeedCarModelAsync(AppDbContext context)
@@ -311,7 +314,10 @@ namespace CarGalleryHub.Persistence.Seed
                     Brand = mazda,
                     ReleaseDate = new DateTime(1998, 2, 1)
                 }
-            }; 
+            };
+
+            await context.CarModels.AddRangeAsync(carModels);  
+            await context.SaveChangesAsync();
         }
     }
 }

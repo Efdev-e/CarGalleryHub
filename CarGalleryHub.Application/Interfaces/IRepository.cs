@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace CarGalleryHub.Persistence.Repositories
+namespace CarGalleryHub.Application.Interfaces
 {
     public interface IRepository<T> where T : class
     {
