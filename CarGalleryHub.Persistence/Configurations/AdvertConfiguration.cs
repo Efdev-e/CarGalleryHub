@@ -37,6 +37,10 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.HasMany(x => x.OrderItems)
                    .WithOne(x => x.Advert)
                    .HasForeignKey(x => x.AdvertId);
+
+            builder.HasMany(x => x.Thumbnails)
+                   .WithOne(x => x.Advert)
+                   .HasForeignKey(x => x.AdvertId);
         }
     }
 }
