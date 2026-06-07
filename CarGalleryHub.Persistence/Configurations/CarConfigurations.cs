@@ -21,7 +21,7 @@ namespace CarGalleryHub.Persistence.Configurations
 
             builder.Property(x => x.MotorPower).HasMaxLength(255);
 
-            builder.Property(x => x.Year).HasMaxLength(9999).IsRequired();
+            builder.Property(x => x.Year).IsRequired();
             builder.Property(x => x.KM).HasMaxLength(int.MaxValue).IsRequired();
             builder.Property(x => x.Color).IsRequired();
             builder.Property(x => x.Status).IsRequired();
@@ -34,9 +34,6 @@ namespace CarGalleryHub.Persistence.Configurations
                    .WithMany(x => x.Cars)
                    .HasForeignKey(x => x.CarModelId);
 
-            builder.HasOne(x => x.Advert)
-                   .WithOne(x => x.Car)
-                   .HasForeignKey<Advert>(x => x.CarId);
         }
     }
 }

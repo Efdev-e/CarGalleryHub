@@ -1,17 +1,32 @@
+using CarGalleryHub.Persistence.Extensions;
+using CarGalleryHub.Persistence.Seed;
+using System.Runtime.CompilerServices;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+
+builder.Services.AddPersistenceService(builder.Configuration);
+
+builder.Services.AddScoped<DataSeeder>();
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+}
+
+using (var scope = app.Services.CreateScope()) 
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+
+    await seeder.SeedAsync();
 }
 
 app.UseHttpsRedirection();

@@ -17,7 +17,7 @@ namespace CarGalleryHub.Persistence.Seed
         private readonly string _secretPass;
         public DataSeeder(AppDbContext context, IConfiguration configuration)
         {
-            _secretPass = configuration.GetSection("SecretPass").Value ?? throw new Exception();
+            _secretPass = configuration.GetSection("Secrets").GetSection("SecretPass").Value ?? throw new Exception();
             _context = context;
         }
 
@@ -35,7 +35,7 @@ namespace CarGalleryHub.Persistence.Seed
 
             var Users = new List<User>()
             {
-                new User() { FirstName = "Abdul", LastName="Hamid",Role = UserRoles.Admin, PasswordHash = BCrypt.Net.BCrypt.HashPassword("12345Test"), Email="Kingston@gmail.com" , PhoneNumber = "+9054879872025"}
+                new User() { FirstName = "Abdul", LastName="Hamid",Role = UserRoles.Admin, PasswordHash = BCrypt.Net.BCrypt.HashPassword(_secretPass), Email="Kingston@gmail.com" , PhoneNumber = "+9054879872025"}
             };
 
             await context.Users.AddRangeAsync(Users);

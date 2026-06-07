@@ -10,4 +10,11 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarGalleryHub.Application\CarGalleryHub.Application.csproj" />
+    <ProjectReference Include="..\CarGalleryHub.Domain\CarGalleryHub.Domain.csproj" />
+    <ProjectReference Include="..\CarGalleryHub.Infrastructure\CarGalleryHub.Infrastructure.csproj" />
+    <ProjectReference Include="..\CarGalleryHub.Persistence\CarGalleryHub.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

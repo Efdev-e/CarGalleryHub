@@ -36,10 +36,6 @@ namespace CarGalleryHub.Persistence.Configurations
                    .WithOne(x => x.Order)
                    .HasForeignKey(x => x.OrderId);
 
-            builder.HasOne(x => x.Payment)
-                   .WithOne(x => x.Order)
-                   .HasForeignKey<Payment>(x => x.OrderId);
-
             builder.HasOne(x => x.User)
                    .WithMany(x => x.Orders)
                    .HasForeignKey(x => x.UserId);
