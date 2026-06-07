@@ -15,6 +15,9 @@ namespace CarGalleryHub.Domain.Enum
         Pink,
         Magenta,
         Yellow,
-        Orange
+        Orange,
+        White,
+        Silver,
+        Gray
     }
 }

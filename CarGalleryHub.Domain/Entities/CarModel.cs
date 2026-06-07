@@ -16,5 +16,6 @@ namespace CarGalleryHub.Domain.Entities
         // FK
         public required int BrandId { get; set; }
         public Brand Brand { get; set; } = null!;
+        public ICollection<Car> Cars { get; set; } = new List<Car>();
     }
 }

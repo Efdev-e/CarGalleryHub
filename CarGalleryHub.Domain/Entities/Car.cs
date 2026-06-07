@@ -35,9 +35,10 @@ namespace CarGalleryHub.Domain.Entities
 
         // ----- //
         public required int CarModelId { get; set; }
+        public required int AdvertId { get; set; }
 
         // ----- //
         public CarModel CarModel { get; set; } = null!;
-
+        public Advert Advert { get; set; } = null!;
     }
 }

@@ -22,5 +22,7 @@ namespace CarGalleryHub.Domain.Entities
         public User Seller { get; set; } = null!;
         public Car Car { get; set; } = null!;
 
+        public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }

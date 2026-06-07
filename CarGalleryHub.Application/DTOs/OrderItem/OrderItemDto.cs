@@ -24,7 +24,8 @@ namespace CarGalleryHub.Application.DTOs.OrderItem
 
         // ----- //
         public int? ImageId { get; set; }
-        public int? AdvertId { get; set; }
+        public required int AdvertId { get; set; }
+        public required int OrderId { get; set; }
 
         // ----- //
         public AdvertDto? Advert { get; set; }

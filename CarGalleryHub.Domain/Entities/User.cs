@@ -24,7 +24,7 @@ namespace CarGalleryHub.Domain.Entities
         public ICollection<Address> Addresses { get; set; } = new List<Address>();
         public ICollection<Cart> Carts { get; set; } = new List<Cart>();
         public ICollection<Order> Orders { get; set; } = new List<Order>();
-
+        public ICollection<Advert> Adverts { get; set; } = new List<Advert>();
 
     }
 }

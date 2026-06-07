@@ -18,6 +18,15 @@ namespace CarGalleryHub.Domain.Entities
         public int? CarId { get; set; }
         public Car? Car { get; set; }
 
+        public int AdvertId { get; set; }
+        public Advert? Advert { get; set; }
+
+        public int? OrderItemId { get; set; }
+        public OrderItem? OrderItem { get; set; }
+
+        public int? CartItemId { get; set; }
+        public CartItem? CartItem { get; set; }
+
         public int? CartId { get; set; }
         public Cart? Cart { get; set; }
     }
