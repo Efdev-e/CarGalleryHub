@@ -3,9 +3,18 @@ using CarGalleryHub.Persistence.Extensions;
 using CarGalleryHub.Persistence.Seed;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Runtime.CompilerServices;
+using Microsoft.OpenApi;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Swashbuckle.AspNetCore;
 using System.Text;
-using System.Text.Unicode;
+using System.Reflection.Metadata;
+using CarGalleryHub.Persistence.UnitOfWork;
+using CarGalleryHub.Application.Interfaces;
+using CarGalleryHub.Persistence.Services;
+using CarGalleryHub.Infrastructure.Services;
+using CarGalleryHub.Persistence.Repositories;
+using CarGalleryHub.Infrastructure.Extensions;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,13 +22,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
+
+
+
+
+
+
 builder.Services.AddAuthentication(options => 
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => 
+})
+
+
+
+.AddJwtBearer(options => 
 {
-    var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>();
+    var jwtOptions = builder.Configuration.GetSection("Jwt").Get<JwtOptions>();
     var key = Encoding.UTF8.GetBytes(jwtOptions!.Secret);
 
     options.TokenValidationParameters = new TokenValidationParameters
@@ -36,8 +55,35 @@ builder.Services.AddAuthentication(options =>
 });
 
 
-builder.Services.AddPersistenceService(builder.Configuration);
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "CarHub", Version = "v1" });
 
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Bearer {Token}"
+    });
+
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+    });
+});
+
+
+builder.Services.AddAuthorization();
+
+
+
+
+builder.Services.AddPersistenceService(builder.Configuration);
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddInfrastructureService(builder.Configuration);
 builder.Services.AddScoped<DataSeeder>();
 
 
@@ -57,7 +103,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseHttpsRedirection();
-
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseAuthorization();
 
 app.MapControllers();

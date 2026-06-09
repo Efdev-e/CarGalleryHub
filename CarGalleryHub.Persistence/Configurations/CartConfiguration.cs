@@ -20,7 +20,8 @@ namespace CarGalleryHub.Persistence.Configurations
 
             builder.HasOne(x => x.User)
                    .WithMany(x => x.Carts)
-                   .HasForeignKey(x => x.UserId);
+                   .HasForeignKey(x => x.UserId)
+                   .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

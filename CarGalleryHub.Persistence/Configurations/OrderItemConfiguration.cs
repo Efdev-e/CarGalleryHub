@@ -16,6 +16,8 @@ namespace CarGalleryHub.Persistence.Configurations
 
             builder.HasKey(x => x.Id);
 
+            
+
             builder.Property(x => x.Quantity).IsRequired();
             builder.Property(x => x.AdvertId).IsRequired();
             builder.Property(x => x.UnitPrice).IsRequired();
