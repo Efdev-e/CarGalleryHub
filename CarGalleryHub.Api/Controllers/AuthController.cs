@@ -29,7 +29,7 @@ namespace CarGalleryHub.Api.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto) 
         {
             var result = await authService.LoginAsync(loginRequestDto);
-            if (result is null) return Invalid(data: "None");
+            if (result is null) return Invalid("");
             return Ok(result);
         }
     }

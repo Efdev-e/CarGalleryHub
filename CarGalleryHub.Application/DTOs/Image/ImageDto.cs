@@ -14,9 +14,9 @@ using System.Text;
 
 namespace CarGalleryHub.Application.DTOs.Image
 {
-    public class ImageDto : BaseEntityDto
+    public class ImageDto
     {
         public string ImageUrl { get; set; } = string.Empty;
-        public ImageType ImageType { get; set; } = ImageType.Unknown;
+        public ImageType ImageType { get; set; }
     }
 }

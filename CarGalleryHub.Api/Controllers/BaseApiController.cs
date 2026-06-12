@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.VisualBasic;
@@ -25,6 +26,8 @@ namespace CarGalleryHub.Api.Controllers
             => base.StatusCode(201, new { _data = data, Msg = message});
 
         protected IActionResult Invalid<T>(T data, string message = "İşlem Başarısız")
-            => base.StatusCode(401, new { _data = data, Msg = message });
+            => base.StatusCode(401, new {_data = data, Msg = message });
+
+        protected ObjectResult Invalid(string message = "İşlem Başarısız") => base.StatusCode(401, new { Msg = message });
     }
 }
