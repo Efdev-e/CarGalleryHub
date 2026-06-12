@@ -41,7 +41,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpPut]
         [Authorize]
         public async Task<IActionResult> ChangeProfile(UserProfileUpdateRequest userProfileUpdateRequest)
         {
