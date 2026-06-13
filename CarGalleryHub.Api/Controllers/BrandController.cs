@@ -48,23 +48,26 @@ namespace CarGalleryHub.Api.Controllers
 
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> AddCarModelToBrand(CreateCarModelDto carModelDto, int brandId)
+        public async Task<IActionResult> AddCarModelToBrand(int carModelId, int brandId)
         {
             if (!IsAdmin()) return Invalid("Yetkisiz İşlem");
-            if (carModelDto is null) return Invalid("Gerekli Parametreler Verilmedi");
-
+            var carModel = await _unitOfWork.CarModels.GetByIdAsync(carModelId);
+            if (carModel is null) return Invalid("Car Model bulunamadı");
 
             var Brand = await _unitOfWork.Brands.GetByIdAsync(brandId);
             if (Brand is null || Brand.BrandName is null) return Invalid();
 
-            Brand.CarModels.Add(new CarModel() 
+            if (Brand.CarModels is null) 
             {
-                BrandId = brandId,
-                Cars = new List<Car>(),
-                Model = carModelDto.Model,
-                Series = carModelDto.Series,
-                ReleaseDate = carModelDto.ReleaseDate
-            });
+                Brand.CarModels = new List<CarModel>();
+            }
+
+            if (!Brand.CarModels.Contains(carModel)) 
+            {
+                Brand.CarModels.Add(carModel);
+            }
+
+         
 
             _unitOfWork.Brands.Update(Brand);
             await _unitOfWork.SaveChangesAsync();

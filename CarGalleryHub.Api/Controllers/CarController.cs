@@ -1,14 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CarGalleryHub.Persistence.UnitOfWork;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CarGalleryHub.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarController : Controller
+    public class CarController : BaseApiController
     {
-        public IActionResult Index()
+        private readonly IUnitOfWork unitOfWork;
+
+        public CarController(IUnitOfWork work)
         {
-            return View();
+            unitOfWork = work;
         }
+
+
     }
 }

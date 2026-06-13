@@ -1,14 +1,148 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CarGalleryHub.Application.DTOs.Car;
+using CarGalleryHub.Application.DTOs.CarModel;
+using CarGalleryHub.Domain.Entities;
+using CarGalleryHub.Persistence.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Numerics;
 
 namespace CarGalleryHub.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarModelController : Controller
+    public class CarModelController : BaseApiController
     {
-        public IActionResult Index()
+        private readonly IUnitOfWork unitOfWork;
+
+        public CarModelController(IUnitOfWork work)
         {
-            return View();
+            unitOfWork = work;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCarModelById(int id) 
+        {
+            var CarModel = await unitOfWork.CarModels.GetByIdAsync(id);
+            if (CarModel is null) return Invalid("Model Yok");
+            var dto = new CarModelDto() 
+            {
+                BrandId = CarModel.BrandId,
+                Id = CarModel.Id,
+                Model = CarModel.Model,
+                Series = CarModel.Series,
+                ReleaseDate = CarModel.ReleaseDate
+            };
+            return Ok(dto);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateCarModel(CarModelDto carModelDto)
+        {
+            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
+            if (carModelDto is null || carModelDto.Series is null || carModelDto.Model is null) return Invalid("Parametreler Eksik");
+            var doesBrandExist = await unitOfWork.Brands.GetByIdAsync(carModelDto.BrandId) is null;
+            if (!doesBrandExist) return Invalid("Brand Yok");
+
+            var carModel = new CarModel()
+            {
+                BrandId = carModelDto.BrandId,
+                Model = carModelDto.Model,
+                Series = carModelDto.Series,
+                ReleaseDate = carModelDto.ReleaseDate,
+                Cars = new List<Car>()
+            };
+            await unitOfWork.CarModels.AddAsync(carModel);
+            await unitOfWork.SaveChangesAsync();
+
+            return Ok("Oluşturuldu");
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> DeleteCarModel(int id)
+        {
+            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
+            var carModel = await unitOfWork.CarModels.GetByIdAsync(id);
+            if (carModel is null) return Invalid("Model yok");
+
+            unitOfWork.CarModels.Remove(carModel);
+            await unitOfWork.SaveChangesAsync();
+
+            return Ok("Silindi");
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> AddCarToModel(int carId, int carModelId)
+        {
+            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
+            var car = await unitOfWork.Cars.GetByIdAsync(carId);
+            if (car is null) return Invalid("Araba Yok");
+            var model = await unitOfWork.CarModels.GetByIdAsync(carModelId);
+            if (model is null) return Invalid("Model Yok");
+            
+            if (model.Cars is null) 
+            {
+                model.Cars = new List<Car>();
+            }
+            if (!model.Cars.Contains(car)) 
+            {
+                model.Cars.Add(car);
+
+            }
+
+            unitOfWork.CarModels.Update(model);
+            await unitOfWork.SaveChangesAsync();
+
+            return Ok("Oluşturuldu");
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> DeleteCarFromModel(int carId, int carModelId)
+        {
+            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
+            var car = await unitOfWork.Cars.GetByIdAsync(carId);
+            if (car is null) return Invalid("Araba Yok");
+            var model = await unitOfWork.CarModels.GetByIdAsync(carModelId);
+            if (model is null) return Invalid("Model Yok");
+
+            if (model.Cars is null)
+            {
+                model.Cars = new List<Car>();
+            }
+            if (model.Cars.Contains(car))
+            {
+                model.Cars.Remove(car);
+            }
+
+            unitOfWork.CarModels.Update(model);
+            await unitOfWork.SaveChangesAsync();
+
+            return Ok("Oluşturuldu");
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> UpdateCarModel(CarModelDto carModelDto, int carModelId)
+        {
+            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
+            if (carModelDto is null || carModelDto.Series is null || carModelDto.Model is null) return Invalid("Parametreler Eksik");
+            var doesBrandExist = await unitOfWork.Brands.GetByIdAsync(carModelDto.BrandId) is null;
+            if (!doesBrandExist) return Invalid("Brand Yok");
+            var model = await unitOfWork.CarModels.GetByIdAsync(carModelId);
+            if (model is null) return Invalid("Model yok");
+
+            model.BrandId = carModelDto.BrandId;
+            model.Series = carModelDto.Series;
+            model.Model = carModelDto.Model;
+            model.ReleaseDate = carModelDto.ReleaseDate;
+            
+            unitOfWork.CarModels.Update(model);
+            await unitOfWork.SaveChangesAsync();
+
+            return Ok("Güncellendi");
         }
     }
 }
