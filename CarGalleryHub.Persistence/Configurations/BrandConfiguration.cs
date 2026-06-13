@@ -14,10 +14,6 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.ToTable("Brands");
 
             builder.HasKey(x => x.Id);
-
-            builder.HasMany(x => x.CarModels)
-                   .WithOne(x => x.Brand)
-                   .HasForeignKey(x => x.BrandId);
         }
     }
 }

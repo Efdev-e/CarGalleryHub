@@ -18,17 +18,18 @@ namespace CarGalleryHub.Persistence.Configurations
 
             builder.Property(x => x.BrandId).IsRequired();
 
-            builder.Property(x => x.BrandName).HasMaxLength(255).IsRequired();
             builder.Property(x => x.Model).HasMaxLength(255).IsRequired();
             builder.Property(x => x.Series).HasMaxLength(255).IsRequired();
 
             builder.HasOne(x => x.Brand)
                    .WithMany(x => x.CarModels)
-                   .HasForeignKey(x => x.BrandId);
+                   .HasForeignKey(x => x.BrandId)
+                   .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(x => x.Cars)
                    .WithOne(x => x.CarModel)
-                   .HasForeignKey(x => x.CarModelId);
+                   .HasForeignKey(x => x.CarModelId)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -7,7 +7,6 @@ namespace CarGalleryHub.Domain.Entities
     public class CarModel : BaseEntity
     {
         // Araba Mdl
-        public string BrandName { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
         public string Series { get; set; } = string.Empty;
 

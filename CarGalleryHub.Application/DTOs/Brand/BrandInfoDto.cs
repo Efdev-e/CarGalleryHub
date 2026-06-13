@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CarGalleryHub.Application.DTOs.Brand
 {
-    public class BrandInfoDto : BaseEntityDto
+    public class BrandInfoDto
     {
         public required string BrandName { get; set; }
     }
