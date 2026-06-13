@@ -8,6 +8,8 @@ using System.Runtime.CompilerServices;
 
 namespace CarGalleryHub.Api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AddressController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;

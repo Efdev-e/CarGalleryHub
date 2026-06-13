@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarGalleryHub.Api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class UserController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;

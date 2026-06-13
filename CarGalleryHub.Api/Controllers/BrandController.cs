@@ -2,11 +2,10 @@
 
 namespace CarGalleryHub.Api.Controllers
 {
-    public class BrandController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BrandController : BaseApiController
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        
     }
 }
