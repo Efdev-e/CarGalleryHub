@@ -23,7 +23,7 @@ namespace CarGalleryHub.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAdvertById(int id) 
         {
-            var advert = await unitOfWork.Adverts.GetByIdAsync(id);
+            var advert = await unitOfWork.Adverts.GetByIdIncludedAsync(id, u => u.Thumbnails);
             if (advert is null) return Invalid("Yok");
 
             var advertDto = new AdvertDto()
@@ -39,7 +39,7 @@ namespace CarGalleryHub.Api.Controllers
                 Warranty = advert.Warranty
             };
 
-            return Ok(advert);
+            return Ok(advertDto);
         }
 
         [HttpPost("create")]
@@ -69,7 +69,7 @@ namespace CarGalleryHub.Api.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateAdvert([FromBody] UpdateAdvertDto advertDto, int advertId)
         {
-            var advert = await unitOfWork.Adverts.GetByIdAsync(advertId);
+            var advert = await unitOfWork.Adverts.GetByIdIncludedAsync(advertId, u => u.Thumbnails);
             if (advert is null) return Invalid();
             if (!IsAdmin()) 
             {

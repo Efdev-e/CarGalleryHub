@@ -115,7 +115,7 @@ namespace CarGalleryHub.Api.Controllers
                 x.FullAddress == addressDto.FullAddress &&
                 x.City == addressDto.City &&
                 x.District == addressDto.District &&
-                x.PostalCode == addressDto.PostalCode);
+                x.PostalCode == addressDto.PostalCode, u => u.Users);
             if (AddressExist is null) 
             {
                 var adr = new Address()
@@ -160,7 +160,7 @@ namespace CarGalleryHub.Api.Controllers
 
             if (address.Users is null)
             {
-                address = await _unitOfWork.Addresses.FirstOrDefaultAsync(x => x.Id == id);
+                address = await _unitOfWork.Addresses.FirstOrDefaultAsync(x => x.Id == id, u => u.Users);
             }
 
 
