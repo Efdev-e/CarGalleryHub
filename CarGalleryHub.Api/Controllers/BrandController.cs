@@ -53,10 +53,10 @@ namespace CarGalleryHub.Api.Controllers
         public async Task<IActionResult> AddCarModelToBrand(int carModelId, int brandId)
         {
             if (!IsAdmin()) return Invalid("Yetkisiz İşlem");
-            var carModel = await _unitOfWork.CarModels.GetByIdAsync(carModelId);
+            var carModel = await _unitOfWork.CarModels.GetByIdIncludedAsync(carModelId, u => u.Brand);
             if (carModel is null) return Invalid("Car Model bulunamadı");
 
-            var Brand = await _unitOfWork.Brands.GetByIdAsync(brandId);
+            var Brand = await _unitOfWork.Brands.GetByIdIncludedAsync(brandId, u => u.CarModels);
             if (Brand is null || Brand.BrandName is null) return Invalid();
 
             if (Brand.CarModels is null) 
@@ -85,9 +85,9 @@ namespace CarGalleryHub.Api.Controllers
 
             var Msg = "";
 
-            var Brand = await _unitOfWork.Brands.GetByIdAsync(brandId);
+            var Brand = await _unitOfWork.Brands.GetByIdIncludedAsync(brandId, u => u.CarModels);
             if (Brand is null || Brand.BrandName is null) return Invalid();
-            var CarModel = await _unitOfWork.CarModels.GetByIdAsync(CarModelId);
+            var CarModel = await _unitOfWork.CarModels.GetByIdIncludedAsync(CarModelId, u => u.Brand);
             if (CarModel is null || CarModel.Model is null) return Invalid();
 
             if (Brand.CarModels.Contains(CarModel)) { Brand.CarModels.Remove(CarModel); Msg = "CarModel is Removed"; await _unitOfWork.SaveChangesAsync(); }
