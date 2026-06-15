@@ -9,7 +9,7 @@ namespace CarGalleryHub.Domain.Entities
     {
         public string ImageUrl { get; set; } = string.Empty;
         public ImageType ImageType { get; set; } = ImageType.Unknown;
-        public Byte[] ImageData { get; set; } = null!;
+        public byte[]? ImageData { get; set; } = null!;
 
         // FK
 
