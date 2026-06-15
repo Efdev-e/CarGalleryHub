@@ -21,7 +21,7 @@ namespace CarGalleryHub.Persistence.Services
 
         public async Task<CartDto> GetCart(int userId)
         {
-            var cart = await unitOfWork.Carts.FirstOrDefaultAsync(x => x.UserId == userId);
+            var cart = await unitOfWork.Carts.FirstOrDefaultAsync(x => x.UserId == userId, u => u.CartItems);
 
             if (cart is null)
             {

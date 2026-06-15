@@ -45,7 +45,7 @@ namespace CarGalleryHub.Api.Controllers
 
         [HttpPost("create")]
         [Authorize]
-        public async Task<IActionResult> CreateCar(CarDto carDto) 
+        public async Task<IActionResult> CreateCar([FromBody] CarDto carDto) 
         {
             if (carDto is null) return Invalid();
             var carExist = await unitOfWork.Cars.FirstOrDefaultAsync(x => 
@@ -77,7 +77,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Oluşturuldu");
         }
 
-        [HttpPut("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteCarById(int id) 
         {
@@ -91,9 +91,9 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpPost("update/{carDto},{carid}")]
+        [HttpPost("update/{carid}")]
         [Authorize]
-        public async Task<IActionResult> UpdateCar(UpdateCarDto carDto, int carid)
+        public async Task<IActionResult> UpdateCar([FromBody] UpdateCarDto carDto, int carid)
         {
             if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
 

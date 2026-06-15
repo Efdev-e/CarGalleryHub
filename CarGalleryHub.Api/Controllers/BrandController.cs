@@ -33,7 +33,7 @@ namespace CarGalleryHub.Api.Controllers
 
         [HttpPost("create")]
         [Authorize]
-        public async Task<IActionResult> CreateBrand(BrandInfoDto brandInfo) 
+        public async Task<IActionResult> CreateBrand([FromBody] BrandInfoDto brandInfo) 
         {
             if (!IsAdmin()) return Invalid("Yetkisiz İşlem");
             if (brandInfo is null || brandInfo.BrandName is null) return Invalid("Brand ismi verilmedi");
@@ -77,7 +77,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Eklendi");
         }
 
-        [HttpPut("removeModel/{brandId},{CarModelId}")]
+        [HttpDelete("removeModel/{brandId},{CarModelId}")]
         [Authorize]
         public async Task<IActionResult> RemoveCarModelFromBrand(int brandId, int CarModelId)
         {
@@ -96,7 +96,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(Msg);
         }
 
-        [HttpPut("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteBrandById(int id)
         {
@@ -110,9 +110,9 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpPut("update/{brandInfo},{id}")]
+        [HttpPut("update/{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateBrand(BrandInfoDto brandInfo,int id)
+        public async Task<IActionResult> UpdateBrand([FromBody] BrandInfoDto brandInfo,int id)
         {
             if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
             var Brand = await _unitOfWork.Brands.GetByIdAsync(id);

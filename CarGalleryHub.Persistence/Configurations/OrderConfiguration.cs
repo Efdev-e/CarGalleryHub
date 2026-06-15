@@ -14,6 +14,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.ToTable("Orders");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
 
             builder.HasIndex(x => x.OrderNumber).IsUnique(true);
 

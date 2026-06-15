@@ -21,9 +21,55 @@ namespace CarGalleryHub.Persistence.Repositories
         }
 
         public async Task AddAsync(T item) => await _dbSet.AddAsync(item);
-        public async Task<List<T>> FindAsync(Expression<Func<T, bool>> predicate) => await _dbSet.Where(predicate).ToListAsync();
-        public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate) => await _dbSet.FirstOrDefaultAsync(predicate);
-        public async Task<List<T>> GetAllAsync() => await _dbSet.ToListAsync();
+
+
+
+
+        public async Task<T?> GetByIdIncludedAsync(int id, params Expression<Func<T, object>>[] includes) 
+        {
+            IQueryable<T> query = _dbSet.AsNoTracking().AsQueryable();
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+            return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
+        }
+
+
+
+
+        public async Task<List<T>> FindAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes) 
+        {
+            IQueryable<T> query = _dbSet.AsNoTracking().AsQueryable();
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+            return await query.Where(predicate).ToListAsync();
+        }
+
+
+
+
+
+        public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes) 
+        {
+            IQueryable<T> query = _dbSet.AsNoTracking().AsQueryable();
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+            return await query.FirstOrDefaultAsync(predicate);
+        }
+        public async Task<List<T>> GetAllAsync(params Expression<Func<T, object>>[] includes) 
+        {
+            IQueryable<T> query = _dbSet.AsNoTracking().AsQueryable();
+            if (includes != null)
+            {
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
+            }
+            return await query.ToListAsync();
+        }
         public async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
         public IQueryable<T> Query() => _dbSet.AsQueryable();
         public void Remove(T item) => _dbSet.Remove(item);

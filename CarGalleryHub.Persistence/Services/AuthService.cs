@@ -34,8 +34,12 @@ namespace CarGalleryHub.Persistence.Services
 
             var user = await _unitofwork.Users.FirstOrDefaultAsync(x => x.Email == loginRequestDto.Email);
             if (user is null)
-                throw new NotFound("User");
-
+                throw new NotFound("Incorrect Email or Password");
+            
+            if (!_hasher.VerifyPassword(loginRequestDto.Password,user.PasswordHash)) 
+            {
+                throw new NotFound("Incorrect Email or Password");
+            }
 
             return ResponseBuilder(user);
         }

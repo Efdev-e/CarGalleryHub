@@ -14,6 +14,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.ToTable("Brands");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
         }
     }
 }

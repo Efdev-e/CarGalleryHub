@@ -14,6 +14,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.ToTable("Adverts");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
 
             builder.Property(x => x.AdvertTitle).HasMaxLength(100).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(500).IsRequired();

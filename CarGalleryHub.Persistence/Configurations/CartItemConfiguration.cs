@@ -14,6 +14,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.ToTable("CartItems");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
 
             builder.Property(x => x.Quantity).IsRequired();
             builder.Property(x => x.AdvertId).IsRequired();

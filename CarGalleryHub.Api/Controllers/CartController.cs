@@ -32,16 +32,16 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(cartDto);
         }
 
-        [HttpPut("addItem/{cartItemDto}")]
+        [HttpPut("addItem")]
         [Authorize]
-        public async Task<IActionResult> AddItemToCart(CreateCartItemDto cartItemDto) 
+        public async Task<IActionResult> AddItemToCart([FromBody] CreateCartItemDto cartItemDto) 
         {
             var cart = await cartService.AddItemToCart(GetUserId(), cartItemDto);
             if (!cart) return Invalid("Err");
             return Ok();
         }
 
-        [HttpPut("removeItem/{cartItemId}")]
+        [HttpDelete("removeItem/{cartItemId}")]
         [Authorize]
         public async Task<IActionResult> RemoveItemFromCart(int cartItemId)
         {

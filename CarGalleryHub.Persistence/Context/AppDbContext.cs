@@ -11,7 +11,6 @@ namespace CarGalleryHub.Persistence.Context
     {
         public AppDbContext(DbContextOptions options) : base(options)
         {
-
         }
         public DbSet<Address> Addresses => Set<Address>();
         public DbSet<Advert> Adverts => Set<Advert>();

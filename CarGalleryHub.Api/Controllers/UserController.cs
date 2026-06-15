@@ -23,7 +23,7 @@ namespace CarGalleryHub.Api.Controllers
 
         // ViewProfile, ChangePassword, ChangeEmail,ChangeProfile
 
-        [HttpGet]
+        [HttpGet("view")]
         [Authorize]
         public async Task<IActionResult> ViewProfile() 
         {
@@ -33,40 +33,41 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(profile);
         }
 
-        [HttpPut]
+        [HttpPut("changeProfile")]
         [Authorize]
-        public async Task<IActionResult> ChangeProfile(UserProfileUpdateRequest userProfileUpdateRequest)
+        public async Task<IActionResult> ChangeProfile([FromBody] UserProfileUpdateRequest userProfileUpdateRequest)
         {
             var prof = await userService.ChangeProfile(GetUserId(), userProfileUpdateRequest);
             if (!prof) return Invalid("Hata Oluştu");
             return Ok("Profil Güncellendi");
         }
 
-        [HttpPut]
+        [HttpPut("changePassword")]
         [Authorize]
-        public async Task<IActionResult> ChangePassword(UserSecurityUpdateRequest updateRequest) 
+        public async Task<IActionResult> ChangePassword([FromBody] UserSecurityUpdateRequest updateRequest) 
         {
             var prof = await userService.ChangePassword(GetUserId(), updateRequest);
             if (!prof) return Invalid("Hata Oluştu");
             return Ok("Şifre değiştirildi");
         }
 
-        [HttpPut]
+        [HttpPut("changeEmail")]
         [Authorize]
-        public async Task<IActionResult> ChangeEmail(UserSecurityUpdateRequest updateRequest)
+        public async Task<IActionResult> ChangeEmail([FromBody] UserSecurityUpdateRequest updateRequest)
         {
             var prof = await userService.ChangeEmail(GetUserId(), updateRequest);
             if (!prof) return Invalid("Hata Oluştu");
             return Ok("Email değiştirildi");
         }
 
-        [HttpPut]
+        [HttpPut("changePhone")]
         [Authorize]
-        public async Task<IActionResult> ChangePhone(UserSecurityUpdateRequest updateRequest)
+        public async Task<IActionResult> ChangePhone([FromBody] UserSecurityUpdateRequest updateRequest)
         {
             var prof = await userService.ChangePhone(GetUserId(), updateRequest);
             if (!prof) return Invalid("Hata Oluştu");
             return Ok("Numara değiştirildi.");
         }
+
     }
 }

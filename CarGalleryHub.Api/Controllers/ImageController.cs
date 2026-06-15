@@ -17,7 +17,7 @@ namespace CarGalleryHub.Api.Controllers
             unitOfWork = work;
         }
 
-        [HttpGet("{url}")]
+        [HttpGet("{*url}")]
         public async Task<IActionResult> GetImage(string url) 
         {
             var image = await unitOfWork.Images.FirstOrDefaultAsync(x => x.ImageUrl == url);
@@ -58,7 +58,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpPut("delete/{imgurl}")]
+        [HttpDelete("delete/{imgurl}")]
         [Authorize]
         public async Task<IActionResult> deleteImage(string imgurl) 
         {

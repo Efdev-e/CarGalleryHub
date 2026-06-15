@@ -14,6 +14,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.ToTable("Cars");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
 
             builder.Property(x => x.BrandName).HasMaxLength(255).IsRequired();
             builder.Property(x => x.ModelName).HasMaxLength(255).IsRequired();

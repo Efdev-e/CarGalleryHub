@@ -23,7 +23,7 @@ namespace CarGalleryHub.Persistence.Seed
 
         public async Task SeedAsync() 
         {
-            await _context.Database.MigrateAsync();
+            await _context.Database.MigrateAsync();   
             await SeedUsersAsync(_context);
             await SeedBrandAsync(_context);
             await SeedCarModelAsync(_context);

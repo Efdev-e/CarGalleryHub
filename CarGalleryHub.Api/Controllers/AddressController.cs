@@ -22,7 +22,8 @@ namespace CarGalleryHub.Api.Controllers
         [Authorize]
         public async Task<IActionResult> ViewAddress(int id) 
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(GetUserId());
+            var user = await _unitOfWork.Users.GetByIdIncludedAsync(GetUserId(), u => u.Addresses);
+            
             if (user is null) return Invalid();
             var Address = user.Addresses.FirstOrDefault(x => x.Id == id);
             if (Address is null) return Invalid();
@@ -47,7 +48,7 @@ namespace CarGalleryHub.Api.Controllers
         [Authorize]
         public async Task<IActionResult> ListAddresses()
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(GetUserId());
+            var user = await _unitOfWork.Users.GetByIdIncludedAsync(GetUserId(), u => u.Addresses);
             if (user is null) return Invalid();
             if (user.Addresses is null) return Ok(Array.Empty<AddressDto>, "Başarız Oldu");
 
@@ -70,9 +71,9 @@ namespace CarGalleryHub.Api.Controllers
 
         [HttpPut("update/{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateAddress(int id, AddressDto addressDto) 
+        public async Task<IActionResult> UpdateAddress(int id, [FromBody] AddressDto addressDto) 
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(GetUserId());
+            var user = await _unitOfWork.Users.GetByIdIncludedAsync(GetUserId(), u => u.Addresses);
             if (user is null) return Invalid();
 
             if (addressDto is null) return Invalid();
@@ -106,9 +107,9 @@ namespace CarGalleryHub.Api.Controllers
 
         [HttpPost("create")]
         [Authorize]
-        public async Task<IActionResult> CreateAddress(CreateAddressDto addressDto) 
+        public async Task<IActionResult> CreateAddress([FromBody] CreateAddressDto addressDto) 
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(GetUserId());
+            var user = await _unitOfWork.Users.GetByIdIncludedAsync(GetUserId(), u => u.Addresses);
             if (user is null) return Invalid();
 
             
@@ -147,21 +148,36 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("delete/{id}")]
+        [HttpDelete("delete/{id}")] 
         [Authorize]
         public async Task<IActionResult> DeleteAddress(int id)
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(GetUserId());
-            if (user is null) return Invalid();
-            var Address = user.Addresses.FirstOrDefault(x => x.Id == id);
-            if (Address is null) return Invalid();
-            var AddressUser = Address.Users.FirstOrDefault(x => x.Id == id);
-            if (AddressUser is null) return Invalid("You don't have that address");
+            var user = await _unitOfWork.Users.GetByIdIncludedAsync(GetUserId(), u => u.Addresses);
+            if (user?.Addresses is null) return Invalid();
 
-            Address.Users.Remove(AddressUser);
-            if (Address.Users.Count == 0) { _unitOfWork.Addresses.Remove(Address); }
-            else { _unitOfWork.Addresses.Update(Address); }
+            var address = user.Addresses.FirstOrDefault(x => x.Id == id);
+            if (address is null) return Invalid();
 
+            if (address.Users is null)
+            {
+                address = await _unitOfWork.Addresses.FirstOrDefaultAsync(x => x.Id == id);
+            }
+
+
+            var userremove = address!.Users.FirstOrDefault(x => x.Id == user.Id);
+            if (userremove != null)
+            {
+                address.Users.Remove(userremove);
+            }
+
+            if (address.Users.Count == 0)
+            {
+                _unitOfWork.Addresses.Remove(address);
+            }
+            else
+            {
+                _unitOfWork.Addresses.Update(address);
+            }
 
             await _unitOfWork.SaveChangesAsync();
             return Ok("Silindi");

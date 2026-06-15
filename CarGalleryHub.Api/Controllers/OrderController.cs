@@ -4,11 +4,8 @@ namespace CarGalleryHub.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : Controller
+    public class OrderController : BaseApiController
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+      
     }
 }

@@ -14,6 +14,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.ToTable("Payments");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
 
             builder.Property(x => x.Amount).HasPrecision(18,2).IsRequired();
             builder.Property(x => x.PaymentStatus).IsRequired();

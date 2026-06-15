@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarGalleryHub.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260615122103_InitialCreate")]
+    [Migration("20260615134714_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -65,12 +65,13 @@ namespace CarGalleryHub.Persistence.Migrations
 
                     b.Property<string>("FullAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -343,6 +344,10 @@ namespace CarGalleryHub.Persistence.Migrations
 
                     b.Property<int?>("CartItemId")
                         .HasColumnType("int");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int>("ImageType")
                         .HasColumnType("int");

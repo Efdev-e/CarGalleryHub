@@ -44,7 +44,7 @@ namespace CarGalleryHub.Api.Controllers
 
         [HttpPost("create")]
         [Authorize]
-        public async Task<IActionResult> CreateAdvert(AdvertDto advertDto) 
+        public async Task<IActionResult> CreateAdvert([FromBody] AdvertDto advertDto) 
         {
             if (advertDto is null) return Invalid();
 
@@ -67,7 +67,7 @@ namespace CarGalleryHub.Api.Controllers
 
         [HttpPut("update/{advertId}")]
         [Authorize]
-        public async Task<IActionResult> UpdateAdvert(UpdateAdvertDto advertDto, int advertId)
+        public async Task<IActionResult> UpdateAdvert([FromBody] UpdateAdvertDto advertDto, int advertId)
         {
             var advert = await unitOfWork.Adverts.GetByIdAsync(advertId);
             if (advert is null) return Invalid();
@@ -83,13 +83,13 @@ namespace CarGalleryHub.Api.Controllers
                                 new Image() { ImageUrl = x.ImageUrl, ImageType = x.ImageType, AdvertId = advert.Id }).ToList() ?? advert.Thumbnails;
             
 
-            await unitOfWork.Adverts.AddAsync(advert);
+            unitOfWork.Adverts.Update(advert);
             await unitOfWork.SaveChangesAsync();
 
             return Ok();
         }
 
-        [HttpPut("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteAdvertById(int id) 
         {
