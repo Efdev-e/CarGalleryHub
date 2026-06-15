@@ -77,7 +77,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Eklendi");
         }
 
-        [HttpDelete("removeModel/{brandId},{CarModelId}")]
+        [HttpPut("removeModel/{brandId},{CarModelId}")]
         [Authorize]
         public async Task<IActionResult> RemoveCarModelFromBrand(int brandId, int CarModelId)
         {

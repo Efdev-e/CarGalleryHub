@@ -28,7 +28,5 @@ namespace CarGalleryHub.Domain.Entities
         public int? CartItemId { get; set; }
         public CartItem? CartItem { get; set; }
 
-        public int? CartId { get; set; }
-        public Cart? Cart { get; set; }
     }
 }

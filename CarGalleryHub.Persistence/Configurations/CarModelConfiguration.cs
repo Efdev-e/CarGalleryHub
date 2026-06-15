@@ -25,7 +25,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.HasOne(x => x.Brand)
                    .WithMany(x => x.CarModels)
                    .HasForeignKey(x => x.BrandId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.Cars)
                    .WithOne(x => x.CarModel)

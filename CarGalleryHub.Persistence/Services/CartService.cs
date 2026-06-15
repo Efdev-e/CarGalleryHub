@@ -75,7 +75,7 @@ namespace CarGalleryHub.Persistence.Services
 
         public async Task<bool> RemoveItemFromCart(int userId,int cartItemId)
         {
-            var cart = await unitOfWork.Carts.FirstOrDefaultAsync(x => x.UserId == userId);
+            var cart = await unitOfWork.Carts.FirstOrDefaultAsync(x => x.UserId == userId, u => u.CartItems);
 
             if (cart is null)
             {
