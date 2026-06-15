@@ -18,7 +18,7 @@ namespace CarGalleryHub.Api.Controllers
             unitOfWork = work;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetCarById(int id) 
         {
             var Car = await unitOfWork.Cars.GetByIdAsync(id);
@@ -43,7 +43,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(dto);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         [Authorize]
         public async Task<IActionResult> CreateCar(CarDto carDto) 
         {
@@ -77,7 +77,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Oluşturuldu");
         }
 
-        [HttpPut]
+        [HttpPut("delete/{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteCarById(int id) 
         {
@@ -91,6 +91,27 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        
+        [HttpPost("update/{carDto},{carid}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateCar(UpdateCarDto carDto, int carid)
+        {
+            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
+
+            if (carDto is null) return Invalid();
+            var car = await unitOfWork.Cars.GetByIdAsync(carid);
+            if (car is null) return Invalid("Araba yok");
+
+            car.KM = carDto?.KM ?? car.KM;
+            car.Color = carDto?.Color ?? car.Color  ;
+            car.Status = carDto?.Status ?? car.Status;
+            car.MotorPower = carDto?.MotorPower ?? car.MotorPower;
+            car.Year = carDto?.Year ?? car.Year;
+            car.Availability = carDto?.Availability ?? car.Availability;
+            
+            unitOfWork.Cars.Update(car);
+            await unitOfWork.SaveChangesAsync();
+
+            return Ok("Güncellendi");
+        }
     }
 }

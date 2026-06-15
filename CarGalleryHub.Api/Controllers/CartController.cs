@@ -23,7 +23,7 @@ namespace CarGalleryHub.Api.Controllers
             cartService = work;
         }
 
-        [HttpGet]
+        [HttpGet("GetCart")]
         [Authorize]
         public async Task<IActionResult> GetCart() 
         {
@@ -32,7 +32,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(cartDto);
         }
 
-        [HttpPut]
+        [HttpPut("addItem/{cartItemDto}")]
         [Authorize]
         public async Task<IActionResult> AddItemToCart(CreateCartItemDto cartItemDto) 
         {
@@ -41,7 +41,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("removeItem/{cartItemId}")]
         [Authorize]
         public async Task<IActionResult> RemoveItemFromCart(int cartItemId)
         {

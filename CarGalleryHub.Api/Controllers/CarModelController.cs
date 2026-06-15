@@ -19,7 +19,7 @@ namespace CarGalleryHub.Api.Controllers
             unitOfWork = work;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetCarModelById(int id) 
         {
             var CarModel = await unitOfWork.CarModels.GetByIdAsync(id);
@@ -35,7 +35,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(dto);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         [Authorize]
         public async Task<IActionResult> CreateCarModel(CarModelDto carModelDto)
         {
@@ -59,7 +59,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Oluşturuldu");
         }
 
-        [HttpPut]
+        [HttpPut("delete/{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteCarModel(int id)
         {
@@ -73,7 +73,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Silindi");
         }
 
-        [HttpPut]
+        [HttpPut("addCar/{carId},{carModelId}")]
         [Authorize]
         public async Task<IActionResult> AddCarToModel(int carId, int carModelId)
         {
@@ -99,7 +99,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Oluşturuldu");
         }
 
-        [HttpPut]
+        [HttpPut("deleteCar/{carId},{carModelId}")]
         [Authorize]
         public async Task<IActionResult> DeleteCarFromModel(int carId, int carModelId)
         {
@@ -124,7 +124,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Oluşturuldu");
         }
 
-        [HttpPut]
+        [HttpPut("update/{carModelDto},{carModelId}")]
         [Authorize]
         public async Task<IActionResult> UpdateCarModel(CarModelDto carModelDto, int carModelId)
         {

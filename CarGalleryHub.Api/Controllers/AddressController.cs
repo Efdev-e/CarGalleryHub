@@ -43,7 +43,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(addressDto);
         }
 
-        [HttpGet]
+        [HttpGet("List")]
         [Authorize]
         public async Task<IActionResult> ListAddresses()
         {
@@ -68,7 +68,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(Addresses);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update/{id}")]
         [Authorize]
         public async Task<IActionResult> UpdateAddress(int id, AddressDto addressDto) 
         {
@@ -104,7 +104,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         [Authorize]
         public async Task<IActionResult> CreateAddress(CreateAddressDto addressDto) 
         {
@@ -145,6 +145,26 @@ namespace CarGalleryHub.Api.Controllers
             
             await _unitOfWork.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpGet("delete/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteAddress(int id)
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(GetUserId());
+            if (user is null) return Invalid();
+            var Address = user.Addresses.FirstOrDefault(x => x.Id == id);
+            if (Address is null) return Invalid();
+            var AddressUser = Address.Users.FirstOrDefault(x => x.Id == id);
+            if (AddressUser is null) return Invalid("You don't have that address");
+
+            Address.Users.Remove(AddressUser);
+            if (Address.Users.Count == 0) { _unitOfWork.Addresses.Remove(Address); }
+            else { _unitOfWork.Addresses.Update(Address); }
+
+
+            await _unitOfWork.SaveChangesAsync();
+            return Ok("Silindi");
         }
     }
 }

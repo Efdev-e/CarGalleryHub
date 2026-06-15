@@ -20,7 +20,7 @@ namespace CarGalleryHub.Api.Controllers
 
 
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetAdvertById(int id) 
         {
             var advert = await unitOfWork.Adverts.GetByIdAsync(id);
@@ -35,13 +35,14 @@ namespace CarGalleryHub.Api.Controllers
                 Id = advert.Id,
                 Thumbnails = advert.Thumbnails.Select(x => new Application.DTOs.Image.ImageDto() { ImageUrl = x.ImageUrl, ImageType = x.ImageType}).ToList(),
                 CreatedAt = advert.CreatedAt,
-                UpdatedAt = advert.UpdatedAt
+                UpdatedAt = advert.UpdatedAt,
+                Warranty = advert.Warranty
             };
 
             return Ok(advert);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         [Authorize]
         public async Task<IActionResult> CreateAdvert(AdvertDto advertDto) 
         {
@@ -64,7 +65,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("update/{advertId}")]
         [Authorize]
         public async Task<IActionResult> UpdateAdvert(UpdateAdvertDto advertDto, int advertId)
         {
@@ -88,7 +89,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("delete/{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteAdvertById(int id) 
         {

@@ -1,6 +1,7 @@
 ﻿using CarGalleryHub.Application.DTOs.Brand;
 using CarGalleryHub.Application.DTOs.CarModel;
 using CarGalleryHub.Domain.Entities;
+using CarGalleryHub.Domain.Enum;
 using CarGalleryHub.Persistence.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@ namespace CarGalleryHub.Api.Controllers
             
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         [Authorize]
         public async Task<IActionResult> CreateBrand(BrandInfoDto brandInfo) 
         {
@@ -47,7 +48,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok($"{brandInfo.BrandName} Oluşturuldu");
         }
 
-        [HttpPut]
+        [HttpPut("addModel/{carModelId},{brandId}")]
         [Authorize]
         public async Task<IActionResult> AddCarModelToBrand(int carModelId, int brandId)
         {
@@ -76,7 +77,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Eklendi");
         }
 
-        [HttpPut]
+        [HttpPut("removeModel/{brandId},{CarModelId}")]
         [Authorize]
         public async Task<IActionResult> RemoveCarModelFromBrand(int brandId, int CarModelId)
         {
@@ -95,10 +96,11 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(Msg);
         }
 
-        [HttpPut]
+        [HttpPut("delete/{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteBrandById(int id)
         {
+            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
             var Brand = await _unitOfWork.Brands.GetByIdAsync(id);
             if (Brand is null || Brand.BrandName is null) return Invalid("Bulunamadı");
 
@@ -108,9 +110,11 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("update/{brandInfo},{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateBrand(BrandInfoDto brandInfo,int id)
         {
+            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
             var Brand = await _unitOfWork.Brands.GetByIdAsync(id);
             if (Brand is null) return Invalid();
             Brand.BrandName = brandInfo.BrandName;

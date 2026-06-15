@@ -128,8 +128,7 @@ namespace CarGalleryHub.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId")
-                        .IsUnique();
+                    b.HasIndex("CarId");
 
                     b.HasIndex("SellerId");
 
@@ -229,11 +228,6 @@ namespace CarGalleryHub.Persistence.Migrations
 
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
-
-                    b.Property<string>("BrandName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -636,9 +630,9 @@ namespace CarGalleryHub.Persistence.Migrations
             modelBuilder.Entity("CarGalleryHub.Domain.Entities.Advert", b =>
                 {
                     b.HasOne("CarGalleryHub.Domain.Entities.Car", "Car")
-                        .WithOne("Advert")
-                        .HasForeignKey("CarGalleryHub.Domain.Entities.Advert", "CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("Advert")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CarGalleryHub.Domain.Entities.User", "Seller")
@@ -657,7 +651,7 @@ namespace CarGalleryHub.Persistence.Migrations
                     b.HasOne("CarGalleryHub.Domain.Entities.CarModel", "CarModel")
                         .WithMany("Cars")
                         .HasForeignKey("CarModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CarModel");
@@ -668,7 +662,7 @@ namespace CarGalleryHub.Persistence.Migrations
                     b.HasOne("CarGalleryHub.Domain.Entities.Brand", "Brand")
                         .WithMany("CarModels")
                         .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Brand");
@@ -799,8 +793,7 @@ namespace CarGalleryHub.Persistence.Migrations
 
             modelBuilder.Entity("CarGalleryHub.Domain.Entities.Car", b =>
                 {
-                    b.Navigation("Advert")
-                        .IsRequired();
+                    b.Navigation("Advert");
                 });
 
             modelBuilder.Entity("CarGalleryHub.Domain.Entities.CarModel", b =>

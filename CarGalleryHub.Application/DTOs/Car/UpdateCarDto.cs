@@ -23,8 +23,6 @@ namespace CarGalleryHub.Application.DTOs.Car
         public ColorType? Color { get; set; }
         public CarStatus? Status { get; set; }
         public CarAvailability? Availability { get; set; }
-        public bool? Warranty { get; set; }
-        public decimal? UnitPrice { get; set; }
 
         // ----- //
         public int? CarModelId { get; set; }

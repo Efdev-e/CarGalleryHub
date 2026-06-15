@@ -95,7 +95,6 @@ namespace CarGalleryHub.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    BrandName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Model = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Series = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -109,8 +108,7 @@ namespace CarGalleryHub.Persistence.Migrations
                         name: "FK_CarModels_Brands_BrandId",
                         column: x => x.BrandId,
                         principalTable: "Brands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -225,7 +223,7 @@ namespace CarGalleryHub.Persistence.Migrations
                         column: x => x.CarModelId,
                         principalTable: "CarModels",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -252,7 +250,7 @@ namespace CarGalleryHub.Persistence.Migrations
                         column: x => x.CarId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Adverts_Users_SellerId",
                         column: x => x.SellerId,
@@ -389,8 +387,7 @@ namespace CarGalleryHub.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Adverts_CarId",
                 table: "Adverts",
-                column: "CarId",
-                unique: true);
+                column: "CarId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Adverts_SellerId",
