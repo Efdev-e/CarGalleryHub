@@ -56,7 +56,7 @@ namespace CarGalleryHub.Api.Controllers
                            x.Status == carDto.Status &&
                            x.Availability == carDto.Availability);
 
-            if (carExist is not null) { Ok(); }
+            if (carExist is not null) { return Ok(); }
 
             var car = new Car()
             {

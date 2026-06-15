@@ -24,7 +24,7 @@ namespace CarGalleryHub.Persistence.Services
         }
         public async Task<UserProfileDto> ViewProfile(int userId)
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+            var user = await _unitOfWork.Users.GetByIdIncludedAsync(userId, u => u.ProfilePicture);
             if (user is null) throw new NotFound("User is null");
 
             var response = new UserProfileDto()
@@ -33,7 +33,7 @@ namespace CarGalleryHub.Persistence.Services
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 ImageId = user.ImageId,
-                ProfilePicture = new ImageDto() { ImageType = user.ProfilePicture?.ImageType ?? ImageType.Unknown, ImageUrl = user.ProfilePicture?.ImageUrl ?? "" }
+                ProfilePicture = new ImageDto() { ImageType = user.ProfilePicture?.ImageType ?? ImageType.Unknown, ImageUrl = user.ProfilePicture?.ImageUrl ?? "", ImageData = user.ProfilePicture?.ImageData ?? new byte[8] }
             };
             return response;
         }

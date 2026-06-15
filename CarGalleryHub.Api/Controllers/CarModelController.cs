@@ -41,8 +41,8 @@ namespace CarGalleryHub.Api.Controllers
         {
             if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
             if (carModelDto is null || carModelDto.Series is null || carModelDto.Model is null) return Invalid("Parametreler Eksik");
-            var doesBrandExist = await unitOfWork.Brands.GetByIdAsync(carModelDto.BrandId) is null;
-            if (!doesBrandExist) return Invalid("Brand Yok");
+            var doesBrandExist = await unitOfWork.Brands.GetByIdAsync(carModelDto.BrandId);
+            if (doesBrandExist is null) return Invalid("Brand Yok");
 
             var carModel = new CarModel()
             {
@@ -130,7 +130,7 @@ namespace CarGalleryHub.Api.Controllers
         {
             if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
             if (carModelDto is null || carModelDto.Series is null || carModelDto.Model is null) return Invalid("Parametreler Eksik");
-            var doesBrandExist = await unitOfWork.Brands.GetByIdIncludedAsync(carModelDto.Id, u => u.CarModels);
+            var doesBrandExist = await unitOfWork.Brands.GetByIdIncludedAsync(carModelDto.BrandId, u => u.CarModels);
             if (doesBrandExist is null) return Invalid("Brand Yok");
             var model = await unitOfWork.CarModels.GetByIdAsync(carModelId);
             if (model is null) return Invalid("Model yok");

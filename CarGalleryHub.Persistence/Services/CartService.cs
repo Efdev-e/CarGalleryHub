@@ -4,6 +4,7 @@ using CarGalleryHub.Application.DTOs.Image;
 using CarGalleryHub.Application.Interfaces;
 using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Persistence.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,16 +28,22 @@ namespace CarGalleryHub.Persistence.Services
             {
                 cart = await createCartOnNull(userId, true);
             }
-
+            var query = cart.CartItems.AsQueryable();
+            query = query.Include(x => x.Thumbnail);
             var cartDto = new CartDto()
             {
-                CartItems = cart?.CartItems?.Select(x => new CartItemDto()
+                CartItems = query.Select(x => new CartItemDto()
                 {
                     AdvertId = x.AdvertId,
                     CartId = x.CartId,
                     Quantity = x.Quantity,
                     Id = x.Id,
-                    Thumbnail = new ImageDto() { ImageUrl = x?.Thumbnail?.ImageUrl ?? "", ImageType = x?.Thumbnail?.ImageType ?? Domain.Enum.ImageType.Unknown }
+                    Thumbnail = x.Thumbnail == null ? null : new ImageDto()
+                    {
+                        ImageUrl = x.Thumbnail.ImageUrl,
+                        ImageType = x.Thumbnail.ImageType,
+                        ImageData = x.Thumbnail.ImageData,
+                    }
                 }).ToList() ?? new List<CartItemDto>(),
                 UserId = userId
             };
@@ -48,7 +55,7 @@ namespace CarGalleryHub.Persistence.Services
 
         public async Task<bool> AddItemToCart(int userId,CreateCartItemDto cartItemDto)
         {
-            var cart = await unitOfWork.Carts.FirstOrDefaultAsync(x => x.UserId == userId);
+            var cart = await unitOfWork.Carts.FirstOrDefaultAsync(x => x.UserId == userId, u => u.CartItems);
 
             if (cart is null)
             {
