@@ -7,8 +7,8 @@ namespace CarGalleryHub.Domain.Entities
 {
     public class Image : BaseEntity
     {
-        public string ImageUrl { get; set; } = string.Empty;
-        public ImageType ImageType { get; set; } = ImageType.Unknown;
+        public required string ImageUrl { get; set; } = string.Empty;
+        public required ImageType ImageType { get; set; } = ImageType.Unknown;
 
         // FK
 

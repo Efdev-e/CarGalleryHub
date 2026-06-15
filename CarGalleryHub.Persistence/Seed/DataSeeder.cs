@@ -113,7 +113,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = honda.Id,
-                    BrandName = honda.BrandName,
                     Model = "Civic",
                     Series = "EK4 SiR",
                     Brand = honda,
@@ -122,7 +121,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = honda.Id,
-                    BrandName = honda.BrandName,
                     Model = "S2000",
                     Series = "AP1",
                     Brand = honda,
@@ -131,7 +129,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = honda.Id,
-                    BrandName = honda.BrandName,
                     Model = "Accord",
                     Series = "Generation 6",
                     Brand = honda,
@@ -142,7 +139,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = toyota.Id,
-                    BrandName = toyota.BrandName,
                     Model = "Corolla",
                     Series = "E110",
                     Brand = toyota,
@@ -151,7 +147,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = toyota.Id,
-                    BrandName = toyota.BrandName,
                     Model = "Prius",
                     Series = "XW10",
                     Brand = toyota,
@@ -160,7 +155,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = toyota.Id,
-                    BrandName = toyota.BrandName,
                     Model = "Supra",
                     Series = "A80",
                     Brand = toyota,
@@ -171,7 +165,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = bmw.Id,
-                    BrandName = bmw.BrandName,
                     Model = "3 Series",
                     Series = "E46",
                     Brand = bmw,
@@ -180,7 +173,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = bmw.Id,
-                    BrandName = bmw.BrandName,
                     Model = "5 Series",
                     Series = "E39",
                     Brand = bmw,
@@ -191,7 +183,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = ford.Id,
-                    BrandName = ford.BrandName,
                     Model = "Mustang",
                     Series = "SN95 New Edge",
                     Brand = ford,
@@ -200,7 +191,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = ford.Id,
-                    BrandName = ford.BrandName,
                     Model = "Focus",
                     Series = "Mk1",
                     Brand = ford,
@@ -211,7 +201,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = volkswagen.Id,
-                    BrandName = volkswagen.BrandName,
                     Model = "Golf",
                     Series = "Mk4",
                     Brand = volkswagen,
@@ -220,7 +209,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = volkswagen.Id,
-                    BrandName = volkswagen.BrandName,
                     Model = "Passat",
                     Series = "B5",
                     Brand = volkswagen,
@@ -231,7 +219,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = nissan.Id,
-                    BrandName = nissan.BrandName,
                     Model = "Skyline",
                     Series = "R34 GT-R",
                     Brand = nissan,
@@ -242,7 +229,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = subaru.Id,
-                    BrandName = subaru.BrandName,
                     Model = "Impreza",
                     Series = "WRX STi GC8",
                     Brand = subaru,
@@ -253,7 +239,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = renault.Id,
-                    BrandName = renault.BrandName,
                     Model = "Clio",
                     Series = "Clio II",
                     Brand = renault,
@@ -264,7 +249,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = mercedesBenz.Id,
-                    BrandName = mercedesBenz.BrandName,
                     Model = "C-Class",
                     Series = "W202",
                     Brand = mercedesBenz,
@@ -275,7 +259,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = audi.Id,
-                    BrandName = audi.BrandName,
                     Model = "TT",
                     Series = "8N Mk1",
                     Brand = audi,
@@ -286,7 +269,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = porsche.Id,
-                    BrandName = porsche.BrandName,
                     Model = "911 Carrera",
                     Series = "996",
                     Brand = porsche,
@@ -297,7 +279,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = chevrolet.Id,
-                    BrandName = chevrolet.BrandName,
                     Model = "Corvette",
                     Series = "C5",
                     Brand = chevrolet,
@@ -308,7 +289,6 @@ namespace CarGalleryHub.Persistence.Seed
                 new CarModel()
                 {
                     BrandId = mazda.Id,
-                    BrandName = mazda.BrandName,
                     Model = "MX-5 Miata",
                     Series = "NB",
                     Brand = mazda,

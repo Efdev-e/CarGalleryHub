@@ -1,5 +1,6 @@
 ﻿using CarGalleryHub.Application.DTOs.Cart;
 using CarGalleryHub.Application.DTOs.CartItem;
+using CarGalleryHub.Application.DTOs.Image;
 using CarGalleryHub.Application.Interfaces;
 using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Persistence.UnitOfWork;
@@ -35,7 +36,7 @@ namespace CarGalleryHub.Persistence.Services
                     CartId = x.CartId,
                     Quantity = x.Quantity,
                     Id = x.Id,
-                    Thumbnail = new Application.DTOs.Image.ImageDto() { ImageUrl = x?.Thumbnail?.ImageUrl ?? "", ImageType = x.Thumbnail.ImageType }
+                    Thumbnail = new ImageDto() { ImageUrl = x?.Thumbnail?.ImageUrl ?? "", ImageType = x?.Thumbnail?.ImageType ?? Domain.Enum.ImageType.Unknown }
                 }).ToList() ?? new List<CartItemDto>(),
                 UserId = userId
             };

@@ -16,7 +16,7 @@ namespace CarGalleryHub.Application.DTOs.Image
 {
     public class ImageDto
     {
-        public string ImageUrl { get; set; } = string.Empty;
-        public ImageType ImageType { get; set; }
+        public required string ImageUrl { get; set; } = string.Empty;
+        public required ImageType ImageType { get; set; }
     }
 }
