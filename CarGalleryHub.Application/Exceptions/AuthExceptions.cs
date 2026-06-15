@@ -19,4 +19,9 @@ namespace CarGalleryHub.Application.Exceptions
     {
         public InvalidCredentials(string message) : base(message, 401) { }
     }
+
+    public class Unsuccessful : AppException
+    {
+        public Unsuccessful(string message) : base(message, 401) { }
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using CarGalleryHub.Application.Interfaces;
+using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,7 +17,7 @@ namespace CarGalleryHub.Persistence.Repositories
         {
             _context = context;
             _dbSet = context.Set<T>();
-            
+
         }
 
         public async Task AddAsync(T item) => await _dbSet.AddAsync(item);
@@ -26,6 +27,6 @@ namespace CarGalleryHub.Persistence.Repositories
         public async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
         public IQueryable<T> Query() => _dbSet.AsQueryable();
         public void Remove(T item) => _dbSet.Remove(item);
-        public void Update(T item) => _dbSet.Update(item);
+        public void Update(T item) { _dbSet.Update(item); }
     }
 }

@@ -82,7 +82,6 @@ builder.Services.AddAuthorization();
 
 
 builder.Services.AddPersistenceService(builder.Configuration);
-builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddInfrastructureService(builder.Configuration);
 builder.Services.AddScoped<DataSeeder>();
 

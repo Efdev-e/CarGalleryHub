@@ -14,6 +14,7 @@ namespace CarGalleryHub.Application.DTOs.Advert
         public required string AdvertTitle { get; set; }
         public List<ImageDto> Thumbnails { get; set; } = new List<ImageDto>();
         public required string Description { get; set; }
+        public required bool Warranty { get; set; } = false;
         // ----- //
         public required int SellerId { get; set; }
         public required int CarId { get; set; }

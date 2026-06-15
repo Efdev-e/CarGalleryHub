@@ -1,4 +1,5 @@
 ﻿using CarGalleryHub.Application.Common.BaseDTOs;
+using CarGalleryHub.Application.DTOs.Advert;
 using CarGalleryHub.Application.DTOs.Brand;
 using CarGalleryHub.Application.DTOs.CarModel;
 using CarGalleryHub.Domain.Enum;
@@ -27,7 +28,7 @@ namespace CarGalleryHub.Application.DTOs.Car
 
         // ----- //
         public int? CarModelId { get; set; }
-
+        public ICollection<AdvertDto> advertDtos { get; set; } = null!;
         // ----- //
     }
 }

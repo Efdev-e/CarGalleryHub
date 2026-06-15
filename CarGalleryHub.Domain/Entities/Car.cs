@@ -38,6 +38,6 @@ namespace CarGalleryHub.Domain.Entities
 
         // ----- //
         public CarModel CarModel { get; set; } = null!;
-        public Advert Advert { get; set; } = null!;
+        public ICollection<Advert> Advert { get; set; } = null!;
     }
 }

@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using CarGalleryHub.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using CarGalleryHub.Persistence.UnitOfWork;
+using CarGalleryHub.Application.Interfaces;
+using CarGalleryHub.Persistence.Services;
 
 namespace CarGalleryHub.Persistence.Extensions
 {
@@ -12,7 +14,8 @@ namespace CarGalleryHub.Persistence.Extensions
         {
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
-            
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserService, UserService>();
             return services;
         }
     }

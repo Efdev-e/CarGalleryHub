@@ -22,13 +22,15 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.Property(x => x.SellerId).IsRequired();
             builder.Property(x => x.CarId).IsRequired();
 
+            
+
             builder.HasOne(x => x.Seller)
                    .WithMany(x => x.Adverts)
                    .HasForeignKey(x => x.SellerId);
 
             builder.HasOne(x => x.Car)
-                   .WithOne(x => x.Advert)
-                   .HasForeignKey<Advert>(x => x.CarId);
+                   .WithMany(x => x.Advert)
+                   .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(x => x.CartItems)
                    .WithOne(x => x.Advert)

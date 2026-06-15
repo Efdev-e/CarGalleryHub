@@ -9,6 +9,6 @@ namespace CarGalleryHub.Domain.Entities
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
 
-        protected void Updated() => UpdatedAt = DateTime.UtcNow;
+        public void Updated() => UpdatedAt = DateTime.UtcNow;
     }
 }

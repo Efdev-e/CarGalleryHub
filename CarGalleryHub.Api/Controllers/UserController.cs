@@ -14,13 +14,11 @@ namespace CarGalleryHub.Api.Controllers
     [ApiController]
     public class UserController : BaseApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IPasswordHasher _passwordHasher;
+        private readonly IUserService userService;
 
-        public UserController(IUnitOfWork work, IPasswordHasher hasher)
+        public UserController(IUserService s)
         {
-            _unitOfWork = work;
-            _passwordHasher = hasher;
+            userService = s;
         }
 
         // ViewProfile, ChangePassword, ChangeEmail,ChangeProfile
@@ -29,105 +27,46 @@ namespace CarGalleryHub.Api.Controllers
         [Authorize]
         public async Task<IActionResult> ViewProfile() 
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(GetUserId());
-            if (user is null) return Invalid("Kullanıcı Alınamadı");
+            var profile = await userService.ViewProfile(GetUserId());
+            if (profile is null) return Invalid("Profile Bulunamadı");
 
-            var response = new UserProfileDto() 
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                ImageId = user.ImageId,
-                ProfilePicture = new ImageDto() { ImageType = user.ProfilePicture?.ImageType ?? ImageType.Unknown , ImageUrl = user.ProfilePicture?.ImageUrl ?? "" }
-            };
-            return Ok(response);
+            return Ok(profile);
         }
 
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> ChangeProfile(UserProfileUpdateRequest userProfileUpdateRequest)
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(GetUserId());
-            if (user is null) return Invalid("Kullanıcı Alınamadı");
-            if (userProfileUpdateRequest is null) return Invalid("Başarız");
-
-
-            if (!string.IsNullOrEmpty(userProfileUpdateRequest.FirstName))
-                user.FirstName = userProfileUpdateRequest.FirstName;
-            if(!string.IsNullOrEmpty(userProfileUpdateRequest.LastName))
-                user.LastName = userProfileUpdateRequest.LastName;
-
-            var usrPic = userProfileUpdateRequest.ProfilePicture?.ImageUrl;
-            if (!string.IsNullOrEmpty(usrPic))
-            {
-                user.ProfilePicture ??= new Image();
-                user.ProfilePicture.ImageUrl = usrPic;
-                user.ProfilePicture.ImageType = ImageType.ProfilePicture;
-            }
-            user.Updated();
-            _unitOfWork.Users.Update(user);
-            await _unitOfWork.SaveChangesAsync();
-            return Ok();
+            var prof = await userService.ChangeProfile(GetUserId(), userProfileUpdateRequest);
+            if (!prof) return Invalid("Hata Oluştu");
+            return Ok("Profil Güncellendi");
         }
 
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> ChangePassword(UserSecurityUpdateRequest updateRequest) 
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(GetUserId());
-            if (user is null) return Invalid("Kullanıcı Bulunamadı");
-            if (updateRequest is null) return Invalid("Request null");
-            if (string.IsNullOrEmpty(updateRequest.CurrentPassword)) return Invalid("Eski Şifre Girilmedi");
-            if (string.IsNullOrEmpty(updateRequest.NewPassword)) return Invalid("Yeni Şifre Girilmedi");
-            if (_passwordHasher.VerifyPassword(updateRequest.CurrentPassword, user.PasswordHash) == false)
-                return Invalid("Şifre Yanlış");
-            
-            var newPass = _passwordHasher.HashPassword(updateRequest.NewPassword);
-            user.PasswordHash = newPass;
-            user.Updated();
-            _unitOfWork.Users.Update(user);
-            await _unitOfWork.SaveChangesAsync();
-
-            return Ok("Şifre Değiştirildi.");
+            var prof = await userService.ChangePassword(GetUserId(), updateRequest);
+            if (!prof) return Invalid("Hata Oluştu");
+            return Ok("Şifre değiştirildi");
         }
 
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> ChangeEmail(UserSecurityUpdateRequest updateRequest)
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(GetUserId());
-            if (user is null) return Invalid("Kullanıcı Bulunamadı");
-            if (updateRequest is null) return Invalid("Request null");
-            if (string.IsNullOrEmpty(updateRequest.CurrentPassword)) return Invalid("Eski Şifre Girilmedi");
-            if (string.IsNullOrEmpty(updateRequest.Email)) return Invalid("Yeni Email Girilmedi");
-            if (_passwordHasher.VerifyPassword(updateRequest.CurrentPassword, user.PasswordHash) == false)
-                return Invalid("Şifre Yanlış");
-            user.Updated();
-            user.Email = updateRequest.Email;
-            _unitOfWork.Users.Update(user);
-            await _unitOfWork.SaveChangesAsync();
-
-            return Ok("Email Değiştirildi.");
+            var prof = await userService.ChangeEmail(GetUserId(), updateRequest);
+            if (!prof) return Invalid("Hata Oluştu");
+            return Ok("Email değiştirildi");
         }
 
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> ChangePhone(UserSecurityUpdateRequest updateRequest)
         {
-            var user = await _unitOfWork.Users.GetByIdAsync(GetUserId());
-            if (user is null) return Invalid("Kullanıcı Bulunamadı");
-            if (updateRequest is null) return Invalid("Request null");
-            if (string.IsNullOrEmpty(updateRequest.CurrentPassword)) return Invalid("Eski Şifre Girilmedi");
-            if (string.IsNullOrEmpty(updateRequest.PhoneNumber)) return Invalid("Yeni Telefon Numarası Girilmedi");
-            if (_passwordHasher.VerifyPassword(updateRequest.CurrentPassword, user.PasswordHash) == false)
-                return Invalid("Şifre Yanlış");
-
-            user.PhoneNumber = updateRequest.PhoneNumber;
-            user.Updated();
-            _unitOfWork.Users.Update(user);
-            await _unitOfWork.SaveChangesAsync();
-
-            return Ok("Numaranız Değiştirildi.");
+            var prof = await userService.ChangePhone(GetUserId(), updateRequest);
+            if (!prof) return Invalid("Hata Oluştu");
+            return Ok("Numara değiştirildi.");
         }
     }
 }

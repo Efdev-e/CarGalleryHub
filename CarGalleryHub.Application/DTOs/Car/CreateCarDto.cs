@@ -10,7 +10,7 @@ using System.Text;
 
 namespace CarGalleryHub.Application.DTOs.Car
 {
-    public class CarDto : BaseDateEntityDto
+    public class CreateCarDto : BaseDateEntityDto
     {
         public required string BrandName { get; set; } 
         public required string ModelName { get; set; }  
