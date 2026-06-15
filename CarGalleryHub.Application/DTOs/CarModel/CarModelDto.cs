@@ -16,6 +16,6 @@ namespace CarGalleryHub.Application.DTOs.CarModel
 
         // FK
         public required int BrandId { get; set; }
-        public BrandDto Brand { get; set; } = null!;
+
     }
 }

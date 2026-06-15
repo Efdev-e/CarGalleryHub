@@ -15,6 +15,7 @@ using CarGalleryHub.Infrastructure.Services;
 using CarGalleryHub.Persistence.Repositories;
 using CarGalleryHub.Infrastructure.Extensions;
 using System.Security.Claims;
+using CarGalleryHub.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -94,7 +95,7 @@ using (var scope = app.Services.CreateScope())
 
     await seeder.SeedAsync();
 }
-
+//app.UseMiddleware<GlobalExceptionHandler>();
 app.UseHttpsRedirection();
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -17,11 +17,15 @@ namespace CarGalleryHub.Application.Exceptions
 
     public class InvalidCredentials : AppException 
     {
-        public InvalidCredentials(string message) : base(message, 401) { }
+        public InvalidCredentials(string message) : base(message, 422) { }
     }
 
     public class Unsuccessful : AppException
     {
         public Unsuccessful(string message) : base(message, 401) { }
+    }
+    public class UnAuthorized : AppException
+    {
+        public UnAuthorized(string message) : base(message, 403) { }
     }
 }

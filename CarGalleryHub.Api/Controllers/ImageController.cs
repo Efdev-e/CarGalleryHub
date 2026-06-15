@@ -3,6 +3,7 @@ using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Persistence.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace CarGalleryHub.Api.Controllers
 {
@@ -20,7 +21,8 @@ namespace CarGalleryHub.Api.Controllers
         [HttpGet("{*url}")]
         public async Task<IActionResult> GetImage(string url) 
         {
-            var image = await unitOfWork.Images.FirstOrDefaultAsync(x => x.ImageUrl == url);
+            string decodedUrl = WebUtility.UrlDecode(url);
+            var image = await unitOfWork.Images.FirstOrDefaultAsync(x => x.ImageUrl == decodedUrl);
             if (image is null) return Invalid("Yok");
 
             return Ok(image.ImageData);

@@ -3,7 +3,7 @@ using CarGalleryHub.Domain.Entities;
 
 namespace CarGalleryHub.Application.DTOs.User.Security
 {
-    public class UserSecurityUpdateRequest : BaseDateEntityDto 
+    public class UserSecurityUpdateRequest 
     {
         public required string CurrentPassword { get; set; }
         public string? Email { get; set; }

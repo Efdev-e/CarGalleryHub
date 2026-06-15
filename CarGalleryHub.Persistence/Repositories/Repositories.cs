@@ -27,7 +27,7 @@ namespace CarGalleryHub.Persistence.Repositories
 
         public async Task<T?> GetByIdIncludedAsync(int id, params Expression<Func<T, object>>[] includes) 
         {
-            IQueryable<T> query = _dbSet.AsNoTracking().AsQueryable();
+            IQueryable<T> query = _dbSet.AsQueryable();
             if (includes != null)
             {
                 query = includes.Aggregate(query, (current, include) => current.Include(include));
@@ -40,7 +40,7 @@ namespace CarGalleryHub.Persistence.Repositories
 
         public async Task<List<T>> FindAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes) 
         {
-            IQueryable<T> query = _dbSet.AsNoTracking().AsQueryable();
+            IQueryable<T> query = _dbSet.AsQueryable();
             if (includes != null)
             {
                 query = includes.Aggregate(query, (current, include) => current.Include(include));
@@ -54,7 +54,7 @@ namespace CarGalleryHub.Persistence.Repositories
 
         public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes) 
         {
-            IQueryable<T> query = _dbSet.AsNoTracking().AsQueryable();
+            IQueryable<T> query = _dbSet.AsQueryable();
             if (includes != null)
             {
                 query = includes.Aggregate(query, (current, include) => current.Include(include));
@@ -63,7 +63,7 @@ namespace CarGalleryHub.Persistence.Repositories
         }
         public async Task<List<T>> GetAllAsync(params Expression<Func<T, object>>[] includes) 
         {
-            IQueryable<T> query = _dbSet.AsNoTracking().AsQueryable();
+            IQueryable<T> query = _dbSet.AsQueryable();
             if (includes != null)
             {
                 query = includes.Aggregate(query, (current, include) => current.Include(include));

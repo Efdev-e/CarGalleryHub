@@ -16,6 +16,7 @@ namespace CarGalleryHub.Persistence.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICartService, CartService>();
             return services;
         }
     }

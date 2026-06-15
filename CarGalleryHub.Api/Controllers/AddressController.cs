@@ -71,13 +71,9 @@ namespace CarGalleryHub.Api.Controllers
 
         [HttpPut("update/{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateAddress(int id, [FromBody] AddressDto addressDto) 
+        public async Task<IActionResult> UpdateAddress(int id, [FromBody] AddressDto addressDto)
         {
-            var user = await _unitOfWork.Users.GetByIdIncludedAsync(GetUserId(), u => u.Addresses);
-            if (user is null) return Invalid();
-
             if (addressDto is null) return Invalid();
-
             if (string.IsNullOrWhiteSpace(addressDto.City) ||
                 string.IsNullOrWhiteSpace(addressDto.District) ||
                 string.IsNullOrWhiteSpace(addressDto.FullAddress) ||
@@ -86,9 +82,13 @@ namespace CarGalleryHub.Api.Controllers
             {
                 return Invalid();
             }
-            if (user.Addresses is null) return Invalid();
+
+            var user = await _unitOfWork.Users.GetByIdIncludedAsync(GetUserId(), u => u.Addresses);
+            if (user?.Addresses is null) return Invalid();
+
             var address = user.Addresses.FirstOrDefault(x => x.Id == id);
             if (address is null) return Invalid();
+
 
             address.City = addressDto.City;
             address.District = addressDto.District;
@@ -97,9 +97,7 @@ namespace CarGalleryHub.Api.Controllers
             address.Phone = addressDto.Phone;
             address.PostalCode = addressDto.PostalCode;
             address.Email = addressDto.Email;
-            
 
-            _unitOfWork.Addresses.Update(address);
             await _unitOfWork.SaveChangesAsync();
 
             return Ok();
@@ -129,10 +127,12 @@ namespace CarGalleryHub.Api.Controllers
                     Phone = addressDto.Phone,
                     PostalCode = addressDto.PostalCode,
                     Email = addressDto.Email,
-                    Users = new List<User>() { user }
                 };
 
-                await _unitOfWork.Addresses.AddAsync(adr);
+                user.Addresses ??= new List<Address>();
+                user.Addresses.Add(adr);
+
+                _unitOfWork.Users.Update(user);
             }
             else 
             {

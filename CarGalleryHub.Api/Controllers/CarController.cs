@@ -91,7 +91,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpPost("update/{carid}")]
+        [HttpPut("update/{carid}")]
         [Authorize]
         public async Task<IActionResult> UpdateCar([FromBody] UpdateCarDto carDto, int carid)
         {

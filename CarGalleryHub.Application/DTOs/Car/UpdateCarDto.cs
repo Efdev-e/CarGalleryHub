@@ -26,7 +26,6 @@ namespace CarGalleryHub.Application.DTOs.Car
 
         // ----- //
         public int? CarModelId { get; set; }
-        public ICollection<AdvertDto> advertDtos { get; set; } = null!;
         // ----- //
     }
 }
