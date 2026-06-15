@@ -1,4 +1,8 @@
-﻿using CarGalleryHub.Persistence.UnitOfWork;
+﻿using CarGalleryHub.Application.DTOs.Car;
+using CarGalleryHub.Domain.Entities;
+using CarGalleryHub.Persistence.UnitOfWork;
+using Iyzipay.Request.V2.Subscription;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarGalleryHub.Api.Controllers
@@ -14,6 +18,79 @@ namespace CarGalleryHub.Api.Controllers
             unitOfWork = work;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCarById(int id) 
+        {
+            var Car = await unitOfWork.Cars.GetByIdAsync(id);
+            if (Car is null) return Invalid("Car Yok");
+            var dto = new CarDto() 
+            {
+                Availability = Car.Availability,
+                BrandName = Car.BrandName,
+                CarModelId = Car.CarModelId,
+                Color = Car.Color,
+                KM = Car.KM,
+                ModelName = Car.ModelName,
+                Series = Car.Series,
+                Status = Car.Status,
+                Year = Car.Year,
+                CreatedAt = Car.CreatedAt,
+                Id = Car.Id,
+                MotorPower = Car.MotorPower,
+                UpdatedAt = Car.UpdatedAt
+            };
 
+            return Ok(dto);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateCar(CarDto carDto) 
+        {
+            if (carDto is null) return Invalid();
+            var carExist = await unitOfWork.Cars.FirstOrDefaultAsync(x => 
+                           x.CarModelId == carDto.CarModelId &&
+                           x.Color == carDto.Color &&
+                           x.Year == carDto.Year &&
+                           x.KM == carDto.KM &&
+                           x.Status == carDto.Status &&
+                           x.Availability == carDto.Availability);
+
+            if (carExist is not null) { Ok(); }
+
+            var car = new Car()
+            {
+                Availability = carDto.Availability,
+                BrandName = carDto.BrandName,
+                CarModelId = carDto.CarModelId,
+                Color = carDto.Color,
+                KM = carDto.KM,
+                ModelName = carDto.ModelName,
+                Series = carDto.Series,
+                Status = carDto.Status,
+                Year = carDto.Year,
+                MotorPower = carDto.MotorPower
+            };
+
+            await unitOfWork.Cars.AddAsync(car);
+            await unitOfWork.SaveChangesAsync();
+            return Ok("Oluşturuldu");
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> DeleteCarById(int id) 
+        {
+            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
+            var carexist = await unitOfWork.Cars.GetByIdAsync(id);
+            if (carexist is null) return Invalid("Car yok");
+
+            unitOfWork.Cars.Remove(carexist);
+            await unitOfWork.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        
     }
 }

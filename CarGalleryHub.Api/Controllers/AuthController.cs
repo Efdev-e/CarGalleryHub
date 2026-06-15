@@ -31,6 +31,7 @@ namespace CarGalleryHub.Api.Controllers
             var result = await authService.LoginAsync(loginRequestDto);
             if (result is null) return Invalid("");
             return Ok(result);
+            
         }
     }
 }

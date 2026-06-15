@@ -52,6 +52,7 @@ namespace CarGalleryHub.Api.Controllers
                 ReleaseDate = carModelDto.ReleaseDate,
                 Cars = new List<Car>()
             };
+
             await unitOfWork.CarModels.AddAsync(carModel);
             await unitOfWork.SaveChangesAsync();
 

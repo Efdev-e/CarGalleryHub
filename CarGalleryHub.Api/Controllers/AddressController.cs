@@ -96,6 +96,7 @@ namespace CarGalleryHub.Api.Controllers
             address.Phone = addressDto.Phone;
             address.PostalCode = addressDto.PostalCode;
             address.Email = addressDto.Email;
+            
 
             _unitOfWork.Addresses.Update(address);
             await _unitOfWork.SaveChangesAsync();

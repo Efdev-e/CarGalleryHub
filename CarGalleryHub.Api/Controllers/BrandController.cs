@@ -27,6 +27,7 @@ namespace CarGalleryHub.Api.Controllers
             if (Brand is null || Brand.BrandName is null) return Invalid();
             var result = new BrandInfoDto() { BrandName = Brand.BrandName };
             return Ok(result);
+            
         }
 
         [HttpPost]

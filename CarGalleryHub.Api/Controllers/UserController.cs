@@ -64,7 +64,7 @@ namespace CarGalleryHub.Api.Controllers
                 user.ProfilePicture.ImageUrl = usrPic;
                 user.ProfilePicture.ImageType = ImageType.ProfilePicture;
             }
-
+            user.Updated();
             _unitOfWork.Users.Update(user);
             await _unitOfWork.SaveChangesAsync();
             return Ok();
@@ -84,7 +84,7 @@ namespace CarGalleryHub.Api.Controllers
             
             var newPass = _passwordHasher.HashPassword(updateRequest.NewPassword);
             user.PasswordHash = newPass;
-
+            user.Updated();
             _unitOfWork.Users.Update(user);
             await _unitOfWork.SaveChangesAsync();
 
@@ -102,9 +102,8 @@ namespace CarGalleryHub.Api.Controllers
             if (string.IsNullOrEmpty(updateRequest.Email)) return Invalid("Yeni Email Girilmedi");
             if (_passwordHasher.VerifyPassword(updateRequest.CurrentPassword, user.PasswordHash) == false)
                 return Invalid("Şifre Yanlış");
-
+            user.Updated();
             user.Email = updateRequest.Email;
-
             _unitOfWork.Users.Update(user);
             await _unitOfWork.SaveChangesAsync();
 
@@ -124,7 +123,7 @@ namespace CarGalleryHub.Api.Controllers
                 return Invalid("Şifre Yanlış");
 
             user.PhoneNumber = updateRequest.PhoneNumber;
-
+            user.Updated();
             _unitOfWork.Users.Update(user);
             await _unitOfWork.SaveChangesAsync();
 
