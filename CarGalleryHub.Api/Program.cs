@@ -95,7 +95,7 @@ using (var scope = app.Services.CreateScope())
 
     await seeder.SeedAsync();
 }
-app.UseMiddleware<GlobalExceptionHandler>();
+//app.UseMiddleware<GlobalExceptionHandler>();
 app.UseHttpsRedirection();
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -36,9 +36,8 @@ namespace CarGalleryHub.Persistence.Services
                 .FirstOrDefaultAsync(x => x.Id == dto.OrderId && x.UserId == userId)
                 ?? throw new NotFound($"Sipariş bulunamadı ID: {dto.OrderId}");
 
-            if (order.OrderStatus != OrderStatus.Pending)
-                throw new AppException("Sipariş zaten işlenmiş veya iptal edilmiş.",500);
-
+            if (order.OrderStatus == OrderStatus.Paid || order.OrderStatus == OrderStatus.Completed)
+                throw new AppException("Already Paid", 500);
             if (order.Payment != null)
                 throw new AppException("Bu sipariş için zaten ödeme yapılmıstır..",500);
 

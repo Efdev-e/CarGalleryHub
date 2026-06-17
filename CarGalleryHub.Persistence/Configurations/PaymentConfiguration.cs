@@ -23,7 +23,7 @@ namespace CarGalleryHub.Persistence.Configurations
 
             builder.HasOne(x => x.Order)
                    .WithOne(x => x.Payment)
-                   .HasForeignKey<Order>(x => x.PaymentId);
+                   .HasForeignKey<Payment>(x => x.OrderId);
         }
     }
 }

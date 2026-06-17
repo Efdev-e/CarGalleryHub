@@ -24,7 +24,7 @@ namespace CarGalleryHub.Persistence.Services
         }
         public async Task<UserProfileDto> ViewProfile(int userId)
         {
-            var user = await _unitOfWork.Users.GetByIdIncludedAsync(userId, u => u.ProfilePicture);
+            var user = await _unitOfWork.Users.GetByIdIncludedAsync(userId, u => u!.ProfilePicture!);
             if (user is null) throw new NotFound("User is null");
 
             var response = new UserProfileDto()
@@ -49,14 +49,17 @@ namespace CarGalleryHub.Persistence.Services
                 user.FirstName = userProfileUpdateRequest.FirstName;
             if (!string.IsNullOrEmpty(userProfileUpdateRequest.LastName))
                 user.LastName = userProfileUpdateRequest.LastName;
-
-            var usrPic = userProfileUpdateRequest.ProfilePicture?.ImageUrl;
-            if (!string.IsNullOrEmpty(usrPic))
-            {
-                user.ProfilePicture ??= new Image();
-                user.ProfilePicture.ImageUrl = usrPic;
-                user.ProfilePicture.ImageType = ImageType.ProfilePicture;
+            if (!string.IsNullOrEmpty(userProfileUpdateRequest.ImageUrl)) {
+                var image = new Image()
+                {
+                    ImageUrl = userProfileUpdateRequest.ImageUrl,
+                    ImageType = Domain.Enum.ImageType.ProfilePicture,
+                    UserId = user.Id
+                };
+                await _unitOfWork.Images.AddAsync(image);
             }
+
+            
             user.Updated();
             _unitOfWork.Users.Update(user);
             await _unitOfWork.SaveChangesAsync();

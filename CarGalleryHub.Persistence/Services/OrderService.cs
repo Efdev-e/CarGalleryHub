@@ -63,7 +63,8 @@ namespace CarGalleryHub.Persistence.Services
                     CarYear = x.Advert.Car.Year,
                     BrandName = x.Advert.Car.BrandName,
                     ModelName = x.Advert.Car.ModelName
-                }).ToList()
+                }).ToList(),
+                
             };
 
             await unitOfWork.CartItems.Query().Where(x => x.CartId == cart.Id).ExecuteDeleteAsync();
@@ -101,7 +102,6 @@ namespace CarGalleryHub.Persistence.Services
                 Id = x.Id,
                 OrderNumber = x.OrderNumber,
                 OrderStatus = x.OrderStatus,
-                PaymentId = x.PaymentId,
                 UserId = x.UserId
             });
 
@@ -127,7 +127,6 @@ namespace CarGalleryHub.Persistence.Services
                 OrderStatus = order.OrderStatus,
                 OrderNumber = order.OrderNumber,
                 UserId = order.UserId,
-                PaymentId = order.PaymentId,
                 Id = order.Id,
                 OrderItems = order.OrderItems.AsQueryable().Include(x => x.Thumbnail).Select(x => new OrderItemDto() 
                 {
@@ -163,7 +162,6 @@ namespace CarGalleryHub.Persistence.Services
                     Id = y.Id,
                     OrderNumber = y.OrderNumber,
                     OrderStatus = y.OrderStatus,
-                    PaymentId = y.PaymentId,
                     UserId = y.UserId
                 }).ToListAsync();
         }

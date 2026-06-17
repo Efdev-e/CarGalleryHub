@@ -4,6 +4,7 @@ using CarGalleryHub.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarGalleryHub.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260617131121_InitialFourth")]
+    partial class InitialFourth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -419,6 +422,9 @@ namespace CarGalleryHub.Persistence.Migrations
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
+                    b.Property<int>("PaymentId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -440,6 +446,9 @@ namespace CarGalleryHub.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderNumber")
+                        .IsUnique();
+
+                    b.HasIndex("PaymentId")
                         .IsUnique();
 
                     b.HasIndex("UserId");
@@ -551,9 +560,6 @@ namespace CarGalleryHub.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
 
                     b.ToTable("Payments", (string)null);
                 });
@@ -731,11 +737,19 @@ namespace CarGalleryHub.Persistence.Migrations
 
             modelBuilder.Entity("CarGalleryHub.Domain.Entities.Order", b =>
                 {
+                    b.HasOne("CarGalleryHub.Domain.Entities.Payment", "Payment")
+                        .WithOne("Order")
+                        .HasForeignKey("CarGalleryHub.Domain.Entities.Order", "PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CarGalleryHub.Domain.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Payment");
 
                     b.Navigation("User");
                 });
@@ -755,17 +769,6 @@ namespace CarGalleryHub.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Advert");
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("CarGalleryHub.Domain.Entities.Payment", b =>
-                {
-                    b.HasOne("CarGalleryHub.Domain.Entities.Order", "Order")
-                        .WithOne("Payment")
-                        .HasForeignKey("CarGalleryHub.Domain.Entities.Payment", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Order");
                 });
@@ -807,13 +810,17 @@ namespace CarGalleryHub.Persistence.Migrations
             modelBuilder.Entity("CarGalleryHub.Domain.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
-
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("CarGalleryHub.Domain.Entities.OrderItem", b =>
                 {
                     b.Navigation("Thumbnail");
+                });
+
+            modelBuilder.Entity("CarGalleryHub.Domain.Entities.Payment", b =>
+                {
+                    b.Navigation("Order")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CarGalleryHub.Domain.Entities.User", b =>

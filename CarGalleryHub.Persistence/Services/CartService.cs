@@ -67,7 +67,7 @@ namespace CarGalleryHub.Persistence.Services
             {
                 AdvertId = cartItemDto.AdvertId,
                 Cart = cart,
-                Quantity = cartItemDto.Quantity
+                Quantity = cartItemDto.Quantity,
             };
 
             var cartItems = cart.CartItems.FirstOrDefault(x => x.AdvertId == cartItem.AdvertId);

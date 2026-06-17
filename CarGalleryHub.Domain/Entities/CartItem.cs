@@ -8,7 +8,7 @@ namespace CarGalleryHub.Domain.Entities
     {
         public string ItemName => Advert is null ? string.Empty : Advert.AdvertTitle;
         public Image? Thumbnail { get; set; } = null;
-        public decimal UnitPrice => Advert is null ? 0 : Advert.UnitPrice;
+        public decimal UnitPrice => Advert is null ? 1 : Advert.UnitPrice;
         public required int Quantity { get; set; }
 
         // ----- //

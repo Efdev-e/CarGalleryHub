@@ -30,7 +30,6 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.Property(x => x.AddressPostalCode).IsRequired();
             builder.Property(x => x.AddressFullName).IsRequired();
 
-            builder.Property(x => x.PaymentId).IsRequired();
             builder.Property(x => x.UserId).IsRequired();
 
             builder.HasMany(x => x.OrderItems)

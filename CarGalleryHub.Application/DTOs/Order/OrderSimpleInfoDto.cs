@@ -16,7 +16,6 @@ namespace CarGalleryHub.Application.DTOs.Order
         public required string FullAddress { get; set; }
 
         // ----- //
-        public int PaymentId { get; init; }
         public int UserId { get; init; }
         // ----- /
     }

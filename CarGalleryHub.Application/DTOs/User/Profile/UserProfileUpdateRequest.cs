@@ -11,7 +11,6 @@ namespace CarGalleryHub.Application.DTOs.User.Profile
         // Profile
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public int? ImageId { get; set; }
-        public ImageDto? ProfilePicture { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }
