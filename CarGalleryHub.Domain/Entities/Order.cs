@@ -26,7 +26,7 @@ namespace CarGalleryHub.Domain.Entities
         public required string FullAddress { get; set; }
 
         // ----- //
-        public required int PaymentId { get; init; }
+        public int PaymentId { get; init; }
         public required int UserId { get; init; }
         // ----- //
         public ICollection<OrderItem> OrderItems { get; init; } = new List<OrderItem>();

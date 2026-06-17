@@ -6,6 +6,6 @@ namespace CarGalleryHub.Application.Interfaces.Payment
 {
     public interface IPaymentProviderFactory
     {
-        IPaymentProvider Create(string paymentproiver = "fake");
+        IPaymentProvider Create(string paymentprovider = "fake");
     }
 }

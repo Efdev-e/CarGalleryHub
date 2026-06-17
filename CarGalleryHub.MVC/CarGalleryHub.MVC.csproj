@@ -6,4 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarGalleryHub.Api\CarGalleryHub.Api.csproj" />
+    <ProjectReference Include="..\CarGalleryHub.Application\CarGalleryHub.Application.csproj" />
+    <ProjectReference Include="..\CarGalleryHub.Domain\CarGalleryHub.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

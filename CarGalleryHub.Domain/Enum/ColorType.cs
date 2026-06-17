@@ -18,6 +18,7 @@ namespace CarGalleryHub.Domain.Enum
         Orange,
         White,
         Silver,
-        Gray
+        Gray,
+        Null
     }
 }

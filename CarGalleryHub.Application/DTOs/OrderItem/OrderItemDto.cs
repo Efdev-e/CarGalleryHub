@@ -17,7 +17,7 @@ namespace CarGalleryHub.Application.DTOs.OrderItem
         public required int Quantity { get; set; }
 
         public int CarYear { get; set; }
-        public string CarKM { get; set; } = string.Empty;
+        public int CarKM { get; set; }
         public ColorType CarColor { get; set; }
         public string BrandName { get; set; } = string.Empty;
         public string ModelName { get; set; } = string.Empty;

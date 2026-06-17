@@ -25,8 +25,8 @@ namespace CarGalleryHub.Application.DTOs.Order
         public required string FullAddress { get; set; }
 
         // ----- //
-        public required int PaymentId { get; init; }
-        public required int UserId { get; init; }
+        public int PaymentId { get; init; }
+        public int UserId { get; init; }
         // ----- //
         public ICollection<OrderItemDto> OrderItems { get; init; } = new List<OrderItemDto>();
     }

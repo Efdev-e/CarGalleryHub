@@ -9,7 +9,7 @@ namespace CarGalleryHub.Domain.Entities
     {
         // ----- //
         public required decimal Amount { get; init; }
-        public required PaymentStatus PaymentStatus { get; set; }
+        public required PaymentStatus Status { get; set; }
         public string? TransactionId { get; set; }
         public string? FailureReason { get; set; }
         public DateTime? PaidAt { get; set; }
