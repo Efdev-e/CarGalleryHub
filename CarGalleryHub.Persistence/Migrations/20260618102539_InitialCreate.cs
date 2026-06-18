@@ -46,28 +46,6 @@ namespace CarGalleryHub.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    PaymentStatus = table.Column<int>(type: "int", nullable: false),
-                    TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FailureReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PaidAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CardLastFour = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -108,7 +86,8 @@ namespace CarGalleryHub.Persistence.Migrations
                         name: "FK_CarModels_Brands_BrandId",
                         column: x => x.BrandId,
                         principalTable: "Brands",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -142,6 +121,8 @@ namespace CarGalleryHub.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    TotalAmount = table.Column<int>(type: "int", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -167,12 +148,12 @@ namespace CarGalleryHub.Persistence.Migrations
                     UserFullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TotalCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     AddressFullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AddressCity = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AddressDistrict = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AddressPostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FullAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaymentId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -181,12 +162,6 @@ namespace CarGalleryHub.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_Payments_PaymentId",
-                        column: x => x.PaymentId,
-                        principalTable: "Payments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_Users_UserId",
                         column: x => x.UserId,
@@ -224,6 +199,34 @@ namespace CarGalleryHub.Persistence.Migrations
                         principalTable: "CarModels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FailureReason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaidAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CardLastFour = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -269,7 +272,7 @@ namespace CarGalleryHub.Persistence.Migrations
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     CarYear = table.Column<int>(type: "int", maxLength: 9999, nullable: false),
-                    CarKM = table.Column<string>(type: "nvarchar(max)", maxLength: 2147483647, nullable: false),
+                    CarKM = table.Column<int>(type: "int", maxLength: 2147483647, nullable: false),
                     CarColor = table.Column<int>(type: "int", nullable: false),
                     BrandName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ModelName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -302,15 +305,14 @@ namespace CarGalleryHub.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     ImageType = table.Column<int>(type: "int", nullable: false),
-                    ImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    ImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: true),
                     CarId = table.Column<int>(type: "int", nullable: true),
-                    AdvertId = table.Column<int>(type: "int", nullable: false),
+                    AdvertId = table.Column<int>(type: "int", nullable: true),
                     OrderItemId = table.Column<int>(type: "int", nullable: true),
                     CartItemId = table.Column<int>(type: "int", nullable: true),
-                    CartId = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -320,17 +322,11 @@ namespace CarGalleryHub.Persistence.Migrations
                         name: "FK_Images_Adverts_AdvertId",
                         column: x => x.AdvertId,
                         principalTable: "Adverts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Images_Cars_CarId",
                         column: x => x.CarId,
                         principalTable: "Cars",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Images_Carts_CartId",
-                        column: x => x.CartId,
-                        principalTable: "Carts",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Images_OrderItems_OrderItemId",
@@ -350,6 +346,7 @@ namespace CarGalleryHub.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     ImageId = table.Column<int>(type: "int", nullable: true),
                     AdvertId = table.Column<int>(type: "int", nullable: false),
@@ -438,9 +435,9 @@ namespace CarGalleryHub.Persistence.Migrations
                 column: "CarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_CartId",
+                name: "IX_Images_ImageUrl",
                 table: "Images",
-                column: "CartId");
+                column: "ImageUrl");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_OrderItemId",
@@ -473,15 +470,15 @@ namespace CarGalleryHub.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_PaymentId",
-                table: "Orders",
-                column: "PaymentId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
                 table: "Orders",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_OrderId",
+                table: "Payments",
+                column: "OrderId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -494,13 +491,16 @@ namespace CarGalleryHub.Persistence.Migrations
                 name: "CartItems");
 
             migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
                 name: "Addresses");
 
             migrationBuilder.DropTable(
-                name: "Images");
+                name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "Carts");
+                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "OrderItems");
@@ -513,9 +513,6 @@ namespace CarGalleryHub.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cars");
-
-            migrationBuilder.DropTable(
-                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Users");

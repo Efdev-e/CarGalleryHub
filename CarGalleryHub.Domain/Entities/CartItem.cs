@@ -8,7 +8,7 @@ namespace CarGalleryHub.Domain.Entities
     {
         public string ItemName => Advert is null ? string.Empty : Advert.AdvertTitle;
         public Image? Thumbnail { get; set; } = null;
-        public decimal UnitPrice => Advert is null ? 1 : Advert.UnitPrice;
+        public decimal UnitPrice { get; set; }
         public required int Quantity { get; set; }
 
         // ----- //
@@ -19,6 +19,5 @@ namespace CarGalleryHub.Domain.Entities
         // ----- //
         public Advert Advert { get; set; } = null!;
         public Cart Cart { get; set; } = null!;
-
     }
 }

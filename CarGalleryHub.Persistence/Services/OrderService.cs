@@ -63,10 +63,12 @@ namespace CarGalleryHub.Persistence.Services
                     CarYear = x.Advert.Car.Year,
                     BrandName = x.Advert.Car.BrandName,
                     ModelName = x.Advert.Car.ModelName
-                }).ToList(),
+                }).ToList<OrderItem>(),
                 
             };
-
+            Console.WriteLine(cart.CartItems.Count);
+            Console.WriteLine(cart);
+            aorder.EnsureTotalCost();
             await unitOfWork.CartItems.Query().Where(x => x.CartId == cart.Id).ExecuteDeleteAsync();
             await unitOfWork.Orders.AddAsync(aorder);
             await unitOfWork.SaveChangesAsync();
@@ -96,7 +98,7 @@ namespace CarGalleryHub.Persistence.Services
             var orders = await unitOfWork.Orders.GetAllAsync();
             if (orders is null) throw new NotFound("Orders");
 
-            var orderDto = orders.Select(x => new OrderSimpleInfoDto() 
+            var orderDto = orders.Select(x => new OrderSimpleInfoDto()
             {
                 FullAddress = x.FullAddress,
                 Id = x.Id,
@@ -111,9 +113,10 @@ namespace CarGalleryHub.Persistence.Services
 
         public async Task<OrderInfoDto> GetOrderById(int userId, int orderId)
         {
-            var order = await unitOfWork.Orders.GetByIdAsync(orderId);
+            var order = await unitOfWork.Orders.Query().Include(x => x.OrderItems).ThenInclude(x => x.Thumbnail).FirstOrDefaultAsync(x => x.UserId == userId && x.Id == orderId);
             if (order is null) throw new NotFound("Order");
             if (order.UserId != userId) throw new MissingCredentials("");
+            order.EnsureTotalCost();
             var orderDto = new OrderInfoDto() 
             {
                 AddressCity = order.AddressCity,
@@ -128,7 +131,7 @@ namespace CarGalleryHub.Persistence.Services
                 OrderNumber = order.OrderNumber,
                 UserId = order.UserId,
                 Id = order.Id,
-                OrderItems = order.OrderItems.AsQueryable().Include(x => x.Thumbnail).Select(x => new OrderItemDto() 
+                OrderItems = order.OrderItems.Select(x => new OrderItemDto()     
                 {
                     AdvertId = x.AdvertId,
                     Quantity = x.Quantity,
@@ -142,11 +145,15 @@ namespace CarGalleryHub.Persistence.Services
                     UnitPrice = x.UnitPrice,
                     ImageId = x.ImageId,
                     ModelName = x.ModelName,
-                    Thumbnail = new ImageDto() { ImageUrl = x!.Thumbnail!.ImageUrl , ImageType = x!.Thumbnail.ImageType, ImageData = x!.Thumbnail.ImageData },
-                    
+                    Thumbnail = x.Thumbnail == null ? null : new ImageDto()
+                    {
+                        ImageUrl = x.Thumbnail.ImageUrl,
+                        ImageType = x.Thumbnail.ImageType,
+                        ImageData = x.Thumbnail.ImageData
+                    },
+
                 }).ToList()
             };
-
             return orderDto;
         }
 
@@ -174,6 +181,7 @@ namespace CarGalleryHub.Persistence.Services
             if (orderStatusDto is null) throw new MissingCredentials("Missing Credentials");
             if (orderStatusDto?.OrderStatus == null) throw new MissingCredentials("Missing Credentials");
             order.OrderStatus = orderStatusDto.OrderStatus;
+            order.EnsureTotalCost();
 
             unitOfWork.Orders.Update(order);
             await unitOfWork.SaveChangesAsync();

@@ -13,7 +13,7 @@ namespace CarGalleryHub.Application.DTOs.Cart
         public ICollection<CartItemDto> CartItems { get; set; } = new List<CartItemDto>();
         public required int UserId { get; set; }
 
-        public int TotalAmount => CartItems.Sum(x => x.Quantity);
-        public decimal TotalPrice => CartItems.Sum(x => x.UnitPrice * x.Quantity);
+        public int TotalAmount { get; set; }
+        public decimal TotalPrice { get; set; }
     }
 }

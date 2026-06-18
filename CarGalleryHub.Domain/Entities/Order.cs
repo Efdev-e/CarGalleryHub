@@ -14,7 +14,7 @@ namespace CarGalleryHub.Domain.Entities
         public required string UserFullName { get; set; }
         public required string UserPhone { get; set; }
         public required string UserEmail { get; set; }
-        public decimal TotalCost => OrderItems is null ? 0 : OrderItems.Sum(x => x.UnitPrice * x.Quantity);
+        public decimal TotalCost { get; private set; }
 
 
         // ----- //
@@ -32,7 +32,15 @@ namespace CarGalleryHub.Domain.Entities
         public Payment? Payment { get; set; } = null!;
         public User User { get; set; } = null!;
 
+        public Order()
+        {
+            EnsureTotalCost();
+        }
 
+        public void EnsureTotalCost()
+        {
+            TotalCost = OrderItems is null ? 0 : OrderItems.Sum(x => x.UnitPrice * x.Quantity);
+        }
 
     }
 }

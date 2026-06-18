@@ -11,7 +11,23 @@ namespace CarGalleryHub.Domain.Entities
         public required int UserId { get; set; }
         public User User { get; set; } = null!;
 
-        public int TotalAmount => CartItems is null ? 0 : CartItems.Sum(x => x.Quantity);
-        public decimal TotalPrice => CartItems is null ? 0 : CartItems.Sum(x => x.UnitPrice * x.Quantity);
+        public int TotalAmount { get; private set; }
+        public decimal TotalPrice { get; private set; }
+
+        public Cart()
+        {
+            setTotalAmount();
+            setTotalPrice();
+        }
+
+        public void setTotalPrice() 
+        {
+            TotalPrice = CartItems is null ? 1 : CartItems.Sum(x => x.UnitPrice * x.Quantity);
+        }
+
+        public void setTotalAmount() 
+        {
+            TotalAmount = CartItems is null ? 1 : CartItems.Sum(x => x.Quantity);
+        }
     }
 }

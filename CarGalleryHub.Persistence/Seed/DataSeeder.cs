@@ -35,7 +35,8 @@ namespace CarGalleryHub.Persistence.Seed
 
             var Users = new List<User>()
             {
-                new User() { FirstName = "Abdul", LastName="Hamid",Role = UserRoles.Admin, PasswordHash = BCrypt.Net.BCrypt.HashPassword(_secretPass), Email="Kingston@gmail.com" , PhoneNumber = "+9054879872025"}
+                new User() { FirstName = "Abdul", LastName="Hamid",Role = UserRoles.Admin, PasswordHash = BCrypt.Net.BCrypt.HashPassword(_secretPass), Email="Kingston@gmail.com" , PhoneNumber = "+905487987202"},
+                new User() { FirstName = "Test", LastName = "Test2", Role = UserRoles.Customer, PasswordHash = BCrypt.Net.BCrypt.HashPassword("1"), Email = "e@gm", PhoneNumber = "+905852133265" }
             };
 
             await context.Users.AddRangeAsync(Users);

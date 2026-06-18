@@ -10,9 +10,9 @@ namespace CarGalleryHub.Application.DTOs.CartItem
 {
     public class CartItemDto : BaseDateEntityDto
     {
-        public string ItemName => Advert is null ? string.Empty : Advert.AdvertTitle;
+        public string ItemName { get; set; } = string.Empty;
         public ImageDto? Thumbnail { get; set; } = null;
-        public decimal UnitPrice => Advert is null ? 0 : Advert.UnitPrice;
+        public decimal UnitPrice { get; set; }
         public required int Quantity { get; set; }
 
         // ----- //

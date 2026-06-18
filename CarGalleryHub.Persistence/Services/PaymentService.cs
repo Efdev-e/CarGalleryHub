@@ -35,20 +35,19 @@ namespace CarGalleryHub.Persistence.Services
                 .Include(x => x.Payment)
                 .FirstOrDefaultAsync(x => x.Id == dto.OrderId && x.UserId == userId)
                 ?? throw new NotFound($"Sipariş bulunamadı ID: {dto.OrderId}");
-
+            Console.WriteLine(order.Payment);
             if (order.OrderStatus == OrderStatus.Paid || order.OrderStatus == OrderStatus.Completed)
                 throw new AppException("Already Paid", 500);
             if (order.Payment != null)
                 throw new AppException("Bu sipariş için zaten ödeme yapılmıstır..",500);
-
 
             var provider = _paymentProviderFactory.Create(_defaultProvider);
 
             var providerResult = await provider.ChargeAsync(new PaymentProviderRequest(
                 dto.CardNumber,
                 dto.CardHolderNumner,
-                dto.ExpiryMonth,
                 dto.ExpiryYear,
+                dto.ExpiryMonth,
                 dto.Cvv,
                 order.TotalCost
                 ));
