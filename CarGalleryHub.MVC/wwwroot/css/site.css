@@ -1,4 +1,27 @@
+/*
+   1. DEĞİŞKENLER VE RENK
+*/
+:root {
+  --color-metallic-gold: #c59f07;
+  --color-gold-bright: #ffd60b;
+  --color-gold-dark: #dbb006;
+  --color-gold-glow: #ffee3880;
+  --color-pure-white: #FFFFFF;
+  
+  --color-night-violet: #171528;
+  --color-shadow-grey: #201e1f;
+  --color-ink-black: #0f0e1b;
+  --color-focus-blue: #258cfb;
+  --color-black: #07070D;
+}
+
+/*
+   2. AYARLAR
+*/
 html {
+  position: relative;
+  min-height: 100dvh;
+  background-color: var(--var-shadow-grey);
   font-size: 14px;
 }
 
@@ -8,24 +31,114 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
-  margin-bottom: 60px;
+  min-height: 100dvh;
+  background-color: var(--color-black);
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.div-black {
+  background-color: var(--color-black);
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/*
+   3. UTILITY
+*/
+
+
+/* Text Renkleri */
+.Metallic-Gold { color: var(--color-metallic-gold); }
+.Night-Violet  { color: var(--color-night-violet); }
+.Shadow-Grey   { color: var(--color-shadow-grey); }
+.Pure-White { color: var(--color-pure-white);}
+.Pure-Gray {color: #e0e0e0;}
+.Showcase-Gold 
+{
+  background: linear-gradient(45deg, #8d8b2b, #efff92,#aeb937,#c1c780);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* BG Renkleri */
+.Ink-Black, 
+.BG-Ink       { background-color: var(--color-ink-black); }
+.BG-Grey      { background-color: var(--color-shadow-grey); }
+.BG-Violet    { background-color: var(--color-night-violet); }
+.BG-Gold      { background-color: var(--color-metallic-gold); }
+.BG-Black  { background-color: var(--color-black);}
+.BG-Transparent {background-color: transparent;}
+
+/*Text Ayarları*/
+.Text-Bold {font-weight: 800;}
+
+/*
+   4. MVC KENDI STYLE
+*/
+*:focus 
+{
+  outline: none !important;
+  box-shadow: none !important;
+  
+
+  outline: 1px solid rgba(255, 255, 255, 0.7) !important;
+  outline-offset: 4px;
+  border-radius: 6px !important;
+
+  color: #ffffff !important;
+  transition: outline 0.5s ease, outline-offset 0.5s ease, border-radius 0.3s ease !important;
+}
+
+.form-floating {
+  & > .form-control-plaintext,
+  & > .form-control {
+    &::placeholder {
+      color: var(--bs-secondary-color);
+      text-align: end;
+    }
+    &:focus::placeholder {
+      text-align: start;
+    }
+  }
+}
+
+
+/*
+   5. BİLEŞENLER
+*/
+
+/*
+  -- FOOTER --
+*/
+.BG-SmoothPass 
+{
+  background: linear-gradient(to bottom, var(--color-night-violet) 30%, var(--color-black) 100%);
+}
+.BrandText-Style {
+  display: inline-block;
+  margin-top: 2px;
+  margin-right: 3rem;
+  margin-left: 0.5rem;
+  font-size: clamp(1rem, calc(0.75rem + 1.35vw), 1.5rem);
+  background: linear-gradient(45deg, #8d8b2b, #efff92,#aeb937,#c1c780);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: filter 0.2s ease;
+
+  &:hover {
+    filter: drop-shadow(0px 0px 2px #ffea0085);
+
+  }
+}
+
+/*
+  -- HERO --
+*/
+.Attention-SizedText 
+{
+  font-size: clamp(2rem, calc(1.5rem + 3vw), 3rem);
+}
+.Smaller-Attention-SizedText 
+{
+  font-size: clamp(1.5rem, calc(1rem + 2vw), 2.5rem);
 }

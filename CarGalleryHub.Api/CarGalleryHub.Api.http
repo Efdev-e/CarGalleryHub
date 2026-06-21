@@ -1,4 +1,4 @@
-@CarGalleryHub.Api_HostAddress = http://localhost:5079
+@CarGalleryHub.Api_HostAddress = http://localhost:7066
 
 GET {{CarGalleryHub.Api_HostAddress}}/weatherforecast/
 Accept: application/json

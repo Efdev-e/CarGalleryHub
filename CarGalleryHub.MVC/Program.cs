@@ -1,7 +1,34 @@
+using Azure.Core;
+using CarGalleryHub.MVC.Exceptions;
+using CarGalleryHub.MVC.Services;
+using System.Net;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+builder.Services.AddSession(options => 
+{
+    options.Cookie.Path = "/";
+    options.IdleTimeout = TimeSpan.FromMinutes(120);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+});
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddHttpClient<HttpClient>(options => 
+{
+    options.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
+});
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 
 var app = builder.Build();
 
@@ -13,6 +40,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseRouting();
 

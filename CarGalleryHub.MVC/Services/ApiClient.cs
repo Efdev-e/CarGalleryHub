@@ -1,0 +1,127 @@
+﻿using Azure;
+using CarGalleryHub.MVC.Exceptions;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Text.Json;
+
+namespace CarGalleryHub.MVC.Services
+{
+    public partial class ApiClient
+    {
+        private readonly HttpClient _httpClient;
+        private readonly HttpContextAccessor _httpContextAccessor;
+        private static readonly JsonSerializerOptions JsonOptions = new()
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+        public ApiClient(HttpClient httpClient, HttpContextAccessor httpContextAccessor)
+        {
+            _httpClient = httpClient;
+            _httpContextAccessor = httpContextAccessor;
+        }
+        private HttpRequestMessage CreateRequestAndReturn(string url, HttpMethod httpMethod) 
+        {
+            if (string.IsNullOrEmpty(url) || httpMethod == null)
+                throw new AppException("Url or httpMethod is Empty");
+            return CreateRequestAndReturn(url,httpMethod, null);
+        }
+
+        private HttpRequestMessage CreateRequestAndReturn(string url,HttpMethod httpMethod, object? body = null) 
+        {
+            if (string.IsNullOrEmpty(url) || httpMethod == null)
+                throw new AppException("Url or httpMethod is Empty");
+
+            var token = _httpContextAccessor.HttpContext?.Session.GetString("JwtToken");
+            var request = new HttpRequestMessage();
+
+            if (!string.IsNullOrEmpty(token))
+                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer",token);
+            else
+                request.Headers.Authorization = null;
+
+            if (body != null)
+                request.Content = Serialize(body);
+
+
+            request.RequestUri = new Uri(url);
+
+            return request;
+        }
+
+        public async Task<ApiResult<T>> GetAsync<T>(string url) 
+        {
+            if (string.IsNullOrEmpty(url))
+                throw new AppException("Url is empty");
+
+
+            var request = CreateRequestAndReturn(url, HttpMethod.Get);
+
+            var response = await _httpClient.SendAsync(request);
+
+            return await ParseAsync<T>(response);
+        }
+
+        public async Task<ApiResult<T>> PostAsync<T>(string url, object body)
+        {
+            if (string.IsNullOrEmpty(url) || body == null)
+                throw new AppException("Url or Body is empty");
+
+
+            var request = CreateRequestAndReturn(url,HttpMethod.Post, body);
+
+            var response = await _httpClient.SendAsync(request);
+
+            return await ParseAsync<T>(response);
+        }
+
+        public async Task<ApiResult<T>> PutAsync<T>(string url, object body)
+        {
+            if (string.IsNullOrEmpty(url) || body == null)
+                throw new AppException("Url or Body is empty");
+
+
+            var request = CreateRequestAndReturn(url, HttpMethod.Put, body);
+
+            var response = await _httpClient.SendAsync(request);
+
+            return await ParseAsync<T>(response);
+        }
+
+        public async Task<ApiResult<T>> DeleteAsync<T>(string url, object body)
+        {
+            if (string.IsNullOrEmpty(url) || body == null)
+                throw new AppException("Url or Body is empty");
+
+
+            var request = CreateRequestAndReturn(url, HttpMethod.Delete, body);
+
+            var response = await _httpClient.SendAsync(request);
+
+            return await ParseAsync<T>(response);
+        }
+
+
+        private static StringContent Serialize(object body) => new(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+
+
+
+        private static async Task<ApiResult<T>> ParseAsync<T>(HttpResponseMessage httpResponse) 
+        {
+            var json = await httpResponse.Content.ReadAsStringAsync();
+
+            if (string.IsNullOrEmpty(json))
+                return ApiResult<T>.Fail("Sunucudan Boş Yanıt Geldi");
+
+            try 
+            {
+                var result = JsonSerializer.Deserialize<ApiResult<T>>(json, JsonOptions);
+                return result ?? ApiResult<T>.Fail("Yanıt Ayrıştırılamadı");
+            }
+            catch 
+            {
+                return ApiResult<T>.Fail($"Http {(int)httpResponse.StatusCode}:İşlem basarısız ");
+            }
+        }
+    }
+}
