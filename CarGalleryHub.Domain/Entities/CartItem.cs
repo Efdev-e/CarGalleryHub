@@ -9,11 +9,11 @@ namespace CarGalleryHub.Domain.Entities
         public string ItemName => Advert is null ? string.Empty : Advert.AdvertTitle;
         public Image? Thumbnail { get; set; } = null;
         public decimal UnitPrice { get; set; }
-        public required int Quantity { get; set; }
+        public  int Quantity { get; set; }
 
         // ----- //
         public int? ImageId { get; set; }
-        public required int AdvertId { get; set; }
+        public  int AdvertId { get; set; }
         public int CartId { get; set; }
 
         // ----- //

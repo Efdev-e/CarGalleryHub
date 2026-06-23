@@ -8,7 +8,7 @@ namespace CarGalleryHub.Domain.Entities
     {
         //
         public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
-        public required int UserId { get; set; }
+        public  int UserId { get; set; }
         public User User { get; set; } = null!;
 
         public int TotalAmount { get; private set; }

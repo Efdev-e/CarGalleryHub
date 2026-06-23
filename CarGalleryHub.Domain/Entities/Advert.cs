@@ -8,15 +8,15 @@ namespace CarGalleryHub.Domain.Entities
     public class Advert : BaseDateEntity
     {
 
-        public required string AdvertTitle { get; set; } = string.Empty;
+        public  string AdvertTitle { get; set; } = string.Empty;
         public List<Image> Thumbnails { get; set; } = new List<Image>();
-        public required string Description { get; set; } = string.Empty;
+        public  string Description { get; set; } = string.Empty;
 
-        public required bool Warranty { get; set; }
-        public required decimal UnitPrice { get; set; }
+        public  bool Warranty { get; set; }
+        public  decimal UnitPrice { get; set; }
         // ----- //
-        public required int SellerId { get; set; }
-        public required int CarId { get; set; }
+        public  int SellerId { get; set; }
+        public  int CarId { get; set; }
 
         // ----- //
         public User Seller { get; set; } = null!;
@@ -24,5 +24,11 @@ namespace CarGalleryHub.Domain.Entities
 
         public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
+        public void DeleteIt() 
+        {
+            if (!IsDeleted)
+                Delete();
+        }
     }
 }

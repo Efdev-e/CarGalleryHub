@@ -70,6 +70,7 @@ namespace CarGalleryHub.Persistence.Services
 
         public AuthResponseDto ResponseBuilder(User user) => new()
         {
+            UserId = user.Id,
             Token = _jwtTokenService.GenerateToken(user),
             Email = user.Email,
             ExpiresAt = _jwtTokenService.GetExpiry(DateTime.UtcNow),
@@ -78,3 +79,4 @@ namespace CarGalleryHub.Persistence.Services
         };
     }
 }
+

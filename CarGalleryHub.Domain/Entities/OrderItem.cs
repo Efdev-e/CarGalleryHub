@@ -7,10 +7,10 @@ namespace CarGalleryHub.Domain.Entities
 {
     public class OrderItem : BaseDateEntity
     {
-        public required string ItemName {get; set;} = null!;
+        public  string ItemName {get; set;} = null!;
         public Image? Thumbnail { get; set; } = null!;
-        public required decimal UnitPrice { get; set;}
-        public required int Quantity { get; set; }
+        public  decimal UnitPrice { get; set;}
+        public  int Quantity { get; set; }
 
         public int CarYear { get; set; }
         public int CarKM { get; set; }
@@ -20,7 +20,7 @@ namespace CarGalleryHub.Domain.Entities
 
         // ----- //
         public int? ImageId { get; set; }
-        public required int AdvertId { get; set; }
+        public  int AdvertId { get; set; }
         public int OrderId { get; set; } = -1;
 
         // ----- //

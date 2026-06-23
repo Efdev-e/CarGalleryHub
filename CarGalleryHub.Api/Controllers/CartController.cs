@@ -32,7 +32,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(cartDto);
         }
 
-        [HttpPut("addItem")]
+        [HttpPost("addItem")]
         [Authorize]
         public async Task<IActionResult> AddItemToCart([FromBody] CreateCartItemDto cartItemDto) 
         {

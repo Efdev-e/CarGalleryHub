@@ -69,7 +69,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(Addresses);
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPost("update/{id}")]
         [Authorize]
         public async Task<IActionResult> UpdateAddress(int id, [FromBody] AddressDto addressDto)
         {

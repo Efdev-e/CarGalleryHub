@@ -23,6 +23,6 @@ namespace CarGalleryHub.Application.DTOs.Advert
 
         // ----- //
 
-        public decimal UnitPrice { get; set; }
+        public required decimal UnitPrice { get; set; }
     }
 }

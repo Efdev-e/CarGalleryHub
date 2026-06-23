@@ -209,6 +209,10 @@ namespace CarGalleryHub.Persistence.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.PrimitiveCollection<string>("UserIds")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
@@ -642,7 +646,7 @@ namespace CarGalleryHub.Persistence.Migrations
                     b.HasOne("CarGalleryHub.Domain.Entities.Car", "Car")
                         .WithMany("Advert")
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CarGalleryHub.Domain.Entities.User", "Seller")

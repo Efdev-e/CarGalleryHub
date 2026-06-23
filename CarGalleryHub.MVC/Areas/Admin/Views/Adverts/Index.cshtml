@@ -1,0 +1,110 @@
+﻿@using CarGalleryHub.Domain.Enum
+@using CarGalleryHub.Domain.Extensions
+@model List<CarGalleryHub.Application.DTOs.Advert.AdvertView>
+@{
+    ViewData["Title"] = "Advert";
+}
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<form asp-controller="Adverts" asp-action="Index" method="get"
+      style="background:#0e1117; border-radius:12px; padding:1.25rem 1.5rem; border:0.5px solid rgba(255,255,255,0.1);">
+    <div class="row g-3">
+        <div class="col-12">
+            <label for="name" class="form-label d-block FilterText">sArama Kutusu:
+            </label>
+            <div class="input-group">
+                <input name="name" class="form-control bg-secondary text-white border-0" placeholder="Örn: Audi" value="@Context.Request.Query["Name"]" />
+                <button type="submit" class="btn btn-success">Filtrele / Ara</button>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label d-block FilterText">
+                Renkler
+            </label>
+            <div class="d-flex flex-column gap-1" style="max-height: 150px; overflow-y: auto;">
+                @foreach (var color in Enum.GetValues(typeof(ColorType)))
+                {
+                    var checkedColors = Context.Request.Query["colors"].ToString().Split(',');
+                    bool isChecked = checkedColors.Contains(color.ToString());
+                        var colorType = (ColorType)color;
+                        <div class="form-check">
+                        <input name="color" class="form-check-input" type="checkbox" value="@color" id="color_@color" @(isChecked ? "checked" : "") />
+                        <label class="form-check-label text-white" for="color_@color">@colorType.ToTurkish()</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label d-block FilterText">
+                Araç Durumu
+            </label>
+            <div class="d-flex flex-column gap-1">
+                @foreach (var status in Enum.GetValues(typeof(CarStatus)))
+                {
+                    var checkedStatus = Context.Request.Query["statuses"].ToString().Split(',');
+                    bool isChecked = checkedStatus.Contains(status.ToString());
+
+                    <div class="form-check">
+                        <input name="status" class="form-check-input" type="checkbox" value="@status" id="status_@status" @(isChecked ? "checked" : "") />
+                        <label class="form-check-label text-white" for="status_@status">@status</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label d-block FilterText">Kullanılabilirlik</label>
+            <div class="d-flex flex-column gap-1">
+                @foreach (var avail in Enum.GetValues(typeof(CarAvailability)))
+                {
+                    var checkedAvail = Context.Request.Query["availabilities"].ToString().Split(',');
+                    bool isChecked = checkedAvail.Contains(avail.ToString());
+
+                    <div class="form-check">
+                        <input name="availability" class="form-check-input" type="checkbox" value="@avail" id="avail_@avail" @(isChecked ? "checked" : "") />
+                        <label class="form-check-label text-white" for="avail_@avail">@avail</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label for="categoryType" class="form-label fw-bold FilterText">Kategori</label>
+            <select name="categoryType" class="form-select bg-secondary text-white border-0">
+                <option value="">Tüm Kategoriler</option>
+                @foreach (var cat in Enum.GetValues(typeof(CategoryType)))
+                {
+                    bool isSelected = Context.Request.Query["categoryType"] == cat.ToString();
+                    <option value="@cat" selected="@isSelected">@cat</option>
+                }
+            </select>
+        </div>
+
+    </div>
+</form>
+<br />
+<hr style="color: white !important; border-color: white !important;"/>
+<br />
+<div class="d-flex flex-row gap-5 w-75" style="justify-self:center; align-self: center">
+    @if (Model.Any())
+    {
+        foreach (var advert in Model)
+        {
+            <div class="card bg-dark border-1 border-white rounded-1">
+                <img src="@advert.ImageUrl" class="card-img-top" />
+                <div class="card-body bg-dark">
+                    <h5 class="card-title" style="color: white !important;">@advert.AdvertTitle</h5>
+                    <p class="card-text" style="color: white !important;">@advert.Description</p>
+                    <a asp-action="Advert"  asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-success">İncele</a>
+                    <a asp-action="Update" asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-success">Değiştir</a>
+                    <a asp-action="Delete" asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-danger">Sil</a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Veri yok</p>    
+    }
+</div>

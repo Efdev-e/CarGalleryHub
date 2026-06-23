@@ -48,7 +48,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok($"{brandInfo.BrandName} Oluşturuldu");
         }
 
-        [HttpPut("addModel/{carModelId},{brandId}")]
+        [HttpPost("addModel/{carModelId},{brandId}")]
         [Authorize]
         public async Task<IActionResult> AddCarModelToBrand(int carModelId, int brandId)
         {
@@ -77,7 +77,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Eklendi");
         }
 
-        [HttpPut("removeModel/{brandId},{CarModelId}")]
+        [HttpPost("removeModel/{brandId},{CarModelId}")]
         [Authorize]
         public async Task<IActionResult> RemoveCarModelFromBrand(int brandId, int CarModelId)
         {
@@ -110,7 +110,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPost("update/{id}")]
         [Authorize]
         public async Task<IActionResult> UpdateBrand([FromBody] BrandInfoDto brandInfo,int id)
         {

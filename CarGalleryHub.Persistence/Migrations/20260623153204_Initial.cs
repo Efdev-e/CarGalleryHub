@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CarGalleryHub.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -186,6 +186,7 @@ namespace CarGalleryHub.Persistence.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     Availability = table.Column<int>(type: "int", nullable: false),
                     CarModelId = table.Column<int>(type: "int", nullable: false),
+                    UserIds = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -253,7 +254,7 @@ namespace CarGalleryHub.Persistence.Migrations
                         column: x => x.CarId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Adverts_Users_SellerId",
                         column: x => x.SellerId,

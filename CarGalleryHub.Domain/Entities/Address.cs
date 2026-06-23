@@ -7,14 +7,14 @@ namespace CarGalleryHub.Domain.Entities
     public class Address : BaseEntity
     {
         // Kişisel
-        public required string FullName { get; set; }
-        public required string Phone { get; set; }
+        public  string FullName { get; set; } = string.Empty;
+        public  string Phone { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         // Address
-        public required string City { get; set; }
-        public required string District { get; set; } 
-        public required string PostalCode { get; set; } 
-        public required string FullAddress { get; set; }
+        public  string City { get; set; } = string.Empty;
+        public  string District { get; set; } = string.Empty;
+        public  string PostalCode { get; set; } = string.Empty;
+        public string FullAddress { get; set; } = string.Empty;
         // FK
         public ICollection<User> Users { get; set; } = new List<User>();
     }

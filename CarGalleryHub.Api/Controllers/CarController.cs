@@ -18,6 +18,46 @@ namespace CarGalleryHub.Api.Controllers
             unitOfWork = work;
         }
 
+        [HttpGet("GetAllCarms")]
+        [Authorize]
+        public async Task<IActionResult> GetAllCarms()
+        {
+            var Cars = await unitOfWork.Cars.GetAllAsync();
+            if (Cars is null)
+            {
+                return NotFound("Kullanıcı araba oluşturmamış");
+            }
+
+            var dto = Cars.Select(x => new CarInfoDto()
+            {
+                FullName = $"{x.BrandName} {x.ModelName} {x.Color} {x.Year}",
+                Id = x.Id
+            }).ToList();
+
+            return Ok(dto);
+
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetCarsCreatedByUser() 
+        {
+            var Cars = await unitOfWork.Cars.FindAsync(x => x.UserIds.Contains(GetUserId()), x => x.UserIds);
+            if (Cars is null) 
+            {
+                return NotFound("Kullanıcı araba oluşturmamış");
+            }
+
+            var dto = Cars.Select(x => new CarInfoDto() 
+            {
+                FullName = $"{x.BrandName} {x.ModelName} {x.Color} {x.Year}",
+                Id = x.Id
+            }).ToList();
+
+            return Ok(dto);
+
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCarById(int id) 
         {
@@ -56,7 +96,13 @@ namespace CarGalleryHub.Api.Controllers
                            x.Status == carDto.Status &&
                            x.Availability == carDto.Availability);
 
-            if (carExist is not null) { return Ok(); }
+            if (carExist is not null) 
+            {
+                carExist.UserIds.Add(GetUserId());
+                unitOfWork.Cars.Update(carExist);
+                await unitOfWork.SaveChangesAsync();
+                return Ok();
+            }
 
             var car = new Car()
             {
@@ -91,7 +137,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok();
         }
 
-        [HttpPut("update/{carid}")]
+        [HttpPost("update/{carid}")]
         [Authorize]
         public async Task<IActionResult> UpdateCar([FromBody] UpdateCarDto carDto, int carid)
         {

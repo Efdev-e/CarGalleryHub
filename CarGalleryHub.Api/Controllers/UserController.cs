@@ -33,7 +33,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(profile);
         }
 
-        [HttpPut("changeProfile")]
+        [HttpPost("changeProfile")]
         [Authorize]
         public async Task<IActionResult> ChangeProfile([FromBody] UserProfileUpdateRequest userProfileUpdateRequest)
         {
@@ -42,7 +42,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Profil Güncellendi");
         }
 
-        [HttpPut("changePassword")]
+        [HttpPost("changePassword")]
         [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] UserSecurityUpdateRequest updateRequest) 
         {
@@ -51,7 +51,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Şifre değiştirildi");
         }
 
-        [HttpPut("changeEmail")]
+        [HttpPost("changeEmail")]
         [Authorize]
         public async Task<IActionResult> ChangeEmail([FromBody] UserSecurityUpdateRequest updateRequest)
         {
@@ -60,7 +60,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Email değiştirildi");
         }
 
-        [HttpPut("changePhone")]
+        [HttpPost("changePhone")]
         [Authorize]
         public async Task<IActionResult> ChangePhone([FromBody] UserSecurityUpdateRequest updateRequest)
         {

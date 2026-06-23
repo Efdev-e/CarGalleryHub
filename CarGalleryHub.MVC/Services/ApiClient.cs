@@ -9,13 +9,13 @@ namespace CarGalleryHub.MVC.Services
     public partial class ApiClient
     {
         private readonly HttpClient _httpClient;
-        private readonly HttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
             PropertyNameCaseInsensitive = true
         };
 
-        public ApiClient(HttpClient httpClient, HttpContextAccessor httpContextAccessor)
+        public ApiClient(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _httpContextAccessor = httpContextAccessor;
@@ -27,24 +27,27 @@ namespace CarGalleryHub.MVC.Services
             return CreateRequestAndReturn(url,httpMethod, null);
         }
 
-        private HttpRequestMessage CreateRequestAndReturn(string url,HttpMethod httpMethod, object? body = null) 
+        private HttpRequestMessage CreateRequestAndReturn(string url, HttpMethod httpMethod, object? body = null)
         {
             if (string.IsNullOrEmpty(url) || httpMethod == null)
                 throw new AppException("Url or httpMethod is Empty");
 
-            var token = _httpContextAccessor.HttpContext?.Session.GetString("JwtToken");
             var request = new HttpRequestMessage();
-
-            if (!string.IsNullOrEmpty(token))
-                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer",token);
-            else
-                request.Headers.Authorization = null;
+            request.Method = httpMethod;
+            var session = _httpContextAccessor.HttpContext?.Session;
+            if (session != null)
+            {
+                var token = session.GetString("JwtToken");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                }
+            }
 
             if (body != null)
                 request.Content = Serialize(body);
 
-
-            request.RequestUri = new Uri(url);
+            request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
 
             return request;
         }
@@ -88,13 +91,13 @@ namespace CarGalleryHub.MVC.Services
             return await ParseAsync<T>(response);
         }
 
-        public async Task<ApiResult<T>> DeleteAsync<T>(string url, object body)
+        public async Task<ApiResult<T>> DeleteAsync<T>(string url)
         {
-            if (string.IsNullOrEmpty(url) || body == null)
-                throw new AppException("Url or Body is empty");
+            if (string.IsNullOrEmpty(url))
+                throw new AppException("Url is empty");
 
 
-            var request = CreateRequestAndReturn(url, HttpMethod.Delete, body);
+            var request = CreateRequestAndReturn(url, HttpMethod.Delete);
 
             var response = await _httpClient.SendAsync(request);
 
@@ -109,6 +112,7 @@ namespace CarGalleryHub.MVC.Services
         private static async Task<ApiResult<T>> ParseAsync<T>(HttpResponseMessage httpResponse) 
         {
             var json = await httpResponse.Content.ReadAsStringAsync();
+
 
             if (string.IsNullOrEmpty(json))
                 return ApiResult<T>.Fail("Sunucudan Boş Yanıt Geldi");

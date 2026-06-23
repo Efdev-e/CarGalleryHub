@@ -28,7 +28,6 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.Property(x => x.Status).IsRequired();
             builder.Property(x => x.Availability).IsRequired();
 
-            builder.Property(x => x.CarModelId).IsRequired();
             builder.HasOne(x => x.CarModel)
                    .WithMany(x => x.Cars)
                    .HasForeignKey(x => x.CarModelId);

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarGalleryHub.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260618102539_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260623153204_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -211,6 +211,10 @@ namespace CarGalleryHub.Persistence.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.PrimitiveCollection<string>("UserIds")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
@@ -645,7 +649,7 @@ namespace CarGalleryHub.Persistence.Migrations
                     b.HasOne("CarGalleryHub.Domain.Entities.Car", "Car")
                         .WithMany("Advert")
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CarGalleryHub.Domain.Entities.User", "Seller")

@@ -13,9 +13,9 @@ namespace CarGalleryHub.Domain.Entities
         // --------------------------------------------
 
         #region Değişmez
-        public required string BrandName { get; set; } 
-        public required string ModelName { get; set; }  
-        public required string Series { get; set; }
+        public string BrandName { get; set; } = string.Empty; 
+        public string ModelName { get; set; } = string.Empty;  
+        public string Series { get; set; } = string.Empty;
 
         public string MotorPower { get; set; } = string.Empty;
 
@@ -25,18 +25,19 @@ namespace CarGalleryHub.Domain.Entities
 
         #region Değişir
 
-        public required int Year { get; set; }
-        public required int KM { get; set; } 
-        public required ColorType Color { get; set; }
-        public required CarStatus Status { get; set; }
-        public required CarAvailability Availability { get; set; }
+        public  int Year { get; set; }
+        public  int KM { get; set; } 
+        public  ColorType Color { get; set; }
+        public  CarStatus Status { get; set; }
+        public  CarAvailability Availability { get; set; }
 
         #endregion
 
         // ----- //
-        public required int CarModelId { get; set; }
+        public  int CarModelId { get; set; }
 
         // ----- //
+        public List<int> UserIds { get; set; } = new List<int>();
         public CarModel CarModel { get; set; } = null!;
         public ICollection<Advert> Advert { get; set; } = null!;
     }

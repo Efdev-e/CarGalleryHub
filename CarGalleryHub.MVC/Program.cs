@@ -19,16 +19,15 @@ builder.Services.AddSession(options =>
     options.Cookie.SameSite = SameSiteMode.Strict;
 });
 
-builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddHttpClient<HttpClient>(options => 
+builder.Services.AddHttpClient<ApiClient>(options => 
 {
     options.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
 });
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -43,10 +42,15 @@ if (!app.Environment.IsDevelopment())
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+app.MapControllerRoute(
+    name: "MyAreas",
+    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}")
+    .WithStaticAssets();
 
 app.MapControllerRoute(
     name: "default",

@@ -1,0 +1,43 @@
+﻿@model CarGalleryHub.Application.DTOs.Auth.RegisterRequestDto
+@{
+    ViewData["Title"] = "Register to Agarte";
+}
+
+<form asp-controller="Account" asp-action="Register" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="d-flex flex-column gap-4 border-1 border-black rounded-1 w-50 p-3 border-1 border-white" style="justify-self: center; align-self:center;">
+        <div>
+            <label class="form-label" style="color: white !important;" asp-for="FirstName">Ad</label>
+
+            <input required asp-for="FirstName" class="form-control" style="color: black !important;" type="text" placeholder="Ad (Zorunlu)" />
+
+            <span class="text-danger d-block" asp-validation-for="FirstName"></span>
+        </div>
+
+        <div>
+            <label class="form-label" style="color: white !important;" asp-for="LastName">Soyad</label>
+
+            <input required asp-for="LastName" class="form-control" style="color: black !important;" type="text" placeholder="Soyad (Zorunlu)"  />
+
+            <span class="text-danger d-block" asp-validation-for="LastName"></span>
+        </div>
+
+        <div>
+            <label class="form-label" style="color: white !important;" asp-for="Email">Email</label>
+
+            <input required asp-for="Email" class="form-control" style="color: black !important;" type="email" placeholder="example@gmail.com"  />
+
+            <span class="text-danger d-block" asp-validation-for="Email"></span>
+        </div>
+        <div>
+            <label class="form-label" style="color: white !important;" asp-for="Password">Password</label>
+
+            <input asp-for="Password" class="form-control" style="color: black !important;" type="password" placeholder="********"  />
+
+            <span class="text-danger d-block" asp-validation-for="Password"></span>
+        </div>
+
+        <input type="submit" value="Kayıt Ol" class="form-control" style="width: 50%;" />
+    </div>
+</form>

@@ -11,22 +11,22 @@ namespace CarGalleryHub.Domain.Entities
         public string OrderNumber { get; set; } = string.Empty;
         public OrderStatus OrderStatus { get; set; }
         // ----- //
-        public required string UserFullName { get; set; }
-        public required string UserPhone { get; set; }
-        public required string UserEmail { get; set; }
+        public  string UserFullName { get; set; } = string.Empty;
+        public  string UserPhone { get; set; } = string.Empty;
+        public  string UserEmail { get; set; } = string.Empty;
         public decimal TotalCost { get; private set; }
 
 
         // ----- //
 
-        public required string AddressFullName { get; set; }
-        public required string AddressCity { get; set; }
-        public required string AddressDistrict { get; set; }
-        public required string AddressPostalCode { get; set; }
-        public required string FullAddress { get; set; }
+        public  string AddressFullName { get; set; } = string.Empty;
+        public  string AddressCity { get; set; } = string.Empty;
+        public  string AddressDistrict { get; set; } = string.Empty;
+        public  string AddressPostalCode { get; set; } = string.Empty;
+        public  string FullAddress { get; set; } = string.Empty;
 
         // ----- //
-        public required int UserId { get; init; }
+        public  int UserId { get; init; }
         // ----- //
         public ICollection<OrderItem> OrderItems { get; init; } = new List<OrderItem>();
         public Payment? Payment { get; set; } = null!;

@@ -73,7 +73,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Silindi");
         }
 
-        [HttpPut("addCar/{carId},{carModelId}")]
+        [HttpPost("addCar/{carId},{carModelId}")]
         [Authorize]
         public async Task<IActionResult> AddCarToModel(int carId, int carModelId)
         {
@@ -124,7 +124,7 @@ namespace CarGalleryHub.Api.Controllers
             return Ok("Oluşturuldu");
         }
 
-        [HttpPut("update/{carModelId}")]
+        [HttpPost("update/{carModelId}")]
         [Authorize]
         public async Task<IActionResult> UpdateCarModel([FromBody] CarModelDto carModelDto, int carModelId)
         {

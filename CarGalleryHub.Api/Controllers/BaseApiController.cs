@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CarGalleryHub.Infrastructure.Services.Payment;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -20,14 +21,14 @@ namespace CarGalleryHub.Api.Controllers
         protected bool IsAdmin() => User.IsInRole("Admin");
 
         protected IActionResult Ok<T>(T data, string message = "işlem başarılı") 
-            => base.Ok(new { _data = data, Msg = message });
+            => base.Ok(new { _data = data, Msg = message, Success = true });
 
         protected IActionResult Created<T>(T data, string message = "Oluşturma İşlemi Başarılı")
-            => base.StatusCode(201, new { _data = data, Msg = message});
+            => base.StatusCode(201, new { _data = data, Msg = message, Success = true});
 
         protected IActionResult Invalid<T>(T data, string message = "İşlem Başarısız")
-            => base.StatusCode(401, new {_data = data, Msg = message });
+            => base.StatusCode(401, new {_data = data, Msg = message, Success = false });
 
-        protected ObjectResult Invalid(string message = "İşlem Başarısız") => base.StatusCode(401, new { Msg = message });
+        protected ObjectResult Invalid(string message = "İşlem Başarısız") => base.StatusCode(401, new { Msg = message, Success = false });
     }
 }
