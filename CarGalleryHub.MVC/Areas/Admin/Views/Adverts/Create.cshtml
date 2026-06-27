@@ -1,4 +1,5 @@
-﻿@model CarGalleryHub.Application.DTOs.Advert.CreateAdvertDto
+﻿
+@model CarGalleryHub.MVC.Models.DTOs.Advert.AdvertCreateViewDto
 @{
     ViewData["Title"] = "Advert";
 }
@@ -9,55 +10,78 @@
 
     <div class="d-flex flex-column gap-4 border-1 border-black rounded-1">
         <div>
-            <label class="form-label" asp-for="AdvertTitle">Başlık</label>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" asp-for="createAdvertDto.AdvertTitle">Başlık</label>
 
-            <input asp-for="AdvertTitle" class="form-control" style="color: black !important;" type="text" placeholder="example@gmail.com" />
+            <input required asp-for="createAdvertDto.AdvertTitle" class="form-control" style="color: black !important;" type="text" placeholder="ex" />
 
-            <span class="text-danger d-block" asp-validation-for="AdvertTitle"></span>
+            <span class="text-danger d-block" asp-validation-for="createAdvertDto.AdvertTitle"></span>
         </div>
 
         <div>
-            <label class="form-label" asp-for="Description">Açıklama</label>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" asp-for="createAdvertDto.Description">Açıklama</label>
 
-            <textarea asp-for="Description" class="form-control" style="color: black !important;" placeholder="Açıklama Buraya"></textarea>
+            <textarea required asp-for="createAdvertDto.Description" class="form-control" style="color: black !important;" placeholder="Açıklama Buraya"></textarea>
 
-            <span class="text-danger d-block" asp-validation-for="Description"></span>
+            <span class="text-danger d-block" asp-validation-for="createAdvertDto.Description"></span>
+        </div>
+
+        <!-- CAR SEÇ-->
+        <div>
+            <label class="form-label" asp-for="createAdvertDto.CarId">Araba Listesi</label>
+            <select required asp-for="createAdvertDto.CarId">
+                <option value="">--- ARABA SEÇİNİZ ---</option>
+                @foreach (var car in Model.Cars)
+                {
+                    <option value="@car.Id">@car.FullName</option>
+                }
+            </select>
         </div>
 
         <div>
-            <label class="form-label" asp-for="CarId">Araba Id'si</label>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" asp-for="createAdvertDto.ImageUrl">Resim Url'i</label>
 
-            <input asp-for="CarId" class="form-control" style="color: black !important;" type="text" placeholder="1.2..3 vb" />
+            <input required asp-for="createAdvertDto.ImageUrl" class="form-control" style="color: black !important;" type="text" placeholder="https://www.example.image" />
 
-            <span class="text-danger d-block" asp-validation-for="CarId"></span>
+            <span class="text-danger d-block" asp-validation-for="createAdvertDto.ImageUrl"></span>
         </div>
 
         <div>
-            <label class="form-label" asp-for="ImageUrl">Resim Url'i</label>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" asp-for="createAdvertDto.UnitPrice">Fiyat</label>
 
-            <input asp-for="ImageUrl" class="form-control" style="color: black !important;" type="text" placeholder="https://www.example.image" />
+            <input required asp-for="createAdvertDto.UnitPrice" class="form-control" style="color: black !important;" type="text" placeholder="10.000₺" />
 
-            <span class="text-danger d-block" asp-validation-for="ImageUrl"></span>
+            <span class="text-danger d-block" asp-validation-for="createAdvertDto.UnitPrice"></span>
         </div>
 
         <div>
-            <label class="form-label" asp-for="UnitPrice">Fiyat</label>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" asp-for="createAdvertDto.Warranty">Sigortalı</label>
 
-            <input asp-for="UnitPrice" class="form-control" style="color: black !important;" type="text" placeholder="10.000₺" />
+            <input required asp-for="createAdvertDto.Warranty" class="form-check" style="color: black !important;" type="checkbox" />
 
-            <span class="text-danger d-block" asp-validation-for="UnitPrice"></span>
+            <span class="text-danger d-block" asp-validation-for="createAdvertDto.Warranty"></span>
         </div>
 
-        <div>
-            <label class="form-label" asp-for="Warranty">Sigortalı</label>
+        <input asp-for="createAdvertDto.SellerId" type="hidden" />
 
-            <input asp-for="Warranty" class="form-check" style="color: black !important;" type="checkbox" />
-
-            <span class="text-danger d-block" asp-validation-for="Warranty"></span>
-        </div>
-
-        <input asp-for="SellerId" type="hidden" />
-
-        <input type="submit" value="Gönder" class="form-control" />
+      <div class="row justify-content-center">
+          <div class="col-6 d-flex">
+                <input type="submit" value="Gönder" class="form-control w-auto " />
+                <button type="button" onclick="history.back()" class="btn btn-secondary mt-2">Geri Dön</button>
+          </div>
+      </div>
     </div>
 </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

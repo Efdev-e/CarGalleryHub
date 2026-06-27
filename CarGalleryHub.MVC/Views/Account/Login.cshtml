@@ -3,26 +3,26 @@
     ViewData["Title"] = "Login to Agarte";
 }
 
-<form asp-controller="Account" asp-action="Login" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<form asp-controller="Account" asp-action="Login" method="post" class="BG-Menu w-50 ToCenter">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3 ToCenter"></div>
 
-    <div class="d-flex flex-column gap-4 border-1 border-black rounded-1 w-50 p-3 border-1 border-white" style="justify-self: center; align-self:center;">
+    <div class="d-flex flex-column gap-3 w-75 ToCenter">
+        <h2 class="ToCenter Pure-White" style="font-family: 'Audiowide'; font-weight: 600; letter-spacing: 2px">Giriş</h2>
         <div>
-            <label class="form-label" style="color: white !important;" asp-for="Email">Email</label>
+            <label class="form-label text-white" style="opacity: 0.7;" asp-for="Email">Email</label>
 
-            <input required asp-for="Email" class="form-control" style="color: black !important;" type="email" placeholder="example@gmail.com" value="Kingston@gmail.com" />
+            <input required asp-for="Email" class="form-control inputfocus BG-ViolentBlack text-white-50" type="email" placeholder="example@gmail.com" value="Kingston@gmail.com" />
 
             <span class="text-danger d-block" asp-validation-for="Email"></span>
         </div>
-
         <div>
-            <label class="form-label" style="color: white !important;" asp-for="Password">Password</label>
+            <label class="form-label text-white" asp-for="Password">Password</label>
 
-            <input required asp-for="Password" class="form-control" style="color: black !important;" type="password" placeholder="********" value="SuperGizliSifre" />
+            <input required asp-for="Password" class="form-control inputfocus BG-ViolentBlack text-white-50" type="password" placeholder="********" value="SuperGizliSifre" />
 
             <span class="text-danger d-block" asp-validation-for="Password"></span>
         </div>
-
-        <input type="submit" value="Giriş Yap" class="form-control" style="width: 50%;" />
+        <br />  
+        <input type="submit" value="Giriş Yap" class="form-control border-0 Text-Bold text-white btnt BG-Gold ToCenter" style="width: 50%; letter-spacing: 1px;" />
     </div>
 </form>

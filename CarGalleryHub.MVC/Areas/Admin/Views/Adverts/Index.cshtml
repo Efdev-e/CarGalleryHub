@@ -1,6 +1,6 @@
 ﻿@using CarGalleryHub.Domain.Enum
 @using CarGalleryHub.Domain.Extensions
-@model List<CarGalleryHub.Application.DTOs.Advert.AdvertView>
+@model CarGalleryHub.MVC.Models.DTOs.Advert.AdvertPageViewDto
 @{
     ViewData["Title"] = "Advert";
 }
@@ -9,7 +9,7 @@
       style="background:#0e1117; border-radius:12px; padding:1.25rem 1.5rem; border:0.5px solid rgba(255,255,255,0.1);">
     <div class="row g-3">
         <div class="col-12">
-            <label for="name" class="form-label d-block FilterText">sArama Kutusu:
+            <label for="name" class="form-label d-block FilterText">Arama Kutusu:
             </label>
             <div class="input-group">
                 <input name="name" class="form-control bg-secondary text-white border-0" placeholder="Örn: Audi" value="@Context.Request.Query["Name"]" />
@@ -45,9 +45,10 @@
                     var checkedStatus = Context.Request.Query["statuses"].ToString().Split(',');
                     bool isChecked = checkedStatus.Contains(status.ToString());
 
-                    <div class="form-check">
+                        var statu = (CarStatus) status;
+                        <div class="form-check">
                         <input name="status" class="form-check-input" type="checkbox" value="@status" id="status_@status" @(isChecked ? "checked" : "") />
-                        <label class="form-check-label text-white" for="status_@status">@status</label>
+                        <label class="form-check-label text-white" for="status_@status">@statu.ToTurkish()</label>
                     </div>
                 }
             </div>
@@ -61,9 +62,11 @@
                     var checkedAvail = Context.Request.Query["availabilities"].ToString().Split(',');
                     bool isChecked = checkedAvail.Contains(avail.ToString());
 
+                    var avai = (CarAvailability) avail;
+
                     <div class="form-check">
                         <input name="availability" class="form-check-input" type="checkbox" value="@avail" id="avail_@avail" @(isChecked ? "checked" : "") />
-                        <label class="form-check-label text-white" for="avail_@avail">@avail</label>
+                        <label class="form-check-label text-white" for="avail_@avail">@avai.ToTurkish()</label>
                     </div>
                 }
             </div>
@@ -75,36 +78,63 @@
                 <option value="">Tüm Kategoriler</option>
                 @foreach (var cat in Enum.GetValues(typeof(CategoryType)))
                 {
+                    var ca = (CategoryType) cat;
                     bool isSelected = Context.Request.Query["categoryType"] == cat.ToString();
-                    <option value="@cat" selected="@isSelected">@cat</option>
+                    <option value="@cat" selected="@isSelected">@ca.ToTurkish()</option>
                 }
             </select>
         </div>
 
     </div>
+    
 </form>
+<a role="button" class="btn btn-success Text-Bold" style="font-family: 'Quicksand'" asp-controller="Adverts" asp-action="Create" asp-area="Admin">OLUŞTUR</a>
 <br />
 <hr style="color: white !important; border-color: white !important;"/>
 <br />
-<div class="d-flex flex-row gap-5 w-75" style="justify-self:center; align-self: center">
-    @if (Model.Any())
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 w-75 h-100 flex-grow-1 overflow-auto" style="justify-self:center; align-self: center">
+    @if (Model.Dtos.Any())
     {
-        foreach (var advert in Model)
+        foreach (var advert in Model.Dtos)
         {
-            <div class="card bg-dark border-1 border-white rounded-1">
-                <img src="@advert.ImageUrl" class="card-img-top" />
-                <div class="card-body bg-dark">
-                    <h5 class="card-title" style="color: white !important;">@advert.AdvertTitle</h5>
-                    <p class="card-text" style="color: white !important;">@advert.Description</p>
-                    <a asp-action="Advert"  asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-success">İncele</a>
-                    <a asp-action="Update" asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-success">Değiştir</a>
-                    <a asp-action="Delete" asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-danger">Sil</a>
+            <div class="col">
+                <div class="card bg-dark border-1 border-white rounded-1 h-100">
+                    <img src="@advert.ImageUrl" class="card-img-top" />
+                    <div class="card-body bg-dark d-flex flex-col flex-column justify-content-between">
+
+                        <h5 class="card-title" style="color: white !important;">@advert.AdvertTitle</h5>
+                        <p class="card-text" style="color: white !important;">@advert.Description</p>
+                        <p class="card-text" style="color: white !important;">@advert.UnitPrice ₺</p>
+                        <div class="d-flex flex-column gap-2 mt-auto">
+                            <a asp-action="Advert" asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-success">İncele</a>
+                            <a asp-action="Update" asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-success">Değiştir</a>
+                            <a asp-action="Delete" asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-danger">Sil</a>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         }
     }
     else
     {
-        <p>Veri yok</p>    
+        <div class="col-12 text-center text-white">
+            <p>Veri yok</p>
+        </div>
     }
+</div>
+<div class="row w-100 h-50">
+    <div class="col-12 d-flex justify-content-center align-items-center g-3">
+        <button>
+            @if (Model.page > 1)
+            {
+                <a asp-action="Index" asp-controller="Adverts" asp-route-page="@(Model.page - 1)" class="btn btn-outline-success">@(Model.page - 1)</a>
+            }
+            <a asp-action="Index" asp-controller="Adverts" asp-route-page="@Model.page" class="btn btn-success">@Model.page</a>
+            @if (Model.Dtos.Any() && Model.Dtos.Count >= 10)
+            {
+                <a asp-action="Index" asp-controller="Adverts" asp-route-page="@(Model.page + 1)" class="btn btn-outline-success">@(Model.page + 1)</a>
+            }
+        </button>
+    </div>
 </div>

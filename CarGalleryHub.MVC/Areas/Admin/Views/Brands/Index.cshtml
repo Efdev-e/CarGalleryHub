@@ -1,7 +1,75 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CarGalleryHub.MVC.Models.DTOs.Brand.BrandViewDto
 @{
+    ViewData["Title"] = "Brands";
 }
 
-<p>Hello -- This is Brands</p>
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<form class="BG-Menu ToCenter w-75 me-3 ms-3" asp-action="Index" asp-controller="Brands" asp-area="Admin" method="get">
+    <div class="container">
+        <div class="row g-3">
+            <div class="col-12">
+                <label for="Name" class="form-label text-white">Arama Kutusu:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control text-black" name="Name" placeholder="Arat" />
+                    <button type="submit" class="btn btn-success">Arat</button>
+                </div>
+            </div>  
+            <div class="col-12 mt-2">
+                <a asp-area="Admin" asp-controller="Brands" asp-action="Create" role="button" class="btn btn-success">OLUŞTUR</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<br><hr style="color: white !important; border-color: white !important;" />
+<br />
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 w-75 h-100 flex-grow-1 overflow-auto" style="justify-self:center; align-self: center">
+    @if (Model.Dtos.Any())
+    {
+        foreach (var advert in Model.Dtos)
+        {
+            <div class="col">
+                <div class="card bg-dark border-1 border-white rounded-1 h-100">
+                    <div class="card-body bg-dark d-flex flex-col flex-column justify-content-between">
+
+                        <div>
+                            <h5 class="card-title text-center text-white mb-3">@advert.BrandName</h5>
+                            <p class="card-text text-white text-center">-</p>
+                        </div>
+
+                        <div class="d-flex flex-column gap-2 mt-auto">
+                            <a asp-action="Brand" asp-controller="Brands" asp-route-id="@advert.Id" class="btn btn-outline-success">İncele</a>
+                            <a asp-action="AddModel" asp-controller="Brands" asp-route-id="@advert.Id" class="btn btn-outline-success">Model Ekle</a>
+                            <a asp-action="Update" asp-controller="Brands" asp-route-id="@advert.Id" class="btn btn-outline-success">Değiştir</a>
+                            <a asp-action="RemoveModel" asp-controller="Brands" asp-route-id="@advert.Id" class="btn btn-outline-danger">Model Sil</a>
+                            <a asp-action="Delete" asp-controller="Brands" asp-route-id="@advert.Id" class="btn btn-outline-danger">Sil</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12 text-center text-white">
+            <p>Veri yok</p>
+        </div>
+    }
+</div>
+<div class="row w-100 h-50">
+    <div class="col-12 d-flex justify-content-center align-items-center g-3">
+        <button>
+            @if (Model.page > 1)
+            {
+                <a asp-action="Index" asp-controller="Brands" asp-route-page="@(Model.page - 1)" class="btn btn-outline-success">@(Model.page - 1)</a>
+            }
+            <a asp-action="Index" asp-controller="Brands" asp-route-page="@Model.page" class="btn btn-success">@Model.page</a>
+            @if (Model.Dtos.Any() && Model.Dtos.Count >= 10)
+            {
+                <a asp-action="Index" asp-controller="Brands" asp-route-page="@(Model.page + 1)" class="btn btn-outline-success">@(Model.page + 1)</a>
+            }
+        </button>
+    </div>
+</div>

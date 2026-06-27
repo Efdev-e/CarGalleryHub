@@ -23,43 +23,44 @@ namespace CarGalleryHub.Api.Controllers
 
 
         [HttpGet("GetAdvertsByPage/{PageNumber}")]
-        public async Task<IActionResult> GetAdvertsByPage(int PageNumber,[FromQuery] CarAvailability[]? availability, [FromQuery] ColorType[]? color, [FromQuery] CategoryType? type, [FromQuery] CarStatus[]? status,string? Name) 
+        public async Task<IActionResult> GetAdvertsByPage(int PageNumber,[FromQuery] CarAvailability[]? availability, [FromQuery] ColorType[]? color, [FromQuery] CategoryType? categoryType, [FromQuery] CarStatus[]? status, [FromQuery] string? Name) 
         {
             var query = unitOfWork.Adverts.Query();
             query = query.Include(x => x.Car);
 
-            if (availability is not null && availability.Length > 0) 
+            if (availability is not null && availability.Length > 0)
             {
-                foreach (var q in availability) 
-                {
-                    query = query.Where(x => x.Car.Availability == q);
-                }
+                query = query.Where(x => availability.Contains(x.Car.Availability));
             }
+
             if (color is not null && color.Length > 0)
             {
-                foreach (var q in color)
-                {
-                    query = query.Where(x => x.Car.Color == q);
-                }
+                query = query.Where(x => color.Contains(x.Car.Color));
             }
-            if (type.HasValue)
+
+            if (status is not null && status.Length > 0)
             {
-                switch (type) 
+                query = query.Where(x => status.Contains(x.Car.Status));
+            }
+
+            if (categoryType.HasValue)
+            {
+                switch ((CategoryType) categoryType)
                 {
                     case CategoryType.HighestPrice:
-                        query = query.OrderBy(x => x.UnitPrice);
+                        query = query.OrderByDescending(x => x.UnitPrice);
                         break;
                     case CategoryType.LowestPrice:
-                        query = query.OrderByDescending(x => x.UnitPrice);
+                        query = query.OrderBy(x => x.UnitPrice); 
+                        break;
+                    default:
+                        query = query.OrderBy(x => x.Id);
                         break;
                 }
             }
-            if (status is not null && status.Length > 0) 
+            else
             {
-                foreach (var q in status)
-                {
-                    query = query.Where(x => x.Car.Status == q);
-                }
+                query = query.OrderBy(x => x.Id);
             }
             query = query.Where(x => x.IsDeleted == false);
             if (!string.IsNullOrEmpty(Name)) 
@@ -68,7 +69,6 @@ namespace CarGalleryHub.Api.Controllers
             }
 
             var adverts = await query
-                .OrderBy(x => x.Id)
                 .Skip((PageNumber - 1) * SayfaBoyut)
                 .Take(SayfaBoyut)
                 .ToListAsync();
@@ -94,7 +94,7 @@ namespace CarGalleryHub.Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAdvertById(int id) 
         {
-            var advert = await unitOfWork.Adverts.GetByIdIncludedAsync(id, u => u.Thumbnails);
+            var advert = await unitOfWork.Adverts.GetByIdIncludedAsync(id, u => u.Thumbnails, u => u.Car);
             if (advert is null) return Invalid("Yok");
             if (advert.IsDeleted) return Invalid("Advert Null");
             var advertDto = new AdvertDto()
@@ -108,7 +108,8 @@ namespace CarGalleryHub.Api.Controllers
                 CreatedAt = advert.CreatedAt,
                 UpdatedAt = advert.UpdatedAt,
                 Warranty = advert.Warranty,
-                UnitPrice = advert.UnitPrice
+                UnitPrice = advert.UnitPrice,
+                CarName = $"{advert.Car.BrandName} {advert.Car.Color} {advert.Car.ModelName}"
             };
 
             return Ok(advertDto);

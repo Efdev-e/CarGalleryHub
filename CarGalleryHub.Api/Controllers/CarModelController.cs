@@ -19,6 +19,27 @@ namespace CarGalleryHub.Api.Controllers
             unitOfWork = work;
         }
 
+        [HttpGet("GetAllmodels/{id:int}")]
+        public async Task<IActionResult> GetAllmodels(int id) 
+        {
+            var CarModel = await unitOfWork.CarModels.GetAllAsync();
+            if (CarModel is null) return Invalid("Model Yok");
+            var query = CarModel.AsQueryable();
+            
+            if (id != 0) 
+            {
+                query = query.Where(x => x.BrandId == id);
+            }
+
+            var dto = query.Where(x => x.IsDeleted == false).Select(x => new CarModelData()
+            {
+                FullName = $"{x.Model} {x.Series}",
+                id = x.Id
+            }).ToList();
+
+            return Ok(dto);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCarModelById(int id) 
         {

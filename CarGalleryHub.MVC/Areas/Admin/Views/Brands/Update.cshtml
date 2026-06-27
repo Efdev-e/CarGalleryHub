@@ -1,0 +1,40 @@
+﻿@model CarGalleryHub.Application.DTOs.Brand.BrandListDto
+@{
+    ViewData["Title"] = "Brands";
+}
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<form asp-controller="Brands" asp-action="Update" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="d-flex flex-column gap-4 border-1 border-black rounded-1">
+        <div>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" asp-for="BrandName">Marka İsmi</label>
+
+            <input required asp-for="BrandName" class="form-control" style="color: black !important;" type="text" placeholder="ex" />
+
+            <span class="text-danger d-block" asp-validation-for="BrandName"></span>
+        </div>
+        <input hidden asp-for="Id"/>
+        <div class="row justify-content-center">
+            <div class="col-6 d-flex">
+                <input type="submit" value="Güncelle" class="form-control w-auto " />
+                <button type="button" onclick="history.back()" class="btn btn-secondary mt-2">Geri Dön</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

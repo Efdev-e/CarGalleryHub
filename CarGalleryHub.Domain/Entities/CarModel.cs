@@ -16,5 +16,11 @@ namespace CarGalleryHub.Domain.Entities
         public  int BrandId { get; set; }
         public Brand Brand { get; set; } = null!;
         public ICollection<Car> Cars { get; set; } = new List<Car>();
+
+        public void DeleteModel() 
+        {
+            if (IsDeleted == false)
+                this.Delete();
+        }
     }
 }

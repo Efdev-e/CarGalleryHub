@@ -2,8 +2,9 @@
 using CarGalleryHub.Application.DTOs.Car;
 using CarGalleryHub.Application.DTOs.Image;
 using CarGalleryHub.Domain.Enum;
-using CarGalleryHub.MVC.Models.DTOs;
+using CarGalleryHub.MVC.Models.DTOs.Advert;
 using CarGalleryHub.MVC.Services;
+using Iyzipay.Request.V2.Subscription;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -42,16 +43,16 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             if (response is null)
             {
                 TempData["ErrorMessage"] = "Yanıt Gelmedi";
-                return View(new List<AdvertView>());
+                return View(new AdvertPageViewDto() { page = page ?? 1, Dtos = response?.Data ?? new List<AdvertView>() });
             }
             if (!response.Success || response.Data is null) 
             {
                 TempData["ErrorMessage"] = "Hata";
-                return View(new List<AdvertView>());
+                return View(new AdvertPageViewDto() { page = page ?? 1, Dtos = response.Data ?? new List<AdvertView>() });
             }
 
 
-            return View(response.Data);
+            return View(new AdvertPageViewDto() { page = page ?? 1, Dtos = response.Data ?? new List<AdvertView>() });
         }
 
         // Get
@@ -74,7 +75,17 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
                 ModelState.AddModelError(string.Empty, "İlan bulunamadı.");
                 return View(id);
             }
-            return View(model: list.Data);
+
+            var newData = new AdvertView()
+            {
+                AdvertTitle = list.Data.AdvertTitle,
+                Description = list.Data.Description,
+                UnitPrice = list.Data.UnitPrice,
+                FullName = list.Data.CarName,
+                Id = list.Data.Id,
+                ImageUrl = list.Data.Thumbnails?.FirstOrDefault()?.ImageUrl ?? ""
+            };
+            return View(model: newData);
         }
 
         [HttpGet]
@@ -144,14 +155,14 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             if (advertUpdate is null)
             {
                 ModelState.AddModelError(string.Empty, "Cevap boş");
-                return View(new AdvertViewDto() { Id = id, updateAdvert = updateAdvert });
+                return View(new AdvertViewDto() { Id = id, updateAdvert = updateAdvert! });
             }
 
             if (!advertUpdate.Success)
             {
                 ModelState.AddModelError(string.Empty, $"İşlem Başarısız \n\n Mesaj: {advertUpdate.Message}");
 
-                return View(new AdvertViewDto() { Id = id, updateAdvert = updateAdvert });
+                return View(new AdvertViewDto() { Id = id, updateAdvert = updateAdvert! });
             }
 
             TempData["SuccessMessage"] = "İlan Başarıyla Güncellendi!";
@@ -184,29 +195,44 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Create() 
+        public async Task<IActionResult> Create() 
         {
             if (IsAdmin())
                 return RedirectToAction("Index", "Home", new { area = "" });
 
-            return View();
+            var data = await Setup();
+
+            return View(data);
+        }
+
+        private async Task<AdvertCreateViewDto> Setup(CreateAdvertDto? dto = null) 
+        {
+
+            var carInfos = await _apiclient.GetAsync<List<CarInfoDto>>("api/Car/GetAllCarms");
+            var nes = new AdvertCreateViewDto() { Cars = carInfos?.Data ?? new List<CarInfoDto>() };
+            if (dto is not null) 
+            {
+                nes.createAdvertDto = dto;
+            }
+            return nes;
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Create(CreateAdvertDto dto) 
+        public async Task<IActionResult> Create([Bind(Prefix = "createAdvertDto")] CreateAdvertDto dto) 
         {
             if (IsAdmin())
                 return RedirectToAction("Index", "Home", new { area = "" });
 
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
                 return Redirect("/login");
-            ModelState.Remove(nameof(dto.SellerId));
+            ModelState.Remove("createAdvertDto.SellerId");
             dto.SellerId = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
-            if (!ModelState.IsValid) 
-                return View(dto);
-
-
+            if (!ModelState.IsValid)
+            {
+                var data = await Setup(dto);
+                return View(data);
+            }
 
             var newAdvert = new AdvertDto()
             {
@@ -229,13 +255,15 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             if (createAdvert is null) 
             {
                 ModelState.AddModelError(string.Empty,"Boş yanıt");
-                return View(dto);
+                var data = await Setup(dto);
+                return View(data);
             }
             
             if (!createAdvert.Success) 
             {
                 ModelState.AddModelError(string.Empty, "Başarısız İşlem");
-                return View(dto);
+                var data = await Setup(dto);
+                return View(data);
             }
 
             TempData["SuccessMessage"] = "İlan Başarıyla Oluşturuldu!";

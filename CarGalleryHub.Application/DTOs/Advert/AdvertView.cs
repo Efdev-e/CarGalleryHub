@@ -13,5 +13,6 @@ namespace CarGalleryHub.Application.DTOs.Advert
         public required string Description { get; set; }
 
         public required decimal UnitPrice { get; set; }
+        public string? FullName { get; set; }
     }
 }

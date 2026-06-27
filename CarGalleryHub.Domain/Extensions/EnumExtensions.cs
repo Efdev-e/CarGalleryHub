@@ -41,5 +41,12 @@ namespace CarGalleryHub.Domain.Extensions
             CarAvailability.Unavailable => "Müsait Değil",
             _ => avail.ToString()
         };
+
+        public static string ToTurkish(this CategoryType type) => type switch
+        {
+            CategoryType.HighestPrice => "Pahalı'dan Ucuz'a",
+            CategoryType.LowestPrice => "Ucuz'dan Pahalı'ya",
+            _ => type.ToString()
+        };
     }
 }

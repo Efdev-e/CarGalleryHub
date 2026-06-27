@@ -1,6 +1,6 @@
 ﻿using CarGalleryHub.Application.DTOs.Image;
 
-namespace CarGalleryHub.MVC.Models.DTOs
+namespace CarGalleryHub.MVC.Models.DTOs.Advert
 {
     public class AdvertUpdateModel
     {

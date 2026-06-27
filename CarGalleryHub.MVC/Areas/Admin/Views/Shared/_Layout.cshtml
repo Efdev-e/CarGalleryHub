@@ -24,12 +24,13 @@
 @{
         string jwtToken = HttpContextAccessor.HttpContext?.Session.GetString("JwtToken");
         string userName = HttpContextAccessor.HttpContext?.Session.GetString("UserName");
+        string userRole = HttpContextAccessor.HttpContext?.Session.GetString("UserRole");
     }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark  BG-SmoothPass box-shadow pb-3 mb-5">
 
             <div class="container-fluid BG-Transparent">
-                <a class="navbar-brand Pure-White BrandText-Style" style="font-family: 'Black Ops One'" asp-area="" asp-controller="Home" asp-action="Index">Agarte Gallery</a>
+                <a class="navbar-brand Pure-White BrandText-Style" style="font-family: 'Black Ops One'" asp-area="" asp-controller="Home" asp-action="Index">Agarte ADMIN</a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                         aria-controls="navbarSupportedContent"
@@ -40,31 +41,44 @@
                 <div class="navbar-collapse BG-Transparent collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 d-md-flex align-items-center gap-2 justify-content-start">
                         <li class="nav-item">
-                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="" asp-controller="Home" asp-action="Index">İlanlar</a>
+                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="Admin" asp-controller="Adverts" asp-action="Index">İlanlar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="" asp-controller="Home" asp-action="Index">Vitrin</a>
+                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="Admin" asp-controller="Brands" asp-action="Index">Markalar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="" asp-controller="Home" asp-action="Index">Hakkımızda</a>
+                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="Admin" asp-controller="Cars" asp-action="Index">Araba Modelleri</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="" asp-controller="Home" asp-action="Index">İletişim</a>
+                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="Admin" asp-controller="Users" asp-action="Index">Arabalar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="Admin" asp-controller="Users" asp-action="Index">Kullanıcılar</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav flex-grow-1 d-md-flex align-items-center justify-content-end">
                         @if (!string.IsNullOrEmpty(userName))
                         {
                             <li class="nav-item dropdown">
-                                <a class="dropdown-toggle nav-link Pure-White me-4" style="color: white !important;" data-bs-toggle="dropdown">@userName!</a>
+                                <a class="nav-link dropdown-toggle pe-2 ps-2 Pure-White me-4 dropfocus" style="color: white !important; font-family: 'quicksand'; cursor: pointer;" data-bs-toggle="dropdown">@userName!</a>
 
-                                <ul class="dropdown-menu dropdown-menu-dark" style="right: 10px;">
-                                    <li><a class="dropdown-item Pure-Gray" href="/profile">Profil</a></li>
-                                    <li><a class="dropdown-item Pure-White" href="/security">Güvenlik</a></li>
-                                    <li><a class="dropdown-item Pure-White" href="/security">Siparişlerim</a></li>
-                                    <li><a class="dropdown-item Pure-White" href="/security">Sepetim</a></li>
-                                    <span class="dropdown-divider" style="color: white !important; border-color: white !important;"></span>
-                                    <li><a class="dropdown-item text-danger" asp-controller="Account" asp-action="Logout">Çıkış Yap</a></li>
+                                <ul class="dropdown-menu BG-ViolentBlack BG-Menu border-0 p-2" style="right: 10px; min-width: 160px;">
+                                    <li><a class="dropdown-item droplink btnt Pure-Gray py-2 px-3" href="/profile">Profil</a></li>
+                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" href="/security">Güvenlik</a></li>
+                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" href="/addresses">Adreslerim</a></li>
+                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" href="/orders">Siparişlerim</a></li>
+                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" href="/cart">Sepetim</a></li>
+
+                                    @if (!string.IsNullOrEmpty(userRole) && userRole == "Admin")
+                                    {
+                                        <li><hr class="dropdown-divider border-secondary my-2" /></li>
+                                        <li class="px-2">
+                                            <a class="dropdown-item droplink btnt Pure-White text-center rounded-pill border border-white py-1" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Kullanıcı Modu</a>
+                                        </li>
+                                    }
+
+                                    <li><hr class="dropdown-divider border-secondary my-2" /></li>
+                                    <li><a class="dropdown-item redlink btnt text-danger py-2 px-3" asp-controller="Account" asp-action="Logout">Çıkış Yap</a></li>
                                 </ul>
                             </li>
                         }

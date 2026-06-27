@@ -78,6 +78,19 @@ namespace CarGalleryHub.MVC.Services
             return await ParseAsync<T>(response);
         }
 
+        public async Task<ApiResult<T>> PostNoBodyAsync<T>(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                throw new AppException("Url is empty");
+
+
+            var request = CreateRequestAndReturn(url, HttpMethod.Post);
+
+            var response = await _httpClient.SendAsync(request);
+
+            return await ParseAsync<T>(response);
+        }
+
         public async Task<ApiResult<T>> PutAsync<T>(string url, object body)
         {
             if (string.IsNullOrEmpty(url) || body == null)

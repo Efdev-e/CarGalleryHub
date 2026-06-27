@@ -1,6 +1,35 @@
-﻿@model CarGalleryHub.Application.DTOs.Advert.AdvertDto
+﻿@model CarGalleryHub.Application.DTOs.Advert.AdvertView
 @{
     ViewData["Title"] = "Advert";
 }
 
-<p class="text-white" style="color: white !important;">@Model.AdvertTitle</p>
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<div class="d-flex flex-column gap-3 w-50">
+    <div>
+        <label class="form-label" asp-for="AdvertTitle" style="color: white !important; font-family:'Quicksand'; font-weight: 500">İlan Başlığı: @Model.AdvertTitle</label>
+        <span asp-validation-for="AdvertTitle" class="text-danger mb-3"></span>
+    </div>
+    <div>
+        <img src="@Model.ImageUrl" width="300" height="300" />
+    </div>
+    <div>
+        <label class="form-label" style="color: white !important; font-family:'Quicksand'; font-weight: 500">Açıklama</label>
+        <textarea asp-for="Description" class="form-control" style="font-family:'Quicksand'; font-weight: 500">
+            @Model.Description
+        </textarea>
+        <span asp-validation-for="Description" class="text-danger mb-3"></span>
+    </div>
+
+    <div>
+        <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" asp-for="UnitPrice">Fiyat: @Model.UnitPrice</label>
+        <span asp-validation-for="UnitPrice" class="text-danger mb-3"></span>
+    </div>
+
+    <div>
+        <label class="form-label" style="color: white !important; font-family:'Quicksand'; font-weight: 500">Araba Adı: @Model.FullName </label>
+    </div>
+
+    <button type="button" onclick="history.back()" style="font-family:'Quicksand'; font-weight: 500" class="btn btn-secondary mt-2">Geri Dön</button>
+</div>

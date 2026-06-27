@@ -1,4 +1,4 @@
-﻿@model CarGalleryHub.MVC.Models.DTOs.AdvertViewDto
+﻿@model CarGalleryHub.MVC.Models.DTOs.Advert.AdvertViewDto
 @{
     ViewData["Title"] = "Advert Update";
 }
@@ -8,25 +8,27 @@
 
     <div class="d-flex flex-column gap-3 w-50">
         <div>
-            <label class="form-label" style="color: white !important;">İlan Başlığı</label>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500">İlan Başlığı</label>
             <input asp-for="updateAdvert.AdvertTitle" class="form-control" style="color: black !important;" placeholder="Başlık" />
             <span asp-validation-for="updateAdvert.AdvertTitle" class="text-danger mb-3"></span>
         </div>
 
         <div>
-            <label class="form-label" style="color: white !important;" >Açıklama</label>
-            <input asp-for="updateAdvert.Description" class="form-control" style="color: black !important;" placeholder="Açıklama" />
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500">Açıklama</label>
+            <textarea asp-for="updateAdvert.Description" class="form-control" style="color: black !important;" placeholder="Açıklama">
+
+            </textarea>
             <span asp-validation-for="updateAdvert.Description" class="text-danger mb-3"></span>
         </div>
 
         <div>
-            <label class="form-label" style="color: white !important;" >Fiyat</label>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500">Fiyat</label>
             <input asp-for="updateAdvert.UnitPrice" class="form-control" style="color: black !important;" placeholder="örn: 10.000₺" />
             <span asp-validation-for="updateAdvert.UnitPrice" class="text-danger mb-3"></span>
         </div>
 
         <div>
-            <label class="form-label" style="color: white !important;" >Araba </label>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" >Araba </label>
             <select class="form-control" asp-for="carModels">
                 <option value="">-- Araba Seçin --</option>
                 @if (Model.carModels != null)
@@ -36,17 +38,22 @@
                         <option value="@info.Id">@info.FullName</option>
                     }
                 }
-                <span asp-validation-for="updateAdvert.AdvertTitle" class="text-danger mb-3"></span>
             </select>
+            <span asp-validation-for="updateAdvert.AdvertTitle" class="text-danger mb-3"></span>
         </div>
 
         <div>
-            <label class="form-label">Image Url</label>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500">Image Url</label>
             <input asp-for="updateAdvert.ImageUrl" class="form-control" style="color: black !important;" placeholder="örn: 10.000₺" />
             <span asp-validation-for="updateAdvert.ImageUrl" class="text-danger mb-3"></span>
         </div>
 
-        <input type="submit" value="Gönder" class="form-control" />
+        <div class="d-flex flex-row g-5 w-50" style="justify-self:center; align-self:center">
+            <input type="submit" value="Gönder" style="font-family:'Quicksand'; font-weight: 500" class="form-control" />
+            <button type="button" style="font-family:'Quicksand'; font-weight: 500" onclick="history.back()" class="btn btn-secondary mt-2">Geri Dön</button>
+        </div>
     </div>
+
+
 </form>
 

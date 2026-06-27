@@ -1,161 +1,215 @@
-/*
-   1. DEĞİŞKENLER VE RENK
-*/
+/* 
+ * ==========================================================================
+ * 1. DEĞİŞKENLER VE RENK PALETİ
+ * ==========================================================================
+ */
 :root {
-  --color-metallic-gold: #c59f07;
-  --color-gold-bright: #ffd60b;
-  --color-gold-dark: #dbb006;
-  --color-gold-glow: #ffee3880;
-  --color-pure-white: #FFFFFF;
-  
-  --color-night-violet: #171528;
-  --color-shadow-grey: #201e1f;
-  --color-ink-black: #0f0e1b;
-  --color-focus-blue: #258cfb;
-  --color-black: #07070D;
+    --color-metallic-gold: #c59f07;
+    --color-gold-bright: #ffd60b;
+    --color-gold-dark: #dbb006;
+    --color-gold-glow: #ffee3880;
+    --color-pure-white: #FFFFFF;
+    --color-night-violet: #171528;
+    --color-shadow-grey: #201e1f;
+    --color-ink-black: #0f0e1b;
+    --color-focus-blue: #258cfb;
+    --color-black: #07070D;
 }
+/* 
+ * ==========================================================================
+ * 2. AYARLAR
+ * ==========================================================================
+ */
 
-/*
-   2. AYARLAR
-*/
 html {
-  position: relative;
-  min-height: 100dvh;
-  background-color: var(--var-shadow-grey);
-  font-size: 14px;
-  color: white;
+    position: relative;
+    min-height: 100dvh;
+    background-color: var(--var-shadow-grey);
+    font-size: 14px;
+    color: white;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-a 
-{
+a {
     text-decoration: none;
 }
 
 body {
-  min-height: 100dvh;
-  background-color: var(--color-black);
+    min-height: 100dvh;
+    background-color: var(--color-black);
 }
 
 .div-black {
-  background-color: var(--color-black);
+    background-color: var(--color-black);
 }
+/* 
+ * ==========================================================================
+ * 3. UTILITY VE TEXT RENK
+ * ==========================================================================
+ */
 
-/*
-   3. UTILITY
-*/
 
 
-/* Text Renkleri */
+/*Renk Ayarları*/
 .Metallic-Gold { color: var(--color-metallic-gold); }
-.Night-Violet  { color: var(--color-night-violet); }
-.Shadow-Grey   { color: var(--color-shadow-grey); }
-.Pure-White { color: var(--color-pure-white);}
-.Pure-Gray {color: #e0e0e0;}
-.Showcase-Gold 
-{
-  background: linear-gradient(45deg, #8d8b2b, #efff92,#aeb937,#c1c780);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+.Night-Violet { color: var(--color-night-violet); }
+.Shadow-Grey { color: var(--color-shadow-grey); }
+.Pure-White { color: var(--color-pure-white); }
+.Pure-Gray { color: #e0e0e0; }
+.Pure-Gold { color: #aeb937; }
+
+.Showcase-Gold {
+    background: linear-gradient(45deg, #8d8b2b, #efff92,#aeb937,#c1c780);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* BG Renkleri */
-.Ink-Black, 
-.BG-Ink       { background-color: var(--color-ink-black); }
-.BG-Grey      { background-color: var(--color-shadow-grey); }
-.BG-Violet    { background-color: var(--color-night-violet); }
-.BG-Gold      { background-color: var(--color-metallic-gold); }
-.BG-Black  { background-color: var(--color-black);}
-.BG-Transparent {background-color: transparent;}
+
+/*Background Ayarları*/
+.Ink-Black, .BG-Ink { background-color: var(--color-ink-black); }
+.BG-Grey { background-color: var(--color-shadow-grey); }
+.BG-Violet { background-color: var(--color-night-violet); }
+.BG-Gold { background-color: var(--color-metallic-gold); }
+.BG-Black { background-color: var(--color-black); }
+.BG-Transparent { background-color: transparent; }
+.BG-PureGold { background-color: #aeb937; }
+.BG-SmoothPass { background: linear-gradient(to bottom, var(--color-night-violet) 30%, var(--color-black) 100%); }
+.BG-ViolentBlack { background: #0e1117; }
+
+.BG-Menu {
+    background: #0e1117;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    border: 0.5px solid rgba(255,255,255,0.1);
+}
+
+
+
 
 /*Text Ayarları*/
-.Text-Bold {font-weight: 800;}
-
-/*
-   4. MVC KENDI STYLE
-*/
-*:focus 
-{
-  outline: none !important;
-  box-shadow: none !important;
-  
-
-  outline: 1px solid rgba(255, 255, 255, 0.7) !important;
-  outline-offset: 4px;
-  border-radius: 6px !important;
-
-  transition: outline 0.5s ease, outline-offset 0.5s ease, border-radius 0.3s ease !important;
-}
-
-.form-floating {
-  & > .form-control-plaintext,
-  & > .form-control {
-    &::placeholder {
-      color: var(--bs-secondary-color);
-      text-align: end;
-    }
-    &:focus::placeholder {
-      text-align: start;
-    }
-  }
-}
-
-
-/*
-   5. BİLEŞENLER
-*/
-
-/*
-  -- FOOTER --
-*/
-.BG-SmoothPass 
-{
-  background: linear-gradient(to bottom, var(--color-night-violet) 30%, var(--color-black) 100%);
-}
-.BrandText-Style {
-  display: inline-block;
-  margin-top: 2px;
-  margin-right: 3rem;
-  margin-left: 0.5rem;
-  font-size: clamp(1rem, calc(0.75rem + 1.35vw), 1.5rem);
-  background: linear-gradient(45deg, #8d8b2b, #efff92,#aeb937,#c1c780);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: filter 0.2s ease;
-
-  &:hover {
-    filter: drop-shadow(0px 0px 2px #ffea0085);
-
-  }
-}
-
-/*
-  -- HERO --
-*/
-.Attention-SizedText 
-{
-  font-size: clamp(2rem, calc(1.5rem + 3vw), 3rem);
-}
-.Smaller-Attention-SizedText 
-{
-  font-size: clamp(1.5rem, calc(1rem + 2vw), 2.5rem);
-}
-
-/*
-    Admin
-*/
-
-/* 
-    -- Adverts --
-*/
+.Text-Bold { font-weight: 800; }
+.Attention-SizedText { font-size: clamp(2rem, calc(1.5rem + 3vw), 3rem); }
+.Smaller-Attention-SizedText { font-size: clamp(1.5rem, calc(1rem + 2vw), 2.5rem); }
 
 .FilterText {
-    font-size:12px; font-weight:500; color: var(--color-metallic-gold); text-transform:uppercase; letter-spacing:0.05em;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-metallic-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
+
+.BrandText-Style {
+    display: inline-block;
+    margin-top: 2px;
+    margin-right: 3rem;
+    margin-left: 0.5rem;
+    font-size: clamp(1rem, calc(0.75rem + 1.35vw), 1.5rem);
+    background: linear-gradient(45deg, #8d8b2b, #efff92,#aeb937,#c1c780);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: filter 0.2s ease;
+
+    &:hover {
+        filter: drop-shadow(0px 0px 2px #ffea0085);
+    }
+}
+
+/*Pozisyon Ayarları*/
+
+.ToCenter { justify-self: center; align-self: center; }
+.ToRight {justify-self: right;}
+.ToLeft {justify-self: left;}
+
+
+/* 
+ * ==========================================================================
+ * 4. MVC KARŞITI
+ * ==========================================================================
+ */
+
+
+
+*:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    outline: 1px solid rgba(255, 255, 255, 0.7) !important;
+    outline-offset: 4px;
+    border-radius: 6px !important;
+    transition: outline 0.5s ease, outline-offset 0.5s ease, border-radius 0.3s ease !important;
+}
+
+.btnt {
+    transition: color 0.325s ease,background-color 0.325s ease,border-color 0.325s ease, border-radius 0.325s ease !important;
+
+    &:focus {
+        background-color: var(--color-ink-black);
+        border-color: white;
+    }
+}
+
+.droplink {
+    margin: 1px;
+
+    &:hover {
+        margin: 0px;
+        background-color: var(--color-ink-black);
+        border-radius: 1rem;
+        border: 1px solid white;
+        color: dodgerblue;
+    }
+}
+
+.redlink {
+    margin: 1px;
+
+    &:hover {
+        margin: 0px;
+        background-color: var(--color-ink-black);
+        border-radius: 1rem;
+        border: 1px solid red;
+        color: dodgerblue;
+    }
+}
+
+.inputfocus:focus {
+    background-color: var(--color-ink-black);
+    border-color: white;
+}
+
+.dropfocus {
+    transition: opacity 0.3s ease, scale 0.3s ease;
+    opacity: 1;
+
+    &:enabled, &:active {
+        scale: 1.1;
+        opacity: 0.5;
+    }
+
+    &:hover {
+        opacity: 0.5;
+        cursor: pointer;
+    }
+}
+
+/* 
+ * ==========================================================================
+ * 5. COMMON BİLEŞENLER
+ * ==========================================================================
+ */
+
+
+
+
+/* 
+ * ==========================================================================
+ * 6. BİLEŞENLER
+ * ==========================================================================
+ */
