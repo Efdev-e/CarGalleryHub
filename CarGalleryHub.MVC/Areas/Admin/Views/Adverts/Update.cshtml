@@ -29,7 +29,7 @@
 
         <div>
             <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" >Araba </label>
-            <select class="form-control" asp-for="carModels">
+            <select required class="form-control" asp-for="carModels">
                 <option value="">-- Araba Seçin --</option>
                 @if (Model.carModels != null)
                 {

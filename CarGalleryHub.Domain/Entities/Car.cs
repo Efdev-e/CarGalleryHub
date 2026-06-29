@@ -34,11 +34,19 @@ namespace CarGalleryHub.Domain.Entities
         #endregion
 
         // ----- //
-        public  int CarModelId { get; set; }
+        public int CarModelId { get; set; }
 
         // ----- //
         public List<int> UserIds { get; set; } = new List<int>();
         public CarModel CarModel { get; set; } = null!;
         public ICollection<Advert> Advert { get; set; } = null!;
+
+        public void DeleteCar() 
+        {
+            if (this.IsDeleted == false) 
+            {
+                this.Delete();
+            }
+        }
     }
 }

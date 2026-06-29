@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Eventing.Reader;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CarGalleryHub.Api.Controllers
 {
@@ -22,6 +23,21 @@ namespace CarGalleryHub.Api.Controllers
             _unitOfWork = work;
         }
 
+        [HttpGet("GetAllBrand")]
+        public async Task<IActionResult> GetAllBrand()
+        {
+            var query = _unitOfWork.Brands.Query();
+
+            query = query.Where(x => x.IsDeleted == false);
+            var list = query.Select(x => new BrandListDto()
+            {
+                Id = x.Id,
+                BrandName = x.BrandName
+            });
+
+            return Ok(list);
+        }
+
         [HttpGet("GetAllBrand/{page}")]
         public async Task<IActionResult> GetAllBrand(int page, [FromQuery] string? name) 
         {
@@ -34,7 +50,7 @@ namespace CarGalleryHub.Api.Controllers
                 .Skip((page - 1) * BrandPage)
                 .Take(BrandPage)
                 .ToListAsync();
-
+            query = query.Where(x => x.IsDeleted == false);
             if (brands is null || !brands.Any()) 
             {
                 return Invalid("Brand bulunamadı.");
@@ -137,7 +153,8 @@ namespace CarGalleryHub.Api.Controllers
             var Brand = await _unitOfWork.Brands.GetByIdAsync(id);
             if (Brand is null || Brand.BrandName is null) return Invalid("Bulunamadı");
 
-            _unitOfWork.Brands.Remove(Brand);
+            Brand.DeleteBrand();
+            _unitOfWork.Brands.Update(Brand);
             await _unitOfWork.SaveChangesAsync();
 
             return Ok(true);

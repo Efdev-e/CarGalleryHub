@@ -11,5 +11,13 @@ namespace CarGalleryHub.Domain.Entities
         // FK
 
         public ICollection<CarModel> CarModels { get; set; } = new List<CarModel>();
+
+        public void DeleteBrand() 
+        {
+            if (IsDeleted == false) 
+            {
+                this.Delete();
+            }
+        }
     }
 }

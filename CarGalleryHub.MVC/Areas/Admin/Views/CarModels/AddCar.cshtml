@@ -1,0 +1,37 @@
+﻿@model CarGalleryHub.MVC.Models.DTOs.CarModel.CarModelAddCarView
+@{
+    ViewData["Title"] = "Advert";
+}
+
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<form asp-action="AddCar" asp-controller="CarModels" method="post">
+    <div class="d-flex flex-column gap-3 w-50">
+        <div>
+            <label class="form-label" asp-for="ModelName" style="color: white !important; font-family:'Quicksand'; font-weight: 500">Model ismi: @Model.ModelName</label>
+            <span asp-validation-for="ModelName" class="text-danger mb-3"></span>
+        </div>
+        <div>
+            <label class="form-label" asp-for="carDataModel" style="color: white !important; font-family:'Quicksand'; font-weight: 500">Modeller:</label>
+            <select required asp-for="CarId" class="form-control">
+                <option value="">-- MODEL SEÇİNİZ --</option>
+                @if (Model.carDataModel.Any())
+                {
+                    foreach (var dtao in Model.carDataModel)
+                    {
+                        <option value="@dtao.Id">@dtao.FullName</option>
+                    }
+                }
+
+            </select>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-6 d-flex">
+                <input type="submit" value="Araba Ekle" class="form-control w-auto " />
+                <button type="button" onclick="history.back()" class="btn btn-secondary mt-2">Geri Dön</button>
+            </div>
+        </div>
+    </div>
+</form>

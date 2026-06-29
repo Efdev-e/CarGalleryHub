@@ -1,0 +1,58 @@
+﻿@model CarGalleryHub.MVC.Models.DTOs.CarModel.CarModelUpdateView
+@{
+    ViewData["Title"] = "Car Model";
+}
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<form asp-controller="CarModels" asp-action="Update" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="d-flex flex-column gap-4 border-1 border-black rounded-1">+
+        <input hidden asp-for="CarModelId"/>
+        <div>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" asp-for="CarModelData.Series">Seri İsmi</label>
+
+            <input required asp-for="CarModelData.Series" class="form-control" style="color: black !important;" type="text" placeholder="ex" value="@(Model.CarModelData?.Series ?? "")" />
+
+            <span class="text-danger d-block" asp-validation-for="CarModelData.Series"></span>
+        </div>
+
+        <div>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" asp-for="CarModelData.Model">Model İsmi</label>
+
+            <input required asp-for="CarModelData.Model" class="form-control" style="color: black !important;" value="@(Model.CarModelData?.Model ?? "")" type="text" placeholder="ex" />
+
+            <span class="text-danger d-block" asp-validation-for="CarModelData.Model"></span>
+        </div>
+
+        <div>
+            <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" asp-for="CarModelData.ReleaseDate">Çıkış Tarihi</label>
+
+            <input required asp-for="CarModelData.ReleaseDate" class="form-control" style="color: black !important;" value="@(Model.CarModelData?.ReleaseDate ?? DateTime.UtcNow)" type="date" placeholder="ex" />
+
+            <span class="text-danger d-block" asp-validation-for="CarModelData.ReleaseDate"></span>
+        </div>
+
+        <div>
+            <label class="form-label" style="color: white !important; font-family:'Quicksand'; font-weight: 500">Modeller:</label>
+            <select required asp-for="CarModelData.BrandId" class="form-control">
+                <option value="">-- MARKA SEÇİNİZ --</option>
+                @if (Model.Brands.Any())
+                {
+                    foreach (var dtao in Model.Brands)
+                    {
+                        <option value="@dtao.Id">@dtao.BrandName</option>
+                    }
+                }
+
+            </select>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-6 d-flex">
+                <input type="submit" value="Güncelle" class="form-control w-auto " />
+                <button type="button" onclick="history.back()" class="btn btn-secondary mt-2">Geri Dön</button>
+            </div>
+        </div>
+    </div>
+</form>

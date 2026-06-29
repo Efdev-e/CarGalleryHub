@@ -15,7 +15,7 @@
         <input hidden asp-for="id" />
         <div>
             <label class="form-label" asp-for="Dtos" style="color: white !important; font-family:'Quicksand'; font-weight: 500">Modeller:</label>
-            <select asp-for="carModelId" class="form-control">
+            <select required asp-for="carModelId" class="form-control">
                 <option value="">-- MODEL SEÇİNİZ --</option>
                 @if (Model.Dtos.Any())
                 {

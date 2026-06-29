@@ -1,9 +1,12 @@
-﻿using CarGalleryHub.Application.DTOs.Car;
+﻿using CarGalleryHub.Application.DTOs.Brand;
+using CarGalleryHub.Application.DTOs.Car;
 using CarGalleryHub.Application.DTOs.CarModel;
+using CarGalleryHub.Application.DTOs.User.Address;
 using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Persistence.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Numerics;
 
 namespace CarGalleryHub.Api.Controllers
@@ -13,31 +16,41 @@ namespace CarGalleryHub.Api.Controllers
     public class CarModelController : BaseApiController
     {
         private readonly IUnitOfWork unitOfWork;
-
+        private readonly int ModelPage = 10;
         public CarModelController(IUnitOfWork work)
         {
             unitOfWork = work;
         }
 
-        [HttpGet("GetAllmodels/{id:int}")]
-        public async Task<IActionResult> GetAllmodels(int id) 
+        [HttpGet("GetAllModels/{page:int}")]
+        public async Task<IActionResult> GetAllModels(int page, [FromQuery] string? name) 
         {
-            var CarModel = await unitOfWork.CarModels.GetAllAsync();
-            if (CarModel is null) return Invalid("Model Yok");
-            var query = CarModel.AsQueryable();
-            
-            if (id != 0) 
+            var query = unitOfWork.CarModels.Query();
+
+            if (!string.IsNullOrEmpty(name)) { 
+                query = query.Where(x => EF.Functions.Like(x.Series, $"%{name}%"));
+                query = query.Where(x => EF.Functions.Like(x.Model, $"%{name}%"));
+            }
+            query = query.Where(x => x.IsDeleted == false);
+            var models = await query.Include(u => u.Brand).OrderBy(x => x.Id)
+                .Skip((page - 1) * ModelPage)
+                .Take(ModelPage)
+                .ToListAsync();
+
+            if (models is null || !models.Any())
             {
-                query = query.Where(x => x.BrandId == id);
+                return Invalid("Model bulunamadı.");
             }
 
-            var dto = query.Where(x => x.IsDeleted == false).Select(x => new CarModelData()
+            var list = models.Select(x => new CarModelPageData()
             {
+                Id = x.Id,
                 FullName = $"{x.Model} {x.Series}",
-                id = x.Id
-            }).ToList();
+                BrandName = $"{x.Brand?.BrandName ?? ""}",
+                ReleaseDate = x.ReleaseDate.ToString("ddMMyyyy")
+            });
 
-            return Ok(dto);
+            return Ok(list);
         }
 
         [HttpGet("{id}")]
@@ -54,6 +67,41 @@ namespace CarGalleryHub.Api.Controllers
                 ReleaseDate = CarModel.ReleaseDate
             };
             return Ok(dto);
+        }
+
+        [HttpGet("Inspect/{id}")]
+        public async Task<IActionResult> Inspect(int id)
+        {
+            var CarModel = await unitOfWork.CarModels.GetByIdIncludedAsync(id, u => u.Brand);
+            if (CarModel is null) return Invalid(false,"Model Yok");
+            var dto = new CarModelDto()
+            {
+                BrandId = CarModel.BrandId,
+                Id = CarModel.Id,
+                Model = CarModel.Model,
+                Series = CarModel.Series,
+                ReleaseDate = CarModel.ReleaseDate,
+            };
+            var Cars = await unitOfWork.Cars.FindAsync(x => x.CarModelId == id);
+            var Inspect = new CarModelInspectDto();
+            if (Cars is null) 
+            {
+                Inspect.Cars = new List<CarInfoDto>();
+            }
+            else 
+            {
+                Inspect.Cars = Cars.Select(x => new CarInfoDto() 
+                {
+                    FullName = $"{x.KM}KM {x.Year.ToString()} {x.Color.ToString()} {x.ModelName}",
+                    Id = x.Id
+                }).ToList();
+            }
+
+            Inspect.carModel = dto;
+            Inspect.BrandName = CarModel.Brand.BrandName;
+            Inspect.Id = CarModel.Id;
+            return Ok(Inspect);
+
         }
 
         [HttpPost("create")]
@@ -77,10 +125,10 @@ namespace CarGalleryHub.Api.Controllers
             await unitOfWork.CarModels.AddAsync(carModel);
             await unitOfWork.SaveChangesAsync();
 
-            return Ok("Oluşturuldu");
+            return Ok(true);
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("delete/{id:int}")]
         [Authorize]
         public async Task<IActionResult> DeleteCarModel(int id)
         {
@@ -88,10 +136,11 @@ namespace CarGalleryHub.Api.Controllers
             var carModel = await unitOfWork.CarModels.GetByIdAsync(id);
             if (carModel is null) return Invalid("Model yok");
 
-            unitOfWork.CarModels.Remove(carModel);
+            carModel.DeleteModel();
+            unitOfWork.CarModels.Update(carModel);
             await unitOfWork.SaveChangesAsync();
 
-            return Ok("Silindi");
+            return Ok(true);
         }
 
         [HttpPost("addCar/{carId},{carModelId}")]
@@ -110,6 +159,7 @@ namespace CarGalleryHub.Api.Controllers
             }
             if (!model.Cars.Contains(car)) 
             {
+                car.CarModelId = carModelId;
                 model.Cars.Add(car);
 
             }
@@ -117,18 +167,18 @@ namespace CarGalleryHub.Api.Controllers
             unitOfWork.CarModels.Update(model);
             await unitOfWork.SaveChangesAsync();
 
-            return Ok("Oluşturuldu");
+            return Ok(true);
         }
 
         [HttpDelete("deleteCar/{carId},{carModelId}")]
         [Authorize]
         public async Task<IActionResult> DeleteCarFromModel(int carId, int carModelId)
         {
-            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
+            if (!IsAdmin()) return Invalid(false,"Yetkisiz Erişim");
             var car = await unitOfWork.Cars.GetByIdIncludedAsync(carId, u => u.CarModel);
-            if (car is null) return Invalid("Araba Yok");
+            if (car is null) return Invalid(false,"Araba Yok");
             var model = await unitOfWork.CarModels.GetByIdIncludedAsync(carModelId, u => u.Cars);
-            if (model is null) return Invalid("Model Yok");
+            if (model is null) return Invalid(false,"Model Yok");
 
             if (model.Cars is null)
             {
@@ -136,18 +186,19 @@ namespace CarGalleryHub.Api.Controllers
             }
             if (model.Cars.Contains(car))
             {
-                model.Cars.Remove(car);
+                car.CarModelId = -1;
             }
 
+            unitOfWork.Cars.Update(car);
             unitOfWork.CarModels.Update(model);
             await unitOfWork.SaveChangesAsync();
 
-            return Ok("Oluşturuldu");
+            return Ok(true);
         }
 
         [HttpPost("update/{carModelId}")]
         [Authorize]
-        public async Task<IActionResult> UpdateCarModel([FromBody] CarModelDto carModelDto, int carModelId)
+        public async Task<IActionResult> UpdateCarModel(int carModelId, [FromBody] CarModelDto carModelDto)
         {
             if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
             if (carModelDto is null || carModelDto.Series is null || carModelDto.Model is null) return Invalid("Parametreler Eksik");
@@ -164,7 +215,7 @@ namespace CarGalleryHub.Api.Controllers
             unitOfWork.CarModels.Update(model);
             await unitOfWork.SaveChangesAsync();
 
-            return Ok("Güncellendi");
+            return Ok(true);
         }
     }
 }

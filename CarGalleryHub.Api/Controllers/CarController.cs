@@ -22,17 +22,18 @@ namespace CarGalleryHub.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetAllCarms()
         {
-            var Cars = await unitOfWork.Cars.GetAllAsync();
-            if (Cars is null)
-            {
-                return NotFound("Kullanıcı araba oluşturmamış");
-            }
-
-            var dto = Cars.Select(x => new CarInfoDto()
+            var query = unitOfWork.Cars.Query();
+            query = query.Where(x => x.IsDeleted == false);
+            var dto = query.Select(x => new CarInfoDto()
             {
                 FullName = $"{x.BrandName} {x.ModelName} {x.Color} {x.Year}",
                 Id = x.Id
             }).ToList();
+
+            if (dto is null) 
+            {
+                return NotFound(" Araba yok");
+            }
 
             return Ok(dto);
 
