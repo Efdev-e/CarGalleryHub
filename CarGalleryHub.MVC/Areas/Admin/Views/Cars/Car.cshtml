@@ -1,0 +1,22 @@
+@using CarGalleryHub.Domain.Extensions
+@model CarGalleryHub.Application.DTOs.Car.CarDto
+@{
+    ViewData["Title"] = "Car";
+}
+
+<div class="card bg-dark border-1 border-white rounded-1 w-75 mx-auto">
+    <div class="card-body bg-dark">
+        <h3 class="text-white">@Model.BrandName @Model.ModelName @Model.Series</h3>
+        <hr class="border-light" />
+        <p class="text-white">Yıl: @Model.Year</p>
+        <p class="text-white">KM: @Model.KM</p>
+        <p class="text-white">Motor Gücü: @Model.MotorPower</p>
+        <p class="text-white">Renk: @Model.Color.ToTurkish()</p>
+        <p class="text-white">Durum: @Model.Status.ToTurkish()</p>
+        <p class="text-white">Kullanılabilirlik: @Model.Availability.ToTurkish()</p>
+        <div class="d-flex gap-2">
+            <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-outline-success">Değiştir</a>
+            <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+        </div>
+    </div>
+</div>

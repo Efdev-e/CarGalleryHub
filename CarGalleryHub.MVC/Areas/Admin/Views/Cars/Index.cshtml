@@ -1,6 +1,135 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+@using CarGalleryHub.Domain.Enum
+@using CarGalleryHub.Domain.Extensions
+@model CarGalleryHub.MVC.Models.DTOs.Car.CarPageViewDto
 @{
+    ViewData["Title"] = "Cars";
+    var selectedAvailability = Context.Request.Query["availability"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries);
+    var selectedColors = Context.Request.Query["color"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries);
+    var selectedStatuses = Context.Request.Query["status"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries);
+    var name = Context.Request.Query["name"].ToString();
+    Func<int, string> pageUrl = targetPage =>
+    {
+        var parts = new List<string> { $"page={targetPage}" };
+
+        if (!string.IsNullOrWhiteSpace(name))
+            parts.Add($"name={Uri.EscapeDataString(name)}");
+
+        parts.AddRange(selectedAvailability.Select(x => $"availability={x}"));
+        parts.AddRange(selectedColors.Select(x => $"color={x}"));
+        parts.AddRange(selectedStatuses.Select(x => $"status={x}"));
+
+        return Url.Action("Index", "Cars", new { area = "Admin" }) + "?" + string.Join("&", parts);
+    };
 }
-<p>Hello -- This is Cars</p>
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<form class="BG-Menu ToCenter w-75 me-3 ms-3" asp-action="Index" asp-controller="Cars" asp-area="Admin" method="get">
+    <div class="container">
+        <div class="row g-3">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <h3 class="text-white m-0">Arabalar</h3>
+                <a asp-area="Admin" asp-controller="Cars" asp-action="Create" role="button" class="btn btn-success">OLUŞTUR</a>
+            </div>
+
+            <div class="col-12">
+                <label for="name" class="form-label text-white FilterText">Arama Kutusu:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control bg-secondary text-white border-0" name="name" value="@name" placeholder="Marka, model, renk veya yıl" />
+                    <button type="submit" class="btn btn-success">Filtrele / Ara</button>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label d-block FilterText">Renkler</label>
+                <div class="d-flex flex-column gap-1" style="max-height: 150px; overflow-y: auto;">
+                    @foreach (ColorType color in Enum.GetValues(typeof(ColorType)))
+                    {
+                        var isChecked = selectedColors.Contains(color.ToString());
+                        <div class="form-check">
+                            <input name="color" class="form-check-input" type="checkbox" value="@color" id="color_@color" checked="@isChecked" />
+                            <label class="form-check-label text-white" for="color_@color">@color.ToTurkish()</label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label d-block FilterText">Araç Durumu</label>
+                <div class="d-flex flex-column gap-1">
+                    @foreach (CarStatus status in Enum.GetValues(typeof(CarStatus)))
+                    {
+                        var isChecked = selectedStatuses.Contains(status.ToString());
+                        <div class="form-check">
+                            <input name="status" class="form-check-input" type="checkbox" value="@status" id="status_@status" checked="@isChecked" />
+                            <label class="form-check-label text-white" for="status_@status">@status.ToTurkish()</label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label d-block FilterText">Kullanılabilirlik</label>
+                <div class="d-flex flex-column gap-1">
+                    @foreach (CarAvailability availability in Enum.GetValues(typeof(CarAvailability)))
+                    {
+                        var isChecked = selectedAvailability.Contains(availability.ToString());
+                        <div class="form-check">
+                            <input name="availability" class="form-check-input" type="checkbox" value="@availability" id="availability_@availability" checked="@isChecked" />
+                            <label class="form-check-label text-white" for="availability_@availability">@availability.ToTurkish()</label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<br />
+<hr style="color: white !important; border-color: white !important;" />
+<br />
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 w-75 h-100 flex-grow-1 overflow-auto" style="justify-self:center; align-self: center">
+    @if (Model.Dtos.Any())
+    {
+        foreach (var car in Model.Dtos)
+        {
+            <div class="col">
+                <div class="card bg-dark border-1 border-white rounded-1 h-100">
+                    <div class="card-body bg-dark d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title text-center text-white mb-3">@car.FullName</h5>
+                            <p class="card-text text-white text-center">#@car.Id</p>
+                        </div>
+
+                        <div class="d-flex flex-column gap-2 mt-auto">
+                            <a asp-action="Car" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-outline-success">İncele</a>
+                            <a asp-action="Update" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-outline-success">Değiştir</a>
+                            <a asp-action="Delete" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-outline-danger">Sil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12 text-center text-white">
+            <p>Veri yok</p>
+        </div>
+    }
+</div>
+
+<div class="row w-100 h-50">
+    <div class="col-12 d-flex justify-content-center align-items-center gap-2">
+        @if (Model.page > 1)
+        {
+            <a href="@pageUrl(Model.page - 1)" class="btn btn-outline-success">@(Model.page - 1)</a>
+        }
+        <a href="@pageUrl(Model.page)" class="btn btn-success">@Model.page</a>
+        @if (Model.Dtos.Any() && Model.Dtos.Count >= 10)
+        {
+            <a href="@pageUrl(Model.page + 1)" class="btn btn-outline-success">@(Model.page + 1)</a>
+        }
+    </div>
+</div>

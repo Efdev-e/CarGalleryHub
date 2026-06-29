@@ -1,0 +1,82 @@
+@using CarGalleryHub.Domain.Enum
+@using CarGalleryHub.Domain.Extensions
+@model CarGalleryHub.MVC.Models.DTOs.Car.CarFormViewDto
+@{
+    ViewData["Title"] = "Update Car";
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<form asp-controller="Cars" asp-action="Update" asp-route-id="@Model.Id" method="post">
+    <div class="d-flex flex-column gap-4 border-1 border-black rounded-1">
+        <div>
+            <label class="form-label text-white" asp-for="Car.CarModelId">Model</label>
+            <select required asp-for="Car.CarModelId" class="form-control">
+                @foreach (var models in Model.Models)
+                {
+                    <option value="@models.Id">@models.BrandName @models.FullName</option>
+                }
+            </select>
+            <span class="text-danger d-block" asp-validation-for="Car.CarModelId"></span>
+        </div>
+
+        <div>
+            <label class="form-label text-white" asp-for="Car.Year">Yıl</label>
+            <input required asp-for="Car.Year" class="form-control" type="number" />
+            <span class="text-danger d-block" asp-validation-for="Car.Year"></span>
+        </div>
+
+        <div>
+            <label class="form-label text-white" asp-for="Car.KM">KM</label>
+            <input required asp-for="Car.KM" class="form-control" type="number" />
+            <span class="text-danger d-block" asp-validation-for="Car.KM"></span>
+        </div>
+
+        <div>
+            <label class="form-label text-white" asp-for="Car.MotorPower">Motor Gücü</label>
+            <input asp-for="Car.MotorPower" class="form-control" type="text" />
+            <span class="text-danger d-block" asp-validation-for="Car.MotorPower"></span>
+        </div>
+
+        <div>
+            <label class="form-label text-white" asp-for="Car.Color">Renk</label>
+            <select required asp-for="Car.Color" class="form-control">
+                @foreach (ColorType color in Enum.GetValues(typeof(ColorType)))
+                {
+                    <option value="@color">@color.ToTurkish()</option>
+                }
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label text-white" asp-for="Car.Status">Durum</label>
+            <select required asp-for="Car.Status" class="form-control">
+                @foreach (CarStatus status in Enum.GetValues(typeof(CarStatus)))
+                {
+                    <option value="@status">@status.ToTurkish()</option>
+                }
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label text-white" asp-for="Car.Availability">Kullanılabilirlik</label>
+            <select required asp-for="Car.Availability" class="form-control">
+                @foreach (CarAvailability availability in Enum.GetValues(typeof(CarAvailability)))
+                {
+                    <option value="@availability">@availability.ToTurkish()</option>
+                }
+            </select>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-6 d-flex gap-2">
+                <input type="submit" value="Güncelle" class="btn btn-success" />
+                <button type="button" onclick="history.back()" class="btn btn-secondary">Geri Dön</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

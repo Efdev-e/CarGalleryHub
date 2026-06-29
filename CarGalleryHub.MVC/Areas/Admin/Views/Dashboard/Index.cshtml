@@ -1,7 +1,25 @@
-﻿@{
+@{
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="ToLef">
-
+<div class="w-75 mx-auto">
+    <h2 class="text-white">Admin Paneli</h2>
+    <p class="text-white">İlan, marka, model, araba ve kullanıcı kayıtlarını buradan yönetebilirsiniz.</p>
+    <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
+        <div class="col">
+            <a asp-area="Admin" asp-controller="Adverts" asp-action="Index" class="btn btn-outline-success w-100 py-3">İlanlar</a>
+        </div>
+        <div class="col">
+            <a asp-area="Admin" asp-controller="Brands" asp-action="Index" class="btn btn-outline-success w-100 py-3">Markalar</a>
+        </div>
+        <div class="col">
+            <a asp-area="Admin" asp-controller="CarModels" asp-action="Index" class="btn btn-outline-success w-100 py-3">Araba Modelleri</a>
+        </div>
+        <div class="col">
+            <a asp-area="Admin" asp-controller="Cars" asp-action="Index" class="btn btn-outline-success w-100 py-3">Arabalar</a>
+        </div>
+        <div class="col">
+            <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-outline-success w-100 py-3">Kullanıcılar</a>
+        </div>
+    </div>
 </div>

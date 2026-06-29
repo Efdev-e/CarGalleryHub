@@ -219,7 +219,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             {
                 Brands = response.Data,
                 CarModelId = id,
-                CarModelData = view is null ? new CarModelDataCreate() : view
+                CarModelData = view is null ? listing : view
             });
         }
 
