@@ -1,0 +1,44 @@
+﻿@model CarGalleryHub.Application.DTOs.User.Security.UserSecurityPageView
+@{
+    ViewData["Title"] = "Güvenlik Ayarları";
+}
+
+<form asp-controller="Account" asp-action="UpdateSecurity" method="post"
+      class="w-100 d-flex justify-content-center align-items-center">
+
+    <div class="w-50 border border-1 border-primary-subtle rounded-1 p-5 d-flex flex-column gap-4">
+
+        <h4 class="QuickSand Pure-White mb-3">Güvenlik ve Hesap Ayarları</h4>
+
+        <div class="w-100 px-4">
+            <label class="QuickSand form-label Pure-White" asp-for="CurrentPassword">Mevcut Şifre (Değişiklikleri onaylamak için):</label>
+            <input class="QuickSand form-control" asp-for="CurrentPassword" type="password" placeholder="Mevcut şifrenizi giriniz" />
+            <span asp-validation-for="CurrentPassword" class="text-danger small"></span>
+        </div>
+
+        <hr class="border-secondary my-2" />
+
+        <div class="w-100 px-4">
+            <label class="QuickSand form-label Pure-White" asp-for="Email">Yeni E-posta Adresi:</label>
+            <input class="QuickSand form-control" asp-for="Email" type="email" placeholder="Yeni e-posta adresinizi giriniz" />
+            <span asp-validation-for="Email" class="text-danger small"></span>
+        </div>
+
+        <hr class="border-secondary my-2" />
+
+        <div class="w-100 px-4">
+            <label class="QuickSand form-label Pure-White" asp-for="NewPassword">Yeni Şifre:</label>
+            <input class="QuickSand form-control" asp-for="NewPassword" type="password" placeholder="Yeni şifre (Değiştirmek istemiyorsanız boş bırakın)" />
+            <span asp-validation-for="NewPassword" class="text-danger small"></span>
+        </div>
+
+
+        <div class="row justify-content-center mt-3">
+            <div class="col-6 d-flex justify-content-center gap-3">
+                <input type="submit" value="Ayarları Güncelle" class="btn btn-primary w-auto px-4" />
+                <button type="button" onclick="history.back()" class="btn btn-secondary px-4">Geri Dön</button>
+            </div>
+        </div>
+
+    </div>
+</form>

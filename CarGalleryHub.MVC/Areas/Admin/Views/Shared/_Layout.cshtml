@@ -63,17 +63,17 @@
                                 <a class="nav-link dropdown-toggle pe-2 ps-2 Pure-White me-4 dropfocus" style="color: white !important; font-family: 'quicksand'; cursor: pointer;" data-bs-toggle="dropdown">@userName!</a>
 
                                 <ul class="dropdown-menu BG-ViolentBlack BG-Menu border-0 p-2" style="right: 10px; min-width: 160px;">
-                                    <li><a class="dropdown-item droplink btnt Pure-Gray py-2 px-3" href="/profile">Profil</a></li>
-                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" href="/security">Güvenlik</a></li>
-                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" href="/addresses">Adreslerim</a></li>
-                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" href="/orders">Siparişlerim</a></li>
-                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" href="/cart">Sepetim</a></li>
+                                    <li><a class="dropdown-item droplink btnt Pure-Gray py-2 px-3" asp-area="" asp-controller="Account" asp-action="Profile">Profil</a></li>
+                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" asp-area="" asp-controller="Account" asp-action="Security">Güvenlik</a></li>
+                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" asp-area="" asp-controller="Account" asp-action="Address">Adreslerim</a></li>
+                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" asp-area="" asp-controller="Account" asp-action="Orders">Siparişlerim</a></li>
+                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" asp-area="" asp-controller="Account" asp-action="Cart">Sepetim</a></li>
 
                                     @if (!string.IsNullOrEmpty(userRole) && userRole == "Admin")
                                     {
                                         <li><hr class="dropdown-divider border-secondary my-2" /></li>
                                         <li class="px-2">
-                                            <a class="dropdown-item droplink btnt Pure-White text-center rounded-pill border border-white py-1" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Kullanıcı Modu</a>
+                                            <a class="dropdown-item droplink btnt text-center rounded-pill border border-white py-1" asp-area="" asp-controller="Home" asp-action="Index">Kullanıcı Modu</a>
                                         </li>
                                     }
 

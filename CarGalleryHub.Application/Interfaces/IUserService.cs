@@ -13,6 +13,7 @@ namespace CarGalleryHub.Application.Interfaces
         Task<bool> ChangePassword(int userId, UserSecurityUpdateRequest requestDto);
         Task<bool> ChangeEmail(int userId, UserSecurityUpdateRequest requestDto);
         Task<bool> ChangePhone(int userId, UserSecurityUpdateRequest requestDto);
+        Task<UserSecurityPageView> ViewSecurity(int userId);
 
 
     }

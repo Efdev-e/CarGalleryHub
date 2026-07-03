@@ -22,9 +22,71 @@ namespace CarGalleryHub.Api.Controllers
             unitOfWork = work;
         }
 
-        [HttpGet("view")]
+        [HttpGet("ViewProfile")]
         [Authorize]
-        public async Task<IActionResult> ViewProfile()
+        public async Task<IActionResult> ViewProfiles()
+        {
+            var profile = await userService.ViewProfile(GetUserId());
+            if (profile is null) return Invalid("Profile Bulunamadı");
+
+            var ViewDto = new ProfileViewData()
+            {
+                ImageUrl = profile.ProfilePicture?.ImageUrl ?? string.Empty,
+                FirstName = profile.FirstName,
+                LastName = profile.LastName
+            };
+
+            return Ok(ViewDto);
+        }
+
+        [HttpGet("ViewSecurity")]
+        [Authorize]
+        public async Task<IActionResult> ViewSecurity()
+        {
+            var profile = await userService.ViewSecurity(GetUserId());
+            if (profile is null) return Invalid("Güvenlik Ayarları Bulunamadı");
+
+            return Ok(profile);
+        }
+
+        [HttpPost("UpdateSecurity")]
+        [Authorize]
+        public async Task<IActionResult> ViewSecurity(UserSecurityPageView userSecurityPageView)
+        {
+            bool[] success = new bool[2];
+            if (!string.IsNullOrWhiteSpace(userSecurityPageView.Email)) 
+            {
+                var email = await userService.ChangeEmail(GetUserId(), new UserSecurityUpdateRequest() 
+                {
+                    CurrentPassword = userSecurityPageView.CurrentPassword,
+                    Email = userSecurityPageView.Email
+                });
+                if (email is false)
+                    success[0] = false;
+                else
+                    success[0] = true;
+            }
+            if (!string.IsNullOrWhiteSpace(userSecurityPageView.NewPassword))
+            {
+                var pass = await userService.ChangePassword(GetUserId(), new UserSecurityUpdateRequest()
+                {
+                    CurrentPassword = userSecurityPageView.CurrentPassword,
+                    NewPassword = userSecurityPageView.NewPassword
+                });
+                if (pass is false)
+                    success[1] = false;
+                else
+                    success[1] = true;
+            }
+
+
+            return Ok(success);
+        }
+
+
+        [HttpGet("View")]
+        [Authorize]
+        public async Task<IActionResult> View()
         {
             var profile = await userService.ViewProfile(GetUserId());
             if (profile is null) return Invalid("Profile Bulunamadı");
@@ -38,7 +100,7 @@ namespace CarGalleryHub.Api.Controllers
         {
             var prof = await userService.ChangeProfile(GetUserId(), userProfileUpdateRequest);
             if (!prof) return Invalid("Hata Oluştu");
-            return Ok("Profil Güncellendi");
+            return Ok(true,"Profil Güncellendi");
         }
 
         [HttpPost("changePassword")]
@@ -47,7 +109,7 @@ namespace CarGalleryHub.Api.Controllers
         {
             var prof = await userService.ChangePassword(GetUserId(), updateRequest);
             if (!prof) return Invalid("Hata Oluştu");
-            return Ok("Şifre değiştirildi");
+            return Ok(true,"Şifre değiştirildi");
         }
 
         [HttpPost("changeEmail")]
@@ -56,7 +118,7 @@ namespace CarGalleryHub.Api.Controllers
         {
             var prof = await userService.ChangeEmail(GetUserId(), updateRequest);
             if (!prof) return Invalid("Hata Oluştu");
-            return Ok("Email değiştirildi");
+            return Ok(true,"Email değiştirildi");
         }
 
         [HttpPost("changePhone")]

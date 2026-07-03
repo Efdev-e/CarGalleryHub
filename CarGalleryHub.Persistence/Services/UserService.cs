@@ -38,6 +38,20 @@ namespace CarGalleryHub.Persistence.Services
             return response;
         }
 
+        public async Task<UserSecurityPageView> ViewSecurity(int userId) 
+        {
+            var user = await _unitOfWork.Users.GetByIdIncludedAsync(userId, u => u!.ProfilePicture!);
+            if (user is null) throw new NotFound("User is null");
+
+            var response = new UserSecurityPageView()
+            {
+                CurrentPassword = "",
+                Email = user.Email.ToString(),
+                NewPassword = ""
+            };
+            return response;
+        }
+
         public async Task<bool> ChangeProfile(int userId ,UserProfileUpdateRequest userProfileUpdateRequest)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(userId);
