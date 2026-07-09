@@ -1,0 +1,120 @@
+@using CarGalleryHub.Domain.Enum
+@using CarGalleryHub.Domain.Extensions
+@model CarGalleryHub.MVC.Models.DTOs.Advert.AdvertPageViewDto
+@{
+    ViewData["Title"] = "İlanlar";
+}
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<form asp-controller="Home" asp-action="Adverts" method="get"
+      class="border border-secondary rounded-4 p-4 BG-ViolentBlack shadow-sm mb-4">
+    <div class="row g-3">
+        <div class="col-12">
+            <label for="name" class="form-label d-block FilterText">Arama Kutusu</label>
+            <div class="input-group">
+                <input name="name" class="form-control bg-dark text-white border-secondary" placeholder="Örn: Audi" value="@Context.Request.Query["name"]" />
+                <button type="submit" class="btn btn-outline-light">Filtrele / Ara</button>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label d-block FilterText">Renkler</label>
+            <div class="d-flex flex-column gap-1" style="max-height: 150px; overflow-y: auto;">
+                @foreach (var color in Enum.GetValues(typeof(ColorType)))
+                {
+                    var checkedColors = (Context.Request.Query["color"].ToString().Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).ToArray());
+                    bool isChecked = checkedColors.Contains(color.ToString());
+                    var colorType = (ColorType)color;
+                    <div class="form-check">
+                        <input name="color" class="form-check-input" type="checkbox" value="@color" id="color_@color" @(isChecked ? "checked" : "") />
+                        <label class="form-check-label text-white" for="color_@color">@colorType.ToTurkish()</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label d-block FilterText">Araç Durumu</label>
+            <div class="d-flex flex-column gap-1">
+                @foreach (var status in Enum.GetValues(typeof(CarStatus)))
+                {
+                    var checkedStatus = (Context.Request.Query["status"].ToString().Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).ToArray());
+                    bool isChecked = checkedStatus.Contains(status.ToString());
+                    var statu = (CarStatus)status;
+                    <div class="form-check">
+                        <input name="status" class="form-check-input" type="checkbox" value="@status" id="status_@status" @(isChecked ? "checked" : "") />
+                        <label class="form-check-label text-white" for="status_@status">@statu.ToTurkish()</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label d-block FilterText">Kullanılabilirlik</label>
+            <div class="d-flex flex-column gap-1">
+                @foreach (var avail in Enum.GetValues(typeof(CarAvailability)))
+                {
+                    var checkedAvail = (Context.Request.Query["availability"].ToString().Split(',').Where(x => !string.IsNullOrWhiteSpace(x)).ToArray());
+                    bool isChecked = checkedAvail.Contains(avail.ToString());
+                    var avai = (CarAvailability)avail;
+                    <div class="form-check">
+                        <input name="availability" class="form-check-input" type="checkbox" value="@avail" id="avail_@avail" @(isChecked ? "checked" : "") />
+                        <label class="form-check-label text-white" for="avail_@avail">@avai.ToTurkish()</label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label for="categoryType" class="form-label d-block FilterText">Kategori</label>
+            <select name="categoryType" class="form-select bg-dark text-white border-secondary">
+                <option value="">Tüm Kategoriler</option>
+                @foreach (var cat in Enum.GetValues(typeof(CategoryType)))
+                {
+                    var ca = (CategoryType)cat;
+                    bool isSelected = Context.Request.Query["categoryType"] == cat.ToString();
+                    <option value="@cat" selected="@(isSelected ? "selected" : null)">@ca.ToTurkish()</option>
+                }
+            </select>
+        </div>
+    </div>
+</form>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+    @if (Model.Dtos.Any())
+    {
+        foreach (var advert in Model.Dtos)
+        {
+            <div class="col">
+                <div class="card h-100 border border-secondary rounded-4 overflow-hidden BG-ViolentBlack">
+                    <img src="@(string.IsNullOrWhiteSpace(advert.ImageUrl) ? "https://via.placeholder.com/600x400?text=Agarte" : advert.ImageUrl)" class="card-img-top" style="height: 220px; object-fit: cover;" />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="Pure-White mb-2">@advert.AdvertTitle</h5>
+                        <p class="Pure-Gray small mb-3">@advert.Description</p>
+                        <p class="Showcase-Gold Text-Bold mb-3">@advert.UnitPrice ₺</p>
+                        <a asp-controller="Home" asp-action="AdvertDetail" asp-route-id="@advert.Id" class="btn btn-outline-light mt-auto">İncele</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12 text-center text-white">
+            <p class="Pure-Gray mb-0">Bu filtreye uygun ilan bulunamadı.</p>
+        </div>
+    }
+</div>
+
+<div class="d-flex justify-content-center align-items-center gap-2 mt-4">
+    @if (Model.page > 1)
+    {
+        <a asp-action="Adverts" asp-route-page="@(Model.page - 1)" class="btn btn-outline-light">@(Model.page - 1)</a>
+    }
+    <a asp-action="Adverts" asp-route-page="@Model.page" class="btn btn-light">@Model.page</a>
+    @if (Model.Dtos.Any() && Model.Dtos.Count >= 10)
+    {
+        <a asp-action="Adverts" asp-route-page="@(Model.page + 1)" class="btn btn-outline-light">@(Model.page + 1)</a>
+    }
+</div>

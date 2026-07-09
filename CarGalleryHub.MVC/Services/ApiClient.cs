@@ -126,9 +126,12 @@ namespace CarGalleryHub.MVC.Services
         {
             var json = await httpResponse.Content.ReadAsStringAsync();
 
-
-            if (string.IsNullOrEmpty(json))
-                return ApiResult<T>.Fail("Sunucudan Boş Yanıt Geldi");
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                return httpResponse.IsSuccessStatusCode
+                    ? ApiResult<T>.CreateSuccess()
+                    : ApiResult<T>.Fail($"Http {(int)httpResponse.StatusCode}:İşlem basarısız ");
+            }
 
             try 
             {

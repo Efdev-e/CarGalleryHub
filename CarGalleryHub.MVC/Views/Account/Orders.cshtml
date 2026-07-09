@@ -1,3 +1,58 @@
-﻿@{
-    ViewData["Title"] = "Siparişler";
+﻿@model List<CarGalleryHub.Application.DTOs.Order.OrderDto>
+@using CarGalleryHub.Domain.Enum
+@{
+    ViewData["Title"] = "Siparişlerim";
+
+    string StatusText(OrderStatus status) => status switch
+    {
+        OrderStatus.WaitingPayment => "Ödeme Bekleniyor",
+        OrderStatus.Pending => "İşlemde",
+        OrderStatus.Completed => "Tamamlandı",
+        OrderStatus.Cancelled => "İptal Edildi",
+        OrderStatus.Refunded => "İade Edildi",
+        OrderStatus.Paid => "Ödendi",
+        OrderStatus.PaymentFailed => "Ödeme Başarısız",
+        _ => "Bilinmiyor"
+    };
 }
+
+<div class="border border-secondary rounded-4 p-4 BG-ViolentBlack shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="QuickSand Pure-White mb-1">Sipariş Geçmişi</h4>
+            <p class="Pure-Gray small mb-0">Aktif ve geçmiş siparişlerinizi buradan takip edebilirsiniz.</p>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="d-flex flex-column gap-3">
+            @foreach (var order in Model)
+            {
+                <div class="border border-secondary rounded-3 p-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge bg-light text-dark">#@order.OrderNumber</span>
+                                <span class="badge bg-outline-light text-white border border-secondary">@StatusText(order.OrderStatus)</span>
+                            </div>
+                            <p class="Pure-White mb-1"><strong>Adres:</strong> @order.FullAddress</p>
+                            <p class="Pure-Gray small mb-1">@order.AddressCity / @order.AddressDistrict · @order.AddressPostalCode</p>
+                            <p class="Pure-Gray small mb-0">Ürün Sayısı: @order.OrderItems.Count</p>
+                        </div>
+                        <div class="text-md-end">
+                            <p class="Pure-White mb-1"><strong>Toplam:</strong> @order.TotalCost.ToString("0.##") ₺</p>
+                            <p class="Pure-Gray small mb-0">@order.CreatedAt.ToString("dd MMM yyyy")</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="border border-secondary rounded-3 p-4 text-center">
+            <p class="Pure-Gray mb-0">Henüz sipariş geçmişiniz bulunmuyor.</p>
+        </div>
+    }
+</div>

@@ -16,6 +16,7 @@ namespace CarGalleryHub.MVC.Services
             public T? Data { get; set; }
             public List<string> Errors { get; set; } = new();
             public static ApiResult<T> Fail(string message) => new() { Success = false, Message = message };
+            public static ApiResult<T> CreateSuccess(T? data = default) => new() { Success = true, Data = data };
         }
     }
 }

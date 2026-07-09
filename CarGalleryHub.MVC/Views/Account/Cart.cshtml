@@ -1,3 +1,49 @@
-﻿@{
+﻿@model CarGalleryHub.Application.DTOs.Cart.CartDto
+@using System.Linq
+@{
     ViewData["Title"] = "Sepetim";
 }
+
+<div class="border border-secondary rounded-4 p-4 BG-ViolentBlack shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="QuickSand Pure-White mb-1">Sepetiniz</h4>
+            <p class="Pure-Gray small mb-0">Hazır olan ürünleri inceleyip sepetten çıkarabilirsiniz.</p>
+        </div>
+        <div class="text-end">
+            <p class="Pure-White mb-0"><strong>Toplam Ürün:</strong> @(Model?.CartItems?.Count ?? 0)</p>
+            <p class="Pure-Gray small mb-0"><strong>Toplam Tutar:</strong> @((Model?.TotalPrice ?? 0).ToString("0.##")) ₺</p>
+        </div>
+    </div>
+
+    @if (Model?.CartItems != null && Model.CartItems.Any())
+    {
+        <div class="d-flex flex-column gap-3">
+            @foreach (var item in Model.CartItems)
+            {
+                <div class="border border-secondary rounded-3 p-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+                        <div>
+                            <h6 class="Pure-White mb-2">@item.ItemName</h6>
+                            <p class="Pure-Gray small mb-1">Adet: @item.Quantity</p>
+                            <p class="Pure-Gray small mb-0">Birim Fiyat: @item.UnitPrice.ToString("0.##") ₺</p>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-light text-dark">@((item.UnitPrice * item.Quantity).ToString("0.##")) ₺</span>
+                            <form asp-controller="Account" asp-action="RemoveCartItem" method="post">
+                                <input type="hidden" name="cartItemId" value="@item.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Çıkar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="border border-secondary rounded-3 p-4 text-center">
+            <p class="Pure-Gray mb-0">Sepetiniz şu anda boş.</p>
+        </div>
+    }
+</div>

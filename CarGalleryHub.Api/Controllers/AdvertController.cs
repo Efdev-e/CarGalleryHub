@@ -26,7 +26,8 @@ namespace CarGalleryHub.Api.Controllers
         public async Task<IActionResult> GetAdvertsByPage(int PageNumber,[FromQuery] CarAvailability[]? availability, [FromQuery] ColorType[]? color, [FromQuery] CategoryType? categoryType, [FromQuery] CarStatus[]? status, [FromQuery] string? Name) 
         {
             var query = unitOfWork.Adverts.Query();
-            query = query.Include(x => x.Car);
+            query = query.Include(x => x.Car)
+                         .Include(x => x.Thumbnails);
 
             if (availability is not null && availability.Length > 0)
             {
@@ -91,6 +92,39 @@ namespace CarGalleryHub.Api.Controllers
 
         }
 
+        [HttpGet("GetMyAdverts/{PageNumber}")]
+        [Authorize]
+        public async Task<IActionResult> GetMyAdverts(int PageNumber, [FromQuery] string? Name)
+        {
+            var query = unitOfWork.Adverts.Query()
+                .Where(x => x.SellerId == GetUserId() && x.IsDeleted == false);
+
+            if (!string.IsNullOrWhiteSpace(Name))
+            {
+                query = query.Where(x => EF.Functions.Like(x.AdvertTitle, $"%{Name}%"));
+            }
+
+            var adverts = await query
+                .Include(x => x.Thumbnails)
+                .OrderByDescending(x => x.Id)
+                .Skip((PageNumber - 1) * 10)
+                .Take(10)
+                .ToListAsync();
+
+            var dto = adverts.Select(x => new AdvertView()
+            {
+                Id = x.Id,
+                AdvertTitle = x.AdvertTitle,
+                Description = x.Description,
+                UnitPrice = x.UnitPrice,
+                ImageUrl = x.Thumbnails != null && x.Thumbnails.Any()
+                    ? x.Thumbnails.FirstOrDefault()!.ImageUrl
+                    : ""
+            }).ToList();
+
+            return Ok(dto);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAdvertById(int id) 
         {
@@ -153,7 +187,9 @@ namespace CarGalleryHub.Api.Controllers
             if (updateAdvert is null) return Invalid("İlan bilgileri verilmedi");
 
             advert.AdvertTitle = updateAdvert?.AdvertTitle ?? advert.AdvertTitle;
+            advert.Description = updateAdvert?.Description ?? advert.Description;
             advert.UnitPrice = updateAdvert?.UnitPrice ?? advert.UnitPrice;
+            advert.CarId = updateAdvert?.CarId ?? advert.CarId;
             advert.Thumbnails = updateAdvert?.Thumbnails?.Select(x => 
                                 new Image() { ImageUrl = x.ImageUrl, ImageType = x.ImageType, AdvertId = advert.Id }).ToList() ?? advert.Thumbnails;
             

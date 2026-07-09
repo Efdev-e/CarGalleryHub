@@ -41,16 +41,13 @@
                 <div class="navbar-collapse BG-Transparent collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 d-md-flex align-items-center gap-2     justify-content-start justify-content-start">
                         <li class="nav-item">
-                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="" asp-controller="Home" asp-action="Index">İlanlar</a>
+                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="" asp-controller="Home" asp-action="Adverts">İlanlar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="" asp-controller="Home" asp-action="Index">Vitrin</a>
+                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="" asp-controller="Home" asp-action="About">Hakkımızda</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="" asp-controller="Home" asp-action="Index">Hakkımızda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="" asp-controller="Home" asp-action="Index">İletişim</a>
+                            <a class="nav-link Pure-White Text-Bold" style="font-family: 'quicksand'" asp-area="" asp-controller="Home" asp-action="Contact">İletişim</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav flex-grow-1 d-md-flex align-items-center justify-content-end">
@@ -65,7 +62,7 @@
                                     <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" asp-area="" asp-controller="Account" asp-action="Address">Adreslerim</a></li>
                                     <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" asp-area="" asp-controller="Account" asp-action="Orders">Siparişlerim</a></li>
                                     <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" asp-area="" asp-controller="Account" asp-action="Cart">Sepetim</a></li>
-
+                                    <li><a class="dropdown-item droplink btnt Pure-White py-2 px-3" asp-area="" asp-controller="Account" asp-action="MyAdverts">İlanlarım</a></li>
                                     @if (!string.IsNullOrEmpty(userRole) && userRole == "Admin")
                                     {
                                         <li><hr class="dropdown-divider border-secondary my-2" /></li>

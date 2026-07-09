@@ -1,0 +1,32 @@
+@model CarGalleryHub.MVC.Models.DTOs.Advert.AdvertUpdateModel
+@{
+    ViewData["Title"] = "İlanı Düzenle";
+}
+
+<div class="border border-secondary rounded-4 p-4 BG-ViolentBlack shadow-sm">
+    <h4 class="QuickSand Pure-White mb-3">İlanı Düzenle</h4>
+    <form asp-controller="Account" asp-action="EditAdvert" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="CarId" />
+        <div class="mb-3">
+            <label class="form-label Pure-White">Başlık</label>
+            <input asp-for="AdvertTitle" class="form-control bg-dark text-white border-secondary" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label Pure-White">Açıklama</label>
+            <textarea asp-for="Description" class="form-control bg-dark text-white border-secondary" rows="4"></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label Pure-White">Fiyat</label>
+            <input asp-for="UnitPrice" class="form-control bg-dark text-white border-secondary" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label Pure-White">Görsel URL</label>
+            <input asp-for="ImageUrl" class="form-control bg-dark text-white border-secondary" />
+        </div>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-outline-light">Kaydet</button>
+            <a asp-action="MyAdverts" class="btn btn-outline-secondary">İptal</a>
+        </div>
+    </form>
+</div>

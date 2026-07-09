@@ -1,3 +1,88 @@
-﻿@{
-    ViewData["Title"] = "Adress";
+﻿@model List<CarGalleryHub.Application.DTOs.Address.AddressDto>
+@{
+    ViewData["Title"] = "Adreslerim";
 }
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="border border-secondary rounded-4 p-4 BG-ViolentBlack shadow-sm">
+            <h4 class="QuickSand Pure-White mb-3">Yeni Adres Ekle</h4>
+            <p class="Pure-Gray small mb-4">Teslimat ve fatura bilgilerinizi hızlıca güncelleyebilirsiniz.</p>
+
+            <form asp-controller="Account" asp-action="CreateAddress" method="post">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label QuickSand Pure-White">Ad Soyad</label>
+                        <input class="form-control bg-dark text-white border-secondary" name="FullName" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label QuickSand Pure-White">Telefon</label>
+                        <input class="form-control bg-dark text-white border-secondary" name="Phone" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label QuickSand Pure-White">E-posta</label>
+                        <input class="form-control bg-dark text-white border-secondary" name="Email" type="email" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label QuickSand Pure-White">Şehir</label>
+                        <input class="form-control bg-dark text-white border-secondary" name="City" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label QuickSand Pure-White">İlçe</label>
+                        <input class="form-control bg-dark text-white border-secondary" name="District" required />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label QuickSand Pure-White">Posta Kodu</label>
+                        <input class="form-control bg-dark text-white border-secondary" name="PostalCode" required />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label QuickSand Pure-White">Tam Adres</label>
+                        <textarea class="form-control bg-dark text-white border-secondary" name="FullAddress" rows="3" required></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-outline-light mt-4 px-4">Adres Ekle</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="border border-secondary rounded-4 p-4 BG-ViolentBlack shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h4 class="QuickSand Pure-White mb-1">Kayıtlı Adresler</h4>
+                    <p class="Pure-Gray small mb-0">Siparişlerde kullanabileceğiniz adreslerinizi yönetin.</p>
+                </div>
+            </div>
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="d-flex flex-column gap-3">
+                    @foreach (var address in Model)
+                    {
+                        <div class="border border-secondary rounded-3 p-3">
+                            <div class="d-flex justify-content-between align-items-start gap-3">
+                                <div>
+                                    <h6 class="Pure-White mb-1">@address.FullName</h6>
+                                    <p class="Pure-Gray small mb-1">@address.Phone</p>
+                                    <p class="Pure-Gray small mb-1">@address.City / @address.District</p>
+                                    <p class="Pure-Gray small mb-0">@address.FullAddress</p>
+                                </div>
+                                <form asp-controller="Account" asp-action="DeleteAddress" method="post">
+                                    <input type="hidden" name="id" value="@address.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Sil</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="border border-secondary rounded-3 p-4 text-center">
+                    <p class="Pure-Gray mb-0">Henüz kayıtlı adresiniz bulunmuyor.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

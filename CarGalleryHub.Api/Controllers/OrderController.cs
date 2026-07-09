@@ -23,7 +23,7 @@ namespace CarGalleryHub.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetOrderById(int orderId) 
         {
-            var result = orderService.GetOrderById(GetUserId(), orderId);
+            var result = await orderService.GetOrderById(GetUserId(), orderId);
             if (result is null) return BadRequest();
 
             return Ok(result);
@@ -33,8 +33,8 @@ namespace CarGalleryHub.Api.Controllers
         [Authorize]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto createOrderDto) 
         {
-            var result = orderService.CreateOrder(GetUserId(), createOrderDto);
-            if (result is null) return BadRequest();
+            var result = await orderService.CreateOrder(GetUserId(), createOrderDto);
+            if (!result) return BadRequest();
 
             return Ok(result);
         }
@@ -43,8 +43,8 @@ namespace CarGalleryHub.Api.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteOrder(int orderId)
         {
-            var result = orderService.DeleteOrder(GetUserId(), orderId);
-            if (result is null) return BadRequest();
+            var result = await orderService.DeleteOrder(GetUserId(), orderId);
+            if (!result) return BadRequest();
 
             return Ok(result);
         }
@@ -53,8 +53,8 @@ namespace CarGalleryHub.Api.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateOrder(int orderId,[FromBody] UpdateOrderDto updateOrderDto)
         {
-            var result = orderService.UpdateOrder(GetUserId(),orderId, updateOrderDto);
-            if (result is null) return BadRequest();
+            var result = await orderService.UpdateOrder(GetUserId(),orderId, updateOrderDto);
+            if (!result) return BadRequest();
 
             return Ok(result);
         }
@@ -64,7 +64,7 @@ namespace CarGalleryHub.Api.Controllers
         public async Task<IActionResult> GetAllOrders()
         {
             if (!IsAdmin()) return BadRequest();
-            var result = orderService.GetAllOrders();
+            var result = await orderService.GetAllOrders();
             if (result is null) return BadRequest();
 
             return Ok(result);
@@ -74,7 +74,7 @@ namespace CarGalleryHub.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserOrders()
         {
-            var result = orderService.GetUserOrders(GetUserId());
+            var result = await orderService.GetUserOrders(GetUserId());
             if (result is null) return BadRequest();
 
             return Ok(result);
