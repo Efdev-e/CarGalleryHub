@@ -49,6 +49,19 @@ namespace CarGalleryHub.MVC.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> AdvertDetail(int id)
+        {
+            var response = await _apiclient.GetAsync<AdvertDto>($"api/Advert/{id}");
+            if (response is null || !response.Success || response.Data is null)
+            {
+                TempData["ErrorMessage"] = response?.Message ?? "İlan detayı yüklenemedi.";
+                return RedirectToAction(nameof(Adverts));
+            }
+
+            return View(response.Data);
+        }
+
+        [HttpGet]
         public IActionResult About()
         {
             return View();

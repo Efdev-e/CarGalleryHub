@@ -203,7 +203,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
         private async Task<CarFormViewDto> SetupForm(CarFormData? car = null, int id = 0)
         {
-            var response = await _apiclient.GetAsync<List<CarModelPageData>>("api/CarModel/GetAllModels/1");
+            var response = await _apiclient.GetAsync<List<CarModelPageData>>("api/CarModel/GetAllModels");
             return new CarFormViewDto()
             {
                 Id = id,

@@ -19,7 +19,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.Property(x => x.AdvertTitle).HasMaxLength(100).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(500).IsRequired();
             builder.Property(x => x.Warranty).IsRequired();
-            builder.Property(x => x.UnitPrice).IsRequired();
+            builder.Property(x => x.UnitPrice).HasPrecision(18, 2).IsRequired();
             builder.Property(x => x.SellerId).IsRequired();
             builder.Property(x => x.CarId).IsRequired();
 

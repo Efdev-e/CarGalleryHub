@@ -20,7 +20,7 @@ namespace CarGalleryHub.Persistence.Configurations
 
             builder.Property(x => x.Quantity).IsRequired();
             builder.Property(x => x.AdvertId).IsRequired();
-            builder.Property(x => x.UnitPrice).IsRequired();
+            builder.Property(x => x.UnitPrice).HasPrecision(18, 2).IsRequired();
             builder.Property(x => x.CarYear).HasMaxLength(9999).IsRequired();
             builder.Property(x => x.CarKM).HasMaxLength(int.MaxValue).IsRequired();
             builder.Property(x => x.CarColor).IsRequired();

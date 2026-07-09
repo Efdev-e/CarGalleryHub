@@ -31,6 +31,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.Property(x => x.AddressFullName).IsRequired();
 
             builder.Property(x => x.UserId).IsRequired();
+            builder.Property(x => x.TotalCost).HasPrecision(18, 2);
 
             builder.HasMany(x => x.OrderItems)
                    .WithOne(x => x.Order)

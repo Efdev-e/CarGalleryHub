@@ -17,6 +17,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.Property(x => x.Id).UseIdentityColumn();
 
             builder.Property(x => x.Quantity).IsRequired();
+            builder.Property(x => x.UnitPrice).HasPrecision(18, 2).IsRequired();
             builder.Property(x => x.AdvertId).IsRequired();
             builder.Property(x => x.CartId).IsRequired();
 

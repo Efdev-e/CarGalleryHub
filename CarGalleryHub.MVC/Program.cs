@@ -20,9 +20,15 @@ builder.Services.AddSession(options =>
 });
 
 
-builder.Services.AddHttpClient<ApiClient>(options => 
+var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl"];
+if (string.IsNullOrWhiteSpace(apiBaseUrl) || !Uri.TryCreate(apiBaseUrl, UriKind.Absolute, out var apiUri))
 {
-    options.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
+    throw new InvalidOperationException("ApiSettings:BaseUrl must be a valid absolute URL.");
+}
+
+builder.Services.AddHttpClient<ApiClient>(options =>
+{
+    options.BaseAddress = apiUri;
 });
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

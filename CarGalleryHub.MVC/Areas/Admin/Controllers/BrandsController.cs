@@ -208,8 +208,8 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             }
             if (!brandlist.Success || brandlist.Data is null)
             {
-                TempData["ErrorMessage"] = "Modeller bulunamadı";
-                return RedirectToAction("Index");
+                TempData["ErrorMessage"] = "Bu Markanın Araba Modeli bulunamadı";
+                return View(new BrandCarModelView() { id = id, BrandName = list.Data.BrandName, Dtos = new List<BasicCarModelData>() });
             }
 
             var dta = brandlist.Data.Select(x => new BasicCarModelData()
@@ -218,7 +218,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
                 id = x.id
             }).ToList();
 
-            return View(new BrandCarModelAdd() { id = id, BrandName = list.Data.BrandName, Dtos = dta });
+            return View(new BrandCarModelView() { id = id, BrandName = list.Data.BrandName, Dtos = dta });
 
         }
         #endregion
@@ -243,7 +243,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            var brandlist = await _apiclient.GetAsync<List<CarModelData>>($"api/CarModel/GetAllmodels/{0}");
+            var brandlist = await _apiclient.GetAsync<List<CarModelData>>($"api/CarModel/GetAllmodels/{1}");
 
             if (brandlist is null)
             {
@@ -252,7 +252,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             }
             if (!brandlist.Success || brandlist.Data is null)
             {
-                TempData["ErrorMessage"] = "Modeller bulunamadı";
+                TempData["ErrorMessage"] = "Araba Modelleri bulunamadı";
                 return RedirectToAction("Index");
             }
 

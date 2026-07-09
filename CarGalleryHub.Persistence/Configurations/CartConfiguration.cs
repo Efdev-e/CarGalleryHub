@@ -18,6 +18,7 @@ namespace CarGalleryHub.Persistence.Configurations
             builder.Property(x => x.Id).UseIdentityColumn();
 
             builder.Property(x => x.UserId).IsRequired();
+            builder.Property(x => x.TotalPrice).HasPrecision(18, 2);
 
             builder.HasOne(x => x.User)
                    .WithMany(x => x.Carts)

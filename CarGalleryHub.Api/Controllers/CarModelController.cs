@@ -22,6 +22,32 @@ namespace CarGalleryHub.Api.Controllers
             unitOfWork = work;
         }
 
+        [HttpGet("GetAllModels")]
+        [Authorize]
+        public async Task<IActionResult> GetAllModels([FromQuery] string? name) 
+        {
+            var query = unitOfWork.CarModels.Query();
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(x => EF.Functions.Like(x.Series, $"%{name}%"));
+                query = query.Where(x => EF.Functions.Like(x.Model, $"%{name}%"));
+            }
+            query = query.Where(x => x.IsDeleted == false);
+
+            var _model = await query.Include(u => u.Brand).OrderBy(x => x.Id).ToListAsync();
+
+            var a = _model.Select(x => new CarModelPageData()
+            {
+                Id = x.Id,
+                FullName = $"{x.Model} {x.Series}",
+                BrandName = $"{x.Brand?.BrandName ?? ""}",
+                ReleaseDate = x.ReleaseDate.ToString("ddMMyyyy")
+            });
+
+            return Ok(a);
+        }
+
         [HttpGet("GetAllModels/{page:int}")]
         public async Task<IActionResult> GetAllModels(int page, [FromQuery] string? name) 
         {
@@ -32,6 +58,8 @@ namespace CarGalleryHub.Api.Controllers
                 query = query.Where(x => EF.Functions.Like(x.Model, $"%{name}%"));
             }
             query = query.Where(x => x.IsDeleted == false);
+
+
             var models = await query.Include(u => u.Brand).OrderBy(x => x.Id)
                 .Skip((page - 1) * ModelPage)
                 .Take(ModelPage)

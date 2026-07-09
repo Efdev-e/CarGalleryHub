@@ -12,7 +12,21 @@ namespace CarGalleryHub.Persistence.Extensions
     {
         public static IServiceCollection AddPersistenceService(this IServiceCollection services, IConfiguration configuration) 
         {
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var sqliteConnectionString = configuration.GetConnectionString("SqliteConnection") ?? "Data Source=cargalleryhub.db";
+
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                if (!string.IsNullOrWhiteSpace(connectionString) && connectionString.Contains("Server=", StringComparison.OrdinalIgnoreCase))
+                {
+                    options.UseSqlServer(connectionString);
+                }
+                else
+                {
+                    options.UseSqlite(sqliteConnectionString);
+                }
+            });
+
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();

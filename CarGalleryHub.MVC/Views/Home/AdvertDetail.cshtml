@@ -1,0 +1,31 @@
+@model CarGalleryHub.Application.DTOs.Advert.AdvertDto
+
+@{
+    ViewData["Title"] = "İlan Detayı";
+}
+
+<div class="container py-5">
+    <div class="card bg-dark text-white border-secondary shadow">
+        <div class="card-body">
+            <h2 class="mb-3">@Model.AdvertTitle</h2>
+            <p class="text-muted">@Model.Description</p>
+            <p class="fw-bold">Fiyat: @Model.UnitPrice ₺</p>
+            <p>Araba: @Model.CarName</p>
+            <p>Garanti: @(Model.Warranty ? "Var" : "Yok")</p>
+
+            @if (Model.Thumbnails != null && Model.Thumbnails.Any())
+            {
+                <div class="row g-3 mt-3">
+                    @foreach (var thumbnail in Model.Thumbnails)
+                    {
+                        <div class="col-md-4">
+                            <img src="@thumbnail.ImageUrl" class="img-fluid rounded" alt="İlan görseli" />
+                        </div>
+                    }
+                </div>
+            }
+
+            <a asp-action="Adverts" class="btn btn-outline-light mt-4">Geri Dön</a>
+        </div>
+    </div>
+</div>

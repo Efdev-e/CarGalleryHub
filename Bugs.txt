@@ -1,0 +1,43 @@
+CarGalleryHub Bug Report
+========================
+Date: 2026-07-09
+Scope: Inspection of the current solution without code changes.
+
+Summary
+-------
+The solution builds successfully, but several bugs and weaknesses were found during inspection and startup validation.
+
+1) Hard-coded secrets and credentials in configuration files
+   - Location: CarGalleryHub.Api/appsettings.json
+   - Issue: JWT secret, payment API keys, payment secret key, and other secrets are stored directly in source-controlled configuration files.
+   - Impact: Anyone with repository access can read and misuse the credentials. This is a serious security bug.
+
+2) Weak and hard-coded seed credentials
+   - Location: CarGalleryHub.Persistence/Seed/DataSeeder.cs
+   - Issue: The seeded customer account uses a weak password ("1"), and the admin credentials are hard-coded in code.
+   - Impact: This creates an insecure default setup and can be exploited if the seed data is used in a non-development environment.
+
+3) Startup can crash when required configuration is missing
+   - Location: CarGalleryHub.Persistence/Seed/DataSeeder.cs
+   - Issue: The constructor throws a generic exception if the Secrets:SecretPass value is not present.
+   - Impact: Application startup will fail when configuration is incomplete or misconfigured.
+
+4) Startup can fail on invalid or missing API URL configuration
+   - Location: CarGalleryHub.MVC/Program.cs
+   - Issue: The MVC app creates a Uri from builder.Configuration["ApiSettings:BaseUrl"] without a null/format guard.
+   - Impact: If the configuration value is missing or malformed, the application will throw at startup.
+
+5) Decimal values may be silently truncated in the database
+   - Location: EF Core startup warnings during API launch
+   - Issue: Multiple decimal properties (such as UnitPrice, TotalPrice, TotalCost) do not specify precision/scale in the model configuration.
+   - Impact: Values can be truncated in SQL Server, causing incorrect pricing and financial data.
+
+6) Database dependency on a reachable SQL Server instance
+   - Location: CarGalleryHub.Persistence/Extensions/PersistenceServiceExtension.cs and CarGalleryHub.Persistence/Context/AppDbContextFactory.cs
+   - Issue: The app uses SQL Server directly and runs migrations on startup.
+   - Impact: On a fresh machine or CI environment without SQL Server configured, the service will fail to start.
+
+Notes
+-----
+- The solution build completed successfully, but the issues above are real code/configuration defects that can affect security, reliability, or data correctness.
+- No code changes were made.

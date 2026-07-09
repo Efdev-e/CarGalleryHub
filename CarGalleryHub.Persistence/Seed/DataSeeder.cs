@@ -17,7 +17,7 @@ namespace CarGalleryHub.Persistence.Seed
         private readonly string _secretPass;
         public DataSeeder(AppDbContext context, IConfiguration configuration)
         {
-            _secretPass = configuration.GetSection("Secrets").GetSection("SecretPass").Value ?? throw new Exception();
+            _secretPass = configuration["Secrets:SecretPass"]?.Trim() ?? string.Empty;
             _context = context;
         }
 
