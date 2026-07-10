@@ -1,13 +1,16 @@
-﻿using CarGalleryHub.Application.DTOs.Address;
+using CarGalleryHub.Application.DTOs.Address;
 using CarGalleryHub.Application.DTOs.Advert;
 using CarGalleryHub.Application.DTOs.Auth;
 using CarGalleryHub.Application.DTOs.Car;
 using CarGalleryHub.Application.DTOs.Cart;
+using CarGalleryHub.Application.DTOs.CartItem;
 using CarGalleryHub.Application.DTOs.Image;
 using CarGalleryHub.Application.DTOs.Order;
+using CarGalleryHub.Application.DTOs.Payment;
 using CarGalleryHub.Application.DTOs.User.Profile;
 using CarGalleryHub.Application.DTOs.User.Security;
 using CarGalleryHub.Domain.Enum;
+using CarGalleryHub.MVC.Models;
 using CarGalleryHub.MVC.Models.DTOs.Advert;
 using CarGalleryHub.MVC.Models.DTOs.User;
 using CarGalleryHub.MVC.Services;
@@ -334,6 +337,35 @@ namespace CarGalleryHub.MVC.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> AddCartItem(int advertId, int quantity = 1)
+        {
+            if (!HasExistingToken())
+                return ToLogin();
+
+            if (advertId <= 0 || quantity <= 0)
+            {
+                TempData["ErrorMessage"] = "Geçersiz ilan veya miktar.";
+                return RedirectToAction(nameof(Cart));
+            }
+
+            var response = await _apiclient.PostAsync<bool>("api/Cart/addItem", new CreateCartItemDto
+            {
+                AdvertId = advertId,
+                Quantity = quantity
+            });
+
+            if (response is null || !response.Success)
+            {
+                TempData["ErrorMessage"] = response?.Message ?? "Ürün adedi artırılamadı.";
+                return RedirectToAction(nameof(Cart));
+            }
+
+            TempData["SuccessMessage"] = "Ürün adedi artırıldı.";
+            return RedirectToAction(nameof(Cart));
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> RemoveCartItem(int cartItemId)
         {
             if (!HasExistingToken())
@@ -349,6 +381,181 @@ namespace CarGalleryHub.MVC.Controllers
 
             TempData["SuccessMessage"] = "Ürün sepetten çıkarıldı.";
             return RedirectToAction(nameof(Cart));
+        }
+        #endregion
+
+        #region Checkout
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Checkout()
+        {
+            if (!HasExistingToken())
+                return ToLogin();
+
+            var cartResponse = await _apiclient.GetAsync<CartDto>("api/Cart/GetCart");
+            if (cartResponse is null || !cartResponse.Success || cartResponse.Data == null || !cartResponse.Data.CartItems.Any())
+            {
+                TempData["ErrorMessage"] = "Sepetiniz boş olduğu için ödeme adımına geçilemez.";
+                return RedirectToAction("Cart");
+            }
+
+            var addressesResponse = await _apiclient.GetAsync<List<AddressDto>>("api/Address/List");
+            var savedAddresses = addressesResponse?.Data ?? new List<AddressDto>();
+
+            var viewModel = new CheckoutViewModel
+            {
+                Cart = cartResponse.Data,
+                SavedAddresses = savedAddresses
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Checkout(CheckoutViewModel model)
+        {
+            if (!HasExistingToken())
+                return ToLogin();
+
+            var cartResponse = await _apiclient.GetAsync<CartDto>("api/Cart/GetCart");
+            if (cartResponse is null || !cartResponse.Success || cartResponse.Data == null || !cartResponse.Data.CartItems.Any())
+            {
+                TempData["ErrorMessage"] = "Sepetiniz boş.";
+                return RedirectToAction("Cart");
+            }
+
+            var addressesResponse = await _apiclient.GetAsync<List<AddressDto>>("api/Address/List");
+            var savedAddresses = addressesResponse?.Data ?? new List<AddressDto>();
+
+            model.Cart = cartResponse.Data;
+            model.SavedAddresses = savedAddresses;
+
+            if (string.IsNullOrWhiteSpace(model.AddressFullName) ||
+                string.IsNullOrWhiteSpace(model.AddressCity) ||
+                string.IsNullOrWhiteSpace(model.AddressDistrict) ||
+                string.IsNullOrWhiteSpace(model.AddressPostalCode) ||
+                string.IsNullOrWhiteSpace(model.FullAddress) ||
+                string.IsNullOrWhiteSpace(model.CardNumber) ||
+                string.IsNullOrWhiteSpace(model.CardHolderName) ||
+                string.IsNullOrWhiteSpace(model.ExpiryMonth) ||
+                string.IsNullOrWhiteSpace(model.ExpiryYear) ||
+                string.IsNullOrWhiteSpace(model.Cvv))
+            {
+                TempData["ErrorMessage"] = "Lütfen tüm adres ve ödeme bilgilerini eksiksiz doldurun.";
+                return View(model);
+            }
+
+            // 1. Create the Order
+            var createOrderDto = new CreateOrderDto
+            {
+                AddressFullName = model.AddressFullName,
+                AddressCity = model.AddressCity,
+                AddressDistrict = model.AddressDistrict,
+                AddressPostalCode = model.AddressPostalCode,
+                FullAddress = model.FullAddress
+            };
+
+            var orderResponse = await _apiclient.PostAsync<int>("api/Order/CreateOrder", createOrderDto);
+            if (orderResponse is null || !orderResponse.Success || orderResponse.Data <= 0)
+            {
+                TempData["ErrorMessage"] = orderResponse?.Message ?? "Sipariş oluşturulamadı.";
+                return View(model);
+            }
+
+            int orderId = orderResponse.Data;
+
+            // 2. Process Payment
+            var paymentRequestDto = new PaymentRequestDto
+            {
+                OrderId = orderId,
+                CardNumber = model.CardNumber.Replace(" ", ""),
+                CardHolderNumner = model.CardHolderName,
+                ExpiryMonth = model.ExpiryMonth,
+                ExpiryYear = model.ExpiryYear,
+                Cvv = model.Cvv
+            };
+
+            var paymentResponse = await _apiclient.PostAsync<PaymentResultDto>("api/Payment/pay", paymentRequestDto);
+            if (paymentResponse is null || !paymentResponse.Success || paymentResponse.Data?.IsSuccess != true)
+            {
+                TempData["ErrorMessage"] = paymentResponse?.Message ?? paymentResponse?.Data?.FailureReason ?? "Sipariş oluşturuldu fakat ödeme başarısız oldu. Siparişlerim sayfasından tekrar ödeme yapmayı deneyebilirsiniz.";
+                return RedirectToAction(nameof(Orders));
+            }
+
+            TempData["SuccessMessage"] = "Siparişiniz başarıyla alındı ve ödemesi gerçekleştirildi!";
+            return RedirectToAction(nameof(Orders));
+        }
+        #endregion
+
+        #region PayOrder
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> PayOrder(int orderId)
+        {
+            if (!HasExistingToken())
+                return ToLogin();
+
+            var orderResponse = await _apiclient.GetAsync<OrderInfoDto>($"api/Order/GetOrderById/{orderId}");
+            if (orderResponse is null || !orderResponse.Success || orderResponse.Data == null)
+            {
+                TempData["ErrorMessage"] = "Sipariş bulunamadı.";
+                return RedirectToAction(nameof(Orders));
+            }
+
+            var order = orderResponse.Data;
+            if (order.OrderStatus == Domain.Enum.OrderStatus.Paid || order.OrderStatus == Domain.Enum.OrderStatus.Completed)
+            {
+                TempData["ErrorMessage"] = "Bu sipariş için zaten ödeme yapılmıştır.";
+                return RedirectToAction(nameof(Orders));
+            }
+
+            var model = new PayOrderViewModel
+            {
+                OrderId = order.Id,
+                OrderNumber = order.OrderNumber,
+                TotalCost = order.TotalCost
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> PayOrder(PayOrderViewModel model)
+        {
+            if (!HasExistingToken())
+                return ToLogin();
+
+            if (string.IsNullOrWhiteSpace(model.CardNumber) ||
+                string.IsNullOrWhiteSpace(model.CardHolderName) ||
+                string.IsNullOrWhiteSpace(model.ExpiryMonth) ||
+                string.IsNullOrWhiteSpace(model.ExpiryYear) ||
+                string.IsNullOrWhiteSpace(model.Cvv))
+            {
+                TempData["ErrorMessage"] = "Lütfen tüm kart bilgilerini eksiksiz doldurun.";
+                return View(model);
+            }
+
+            var paymentRequestDto = new PaymentRequestDto
+            {
+                OrderId = model.OrderId,
+                CardNumber = model.CardNumber.Replace(" ", ""),
+                CardHolderNumner = model.CardHolderName,
+                ExpiryMonth = model.ExpiryMonth,
+                ExpiryYear = model.ExpiryYear,
+                Cvv = model.Cvv
+            };
+
+            var paymentResponse = await _apiclient.PostAsync<PaymentResultDto>("api/Payment/pay", paymentRequestDto);
+            if (paymentResponse is null || !paymentResponse.Success || paymentResponse.Data?.IsSuccess != true)
+            {
+                TempData["ErrorMessage"] = paymentResponse?.Message ?? paymentResponse?.Data?.FailureReason ?? "Ödeme işlemi başarısız oldu. Lütfen tekrar deneyin.";
+                return View(model);
+            }
+
+            TempData["SuccessMessage"] = "Ödeme başarıyla gerçekleştirildi!";
+            return RedirectToAction(nameof(Orders));
         }
         #endregion
 

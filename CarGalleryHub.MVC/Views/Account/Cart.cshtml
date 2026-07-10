@@ -1,4 +1,4 @@
-﻿@model CarGalleryHub.Application.DTOs.Cart.CartDto
+@model CarGalleryHub.Application.DTOs.Cart.CartDto
 @using System.Linq
 @{
     ViewData["Title"] = "Sepetim";
@@ -12,7 +12,11 @@
         </div>
         <div class="text-end">
             <p class="Pure-White mb-0"><strong>Toplam Ürün:</strong> @(Model?.CartItems?.Count ?? 0)</p>
-            <p class="Pure-Gray small mb-0"><strong>Toplam Tutar:</strong> @((Model?.TotalPrice ?? 0).ToString("0.##")) ₺</p>
+            <p class="Pure-Gray small mb-1"><strong>Toplam Tutar:</strong> @((Model?.TotalPrice ?? 0).ToString("0.##")) ₺</p>
+            @if (Model?.CartItems != null && Model.CartItems.Any())
+            {
+                <a asp-controller="Account" asp-action="Checkout" class="btn btn-outline-success btn-sm mt-2 px-3 fw-bold">Siparişi Tamamla & Öde</a>
+            }
         </div>
     </div>
 
@@ -24,15 +28,20 @@
                 <div class="border border-secondary rounded-3 p-3">
                     <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
                         <div>
-                            <h6 class="Pure-White mb-2">@item.ItemName</h6>
-                            <p class="Pure-Gray small mb-1">Adet: @item.Quantity</p>
-                            <p class="Pure-Gray small mb-0">Birim Fiyat: @item.UnitPrice.ToString("0.##") ₺</p>
+                            <a asp-controller="Home" asp-action="AdvertDetail" asp-route-id="@item.AdvertId" class="text-decoration-none Pure-White fw-bold mb-2 d-inline-block">@item.ItemName</a>
+                            <p class="Pure-Gray small mb-1">Birim Fiyat: @item.UnitPrice.ToString("0.##") ₺</p>
                         </div>
-                        <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
                             <span class="badge bg-light text-dark">@((item.UnitPrice * item.Quantity).ToString("0.##")) ₺</span>
-                            <form asp-controller="Account" asp-action="RemoveCartItem" method="post">
+                            <form asp-controller="Account" asp-action="AddCartItem" method="post" class="d-inline">
+                                <input type="hidden" name="advertId" value="@item.AdvertId" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-outline-success btn-sm">+1</button>
+                            </form>
+                            <span class="badge bg-secondary">@item.Quantity</span>
+                            <form asp-controller="Account" asp-action="RemoveCartItem" method="post" class="d-inline">
                                 <input type="hidden" name="cartItemId" value="@item.Id" />
-                                <button type="submit" class="btn btn-outline-danger btn-sm">Çıkar</button>
+                                <button type="submit" class="btn btn-outline-danger btn-sm">-1</button>
                             </form>
                         </div>
                     </div>

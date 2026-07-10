@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Cart;
+using CarGalleryHub.Application.DTOs.Cart;
 using CarGalleryHub.Application.DTOs.CartItem;
 using CarGalleryHub.Application.DTOs.Image;
 using CarGalleryHub.Application.Exceptions;
@@ -27,6 +27,8 @@ namespace CarGalleryHub.Persistence.Services
             var cart = await unitOfWork.Carts.Query()
                 .Include(c => c.CartItems)
                     .ThenInclude(ci => ci.Thumbnail)
+                .Include(c => c.CartItems)
+                    .ThenInclude(ci => ci.Advert)
                 .FirstOrDefaultAsync(x => x.UserId == userId);
 
     
@@ -47,6 +49,7 @@ namespace CarGalleryHub.Persistence.Services
                     AdvertId = x.AdvertId,
                     Quantity = x.Quantity,
                     UnitPrice = x.UnitPrice,
+                    ItemName = x.ItemName,
                     Thumbnail = x.Thumbnail == null ? null : new ImageDto()
                     {
                         ImageUrl = x.Thumbnail.ImageUrl,

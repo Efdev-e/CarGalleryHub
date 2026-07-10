@@ -56,7 +56,7 @@
         <div>
             <label class="form-label" style="color: white !important;font-family:'Quicksand'; font-weight: 500" asp-for="createAdvertDto.Warranty">Sigortalı</label>
 
-            <input required asp-for="createAdvertDto.Warranty" class="form-check" style="color: black !important;" type="checkbox" />
+            <input asp-for="createAdvertDto.Warranty" class="form-check" style="color: black !important;" type="checkbox" />
 
             <span class="text-danger d-block" asp-validation-for="createAdvertDto.Warranty"></span>
         </div>

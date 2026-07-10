@@ -1,4 +1,4 @@
-﻿@model List<CarGalleryHub.Application.DTOs.Order.OrderDto>
+@model List<CarGalleryHub.Application.DTOs.Order.OrderDto>
 @using CarGalleryHub.Domain.Enum
 @{
     ViewData["Title"] = "Siparişlerim";
@@ -42,7 +42,11 @@
                         </div>
                         <div class="text-md-end">
                             <p class="Pure-White mb-1"><strong>Toplam:</strong> @order.TotalCost.ToString("0.##") ₺</p>
-                            <p class="Pure-Gray small mb-0">@order.CreatedAt.ToString("dd MMM yyyy")</p>
+                            <p class="Pure-Gray small mb-2">@order.CreatedAt.ToString("dd MMM yyyy")</p>
+                            @if (order.OrderStatus == OrderStatus.WaitingPayment || order.OrderStatus == OrderStatus.PaymentFailed)
+                            {
+                                <a asp-controller="Account" asp-action="PayOrder" asp-route-orderId="@order.Id" class="btn btn-outline-success btn-sm px-3 fw-bold">Ödeme Yap</a>
+                            }
                         </div>
                     </div>
                 </div>

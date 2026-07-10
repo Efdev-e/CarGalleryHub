@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Order;
+using CarGalleryHub.Application.DTOs.Order;
 using CarGalleryHub.Application.Interfaces;
 using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Persistence.UnitOfWork;
@@ -34,7 +34,7 @@ namespace CarGalleryHub.Api.Controllers
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto createOrderDto) 
         {
             var result = await orderService.CreateOrder(GetUserId(), createOrderDto);
-            if (!result) return BadRequest();
+            if (result <= 0) return BadRequest();
 
             return Ok(result);
         }

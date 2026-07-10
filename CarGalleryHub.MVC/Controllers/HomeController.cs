@@ -1,4 +1,5 @@
 using CarGalleryHub.Application.DTOs.Advert;
+using CarGalleryHub.Application.DTOs.CartItem;
 using CarGalleryHub.Domain.Enum;
 using CarGalleryHub.MVC.Models;
 using CarGalleryHub.MVC.Models.DTOs.Advert;
@@ -20,6 +21,40 @@ namespace CarGalleryHub.MVC.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        private bool HasExistingToken()
+        {
+            return !string.IsNullOrWhiteSpace(HttpContext.Session.GetString("JwtToken"));
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> AddToCart(int advertId, int quantity = 1)
+        {
+            if (!HasExistingToken())
+                return RedirectToAction("Login", "Account");
+
+            if (advertId <= 0 || quantity <= 0)
+            {
+                TempData["ErrorMessage"] = "Geçersiz ilan veya miktar.";
+                return RedirectToAction(nameof(Adverts));
+            }
+
+            var response = await _apiclient.PostAsync<bool>("api/Cart/addItem", new CreateCartItemDto
+            {
+                AdvertId = advertId,
+                Quantity = quantity
+            });
+
+            if (response is null || !response.Success)
+            {
+                TempData["ErrorMessage"] = response?.Message ?? "İlan sepete eklenemedi.";
+                return RedirectToAction(nameof(Adverts));
+            }
+
+            TempData["SuccessMessage"] = "İlan sepete eklendi.";
+            return RedirectToAction(nameof(Adverts));
         }
 
         [HttpGet]

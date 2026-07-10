@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.Interfaces.Payment;
+using CarGalleryHub.Application.Interfaces.Payment;
 using CarGalleryHub.Infrastructure.Options;
 using Iyzipay.Model;
 using Iyzipay.Request;
@@ -26,12 +26,18 @@ namespace CarGalleryHub.Infrastructure.Services.Payment
 
         public async Task<PaymentProviderResult> ChargeAsync(PaymentProviderRequest paymentProviderRequest)
         {
+            // Iyzico Sandbox has a limit of 100,000 TL per transaction.
+            // If the amount is >= 100,000 TL, we cap it at 99,000 TL to allow sandbox testing.
+            var iyzicoAmount = paymentProviderRequest.Amount >= 100000
+                ? 99000.00m
+                : paymentProviderRequest.Amount;
+
             var paymentRequest = new CreatePaymentRequest
             {
                 Locale = Locale.TR.ToString(),
                 ConversationId = Guid.NewGuid().ToString(),
-                Price = paymentProviderRequest.Amount.ToString("F2", CultureInfo.InvariantCulture),
-                PaidPrice = paymentProviderRequest.Amount.ToString("F2", CultureInfo.InvariantCulture),
+                Price = iyzicoAmount.ToString("F2", CultureInfo.InvariantCulture),
+                PaidPrice = iyzicoAmount.ToString("F2", CultureInfo.InvariantCulture),
                 Currency = Currency.TRY.ToString(),
                 Installment = 1,
                 BasketId = Guid.NewGuid().ToString(),
@@ -83,7 +89,7 @@ namespace CarGalleryHub.Infrastructure.Services.Payment
                          Name="Sipariþ Ödemesi ",
                          Category1="Genel",
                          ItemType=BasketItemType.PHYSICAL.ToString(),
-                         Price=paymentProviderRequest.Amount.ToString("F2", CultureInfo.InvariantCulture)
+                         Price=iyzicoAmount.ToString("F2", CultureInfo.InvariantCulture)
                      }
                  }
 

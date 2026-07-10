@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Image;
+using CarGalleryHub.Application.DTOs.Image;
 using CarGalleryHub.Application.DTOs.Order;
 using CarGalleryHub.Application.DTOs.OrderItem;
 using CarGalleryHub.Application.Exceptions;
@@ -21,7 +21,7 @@ namespace CarGalleryHub.Persistence.Services
         {
             unitOfWork = work;
         }
-        public async Task<bool> CreateOrder(int userId ,CreateOrderDto orderDto)
+        public async Task<int> CreateOrder(int userId ,CreateOrderDto orderDto)
         {
             var cart = await unitOfWork.Carts.Query().Include(x => x.CartItems).ThenInclude(x => x.Advert)
                 .ThenInclude(x => x.Car)
@@ -72,7 +72,7 @@ namespace CarGalleryHub.Persistence.Services
             await unitOfWork.CartItems.Query().Where(x => x.CartId == cart.Id).ExecuteDeleteAsync();
             await unitOfWork.Orders.AddAsync(aorder);
             await unitOfWork.SaveChangesAsync();
-            return true;
+            return aorder.Id;
         }
 
         private string GenerateOrderNumber() 
@@ -157,19 +157,49 @@ namespace CarGalleryHub.Persistence.Services
             return orderDto;
         }
 
-        public async Task<List<OrderSimpleInfoDto>> GetUserOrders(int UserId)
+        public async Task<List<OrderInfoDto>> GetUserOrders(int UserId)
         {
             return await unitOfWork.Orders.Query()
                 .Include(x => x.User)
                 .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Thumbnail)
                 .Where(x => x.UserId == UserId)
-                .Select(y => new OrderSimpleInfoDto()
+                .Select(y => new OrderInfoDto()
                 {
-                    FullAddress = y.FullAddress,
                     Id = y.Id,
                     OrderNumber = y.OrderNumber,
                     OrderStatus = y.OrderStatus,
-                    UserId = y.UserId
+                    UserFullName = y.UserFullName,
+                    UserPhone = y.UserPhone,
+                    UserEmail = y.UserEmail,
+                    AddressFullName = y.AddressFullName,
+                    AddressCity = y.AddressCity,
+                    AddressDistrict = y.AddressDistrict,
+                    AddressPostalCode = y.AddressPostalCode,
+                    FullAddress = y.FullAddress,
+                    PaymentId = y.Payment != null ? y.Payment.Id : 0,
+                    UserId = y.UserId,
+                    OrderItems = y.OrderItems.Select(x => new OrderItemDto()
+                    {
+                        AdvertId = x.AdvertId,
+                        Quantity = x.Quantity,
+                        OrderId = x.OrderId,
+                        BrandName = x.BrandName,
+                        CarColor = x.CarColor,
+                        CarKM = x.CarKM,
+                        CarYear = x.CarYear,
+                        Id = x.Id,
+                        ItemName = x.ItemName,
+                        UnitPrice = x.UnitPrice,
+                        ImageId = x.ImageId,
+                        ModelName = x.ModelName,
+                        Thumbnail = x.Thumbnail == null ? null : new ImageDto()
+                        {
+                            ImageUrl = x.Thumbnail.ImageUrl,
+                            ImageType = x.Thumbnail.ImageType,
+                            ImageData = x.Thumbnail.ImageData
+                        }
+                    }).ToList()
                 }).ToListAsync();
         }
 
