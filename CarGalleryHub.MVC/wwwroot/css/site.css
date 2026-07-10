@@ -4,218 +4,552 @@
  * ==========================================================================
  */
 :root {
-    --color-metallic-gold: #c59f07;
-    --color-gold-bright: #ffd60b;
-    --color-gold-dark: #dbb006;
-    --color-gold-glow: #ffee3880;
+    --color-obsidian: #0A0A0B;
+    --color-charcoal: #121214;
+    --color-charcoal-light: #1A1A1E;
+    
+    /* Premium Gold Palette */
+    --color-gold-primary: #D4AF37;
+    --color-gold-light: #F3E5AB;
+    --color-gold-dark: #AA7C11;
+    --color-gold-glow: rgba(212, 175, 55, 0.12);
+    --color-gold-gradient: linear-gradient(135deg, #C5A059 0%, #F3E5AB 50%, #AA7C11 100%);
+    
     --color-pure-white: #FFFFFF;
-    --color-night-violet: #171528;
-    --color-shadow-grey: #201e1f;
-    --color-ink-black: #0f0e1b;
-    --color-focus-blue: #258cfb;
-    --color-black: #07070D;
+    --color-muted-gray: #A0A0A5;
+    --color-border-gray: rgba(255, 255, 255, 0.06);
+    --color-border-gold: rgba(212, 175, 55, 0.12);
 }
+
 /* 
  * ==========================================================================
- * 2. AYARLAR
+ * 2. GLOBAL AYARLAR
  * ==========================================================================
  */
-
-html {
-    position: relative;
-    min-height: 100dvh;
-    background-color: var(--var-shadow-grey);
-    font-size: 14px;
-    color: white;
+html, body {
+    background-color: var(--color-obsidian) !important;
+    color: var(--color-pure-white);
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    font-size: 15px;
+    letter-spacing: 0.02em;
 }
 
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
+h1, h2, h3, h4, h5, h6, .brand-luxury {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.06em;
 }
 
 a {
     text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-body {
-    min-height: 100dvh;
-    background-color: var(--color-black);
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--color-obsidian);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--color-gold-dark);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gold-primary);
 }
 
-.div-black {
-    background-color: var(--color-black);
-}
 /* 
  * ==========================================================================
- * 3. UTILITY VE TEXT RENK
+ * 3. NAVİGASYON (LUXURY NAVBAR)
  * ==========================================================================
  */
+.navbar-luxury {
+    background: rgba(10, 10, 11, 0.92) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--color-border-gold);
+    padding: 1.1rem 2rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
 
-
-
-/*Renk Ayarları*/
-.Metallic-Gold { color: var(--color-metallic-gold); }
-.Night-Violet { color: var(--color-night-violet); }
-.Shadow-Grey { color: var(--color-shadow-grey); }
-.Pure-White { color: var(--color-pure-white); }
-.Pure-Gray { color: #e0e0e0; }
-.Pure-Gold { color: #aeb937; }
-
-.Showcase-Gold {
-    background: linear-gradient(45deg, #8d8b2b, #efff92,#aeb937,#c1c780);
+.brand-luxury {
+    font-size: 1.65rem;
+    font-weight: 700;
+    background: var(--color-gold-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    transition: filter 0.3s ease;
+}
+.brand-luxury:hover {
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.55));
 }
 
-
-/*Background Ayarları*/
-.Ink-Black, .BG-Ink { background-color: var(--color-ink-black); }
-.BG-Grey { background-color: var(--color-shadow-grey); }
-.BG-Violet { background-color: var(--color-night-violet); }
-.BG-Gold { background-color: var(--color-metallic-gold); }
-.BG-Black { background-color: var(--color-black); }
-.BG-Transparent { background-color: transparent; }
-.BG-PureGold { background-color: #aeb937; }
-.BG-SmoothPass { background: linear-gradient(to bottom, var(--color-night-violet) 30%, var(--color-black) 100%); }
-.BG-ViolentBlack { background: #0e1117; }
-
-.BG-Menu {
-    background: #0e1117;
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    border: 0.5px solid rgba(255,255,255,0.1);
+.nav-link-luxury {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-muted-gray) !important;
+    letter-spacing: 0.18em;
+    padding: 0.6rem 1.4rem !important;
+    transition: all 0.3s ease;
+}
+.nav-link-luxury:hover, .nav-link-luxury:focus {
+    color: var(--color-gold-primary) !important;
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
 }
 
+/* Dropdown Menu */
+.dropdown-menu-luxury {
+    background: var(--color-charcoal) !important;
+    border: 1px solid var(--color-border-gold) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7) !important;
+    margin-top: 10px !important;
+}
 
+.dropdown-item-luxury {
+    color: var(--color-muted-gray) !important;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    border-radius: 4px;
+    padding: 0.6rem 1.2rem;
+    transition: all 0.3s ease !important;
+}
+.dropdown-item-luxury:hover {
+    background: var(--color-gold-glow) !important;
+    color: var(--color-gold-primary) !important;
+    padding-left: 1.5rem !important;
+}
+.dropdown-item-luxury-danger {
+    color: #ff6b6b !important;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    border-radius: 4px;
+    padding: 0.6rem 1.2rem;
+    transition: all 0.3s ease !important;
+}
+.dropdown-item-luxury-danger:hover {
+    background: rgba(255, 107, 107, 0.08) !important;
+    padding-left: 1.5rem !important;
+}
 
-
-/*Text Ayarları*/
-.Text-Bold { font-weight: 800; }
-.Attention-SizedText { font-size: clamp(2rem, calc(1.5rem + 3vw), 3rem); }
-.Smaller-Attention-SizedText { font-size: clamp(1.5rem, calc(1rem + 2vw), 2.5rem); }
-
-.FilterText {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--color-metallic-gold);
+/* 
+ * ==========================================================================
+ * 4. BTM & FORM CONTROLS (LUXURY BUTTONS & INPUTS)
+ * ==========================================================================
+ */
+.btn-gold {
+    background: var(--color-gold-gradient) !important;
+    color: var(--color-obsidian) !important;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    border: none !important;
+    border-radius: 4px;
+    padding: 0.85rem 2.2rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+}
+.btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(212, 175, 55, 0.35);
+    color: var(--color-obsidian) !important;
+}
+.btn-gold:active {
+    transform: translateY(0);
 }
 
-.BrandText-Style {
-    display: inline-block;
-    margin-top: 2px;
-    margin-right: 3rem;
-    margin-left: 0.5rem;
-    font-size: clamp(1rem, calc(0.75rem + 1.35vw), 1.5rem);
-    background: linear-gradient(45deg, #8d8b2b, #efff92,#aeb937,#c1c780);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: filter 0.2s ease;
-
-    &:hover {
-        filter: drop-shadow(0px 0px 2px #ffea0085);
-    }
+.btn-outline-gold {
+    background: transparent !important;
+    color: var(--color-gold-primary) !important;
+    border: 1px solid var(--color-gold-primary) !important;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    border-radius: 4px;
+    padding: 0.85rem 2.2rem;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase;
 }
-.QuickSand 
-{
-    font-family: "Quicksand";
-    font-weight: 400;
-    font-style: normal;
+.btn-outline-gold:hover {
+    background: var(--color-gold-gradient) !important;
+    color: var(--color-obsidian) !important;
+    border-color: transparent !important;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25);
+    transform: translateY(-2px);
 }
 
-/*Pozisyon Ayarları*/
-
-.ToCenter { justify-self: center; align-self: center; }
-.ToRight {justify-self: right;}
-.ToLeft {justify-self: left;}
-
+.form-control-luxury {
+    background-color: var(--color-charcoal) !important;
+    border: 1px solid var(--color-border-gray) !important;
+    color: var(--color-pure-white) !important;
+    border-radius: 6px !important;
+    padding: 0.9rem 1.2rem !important;
+    font-size: 0.9rem !important;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease !important;
+}
+.form-control-luxury:focus {
+    border-color: var(--color-gold-primary) !important;
+    box-shadow: 0 0 12px var(--color-gold-glow) !important;
+    background-color: var(--color-charcoal-light) !important;
+}
+.form-control-luxury::placeholder {
+    color: rgba(255, 255, 255, 0.25) !important;
+}
 
 /* 
  * ==========================================================================
- * 4. MVC KARŞITI
+ * 5. BİLEŞENLER VE KARTLAR (LUXURY CARDS)
  * ==========================================================================
  */
+.card-luxury {
+    background: var(--color-charcoal);
+    border: 1px solid var(--color-border-gray);
+    border-radius: 12px;
+    padding: 3rem 2.5rem;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.65);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.card-luxury:hover {
+    border-color: var(--color-gold-primary);
+    box-shadow: 0 20px 60px rgba(212, 175, 55, 0.08);
+    transform: translateY(-4px);
+}
 
+/* Backwards-compatibility mappings for older pages */
+.BG-ViolentBlack {
+    background: var(--color-charcoal) !important;
+    border: 1px solid var(--color-border-gray) !important;
+}
+.BG-Menu {
+    background: var(--color-charcoal) !important;
+    border: 1px solid var(--color-border-gold) !important;
+    border-radius: 12px;
+}
+.Pure-White {
+    color: var(--color-pure-white) !important;
+}
+.Pure-Gray {
+    color: var(--color-muted-gray) !important;
+}
+.Metallic-Gold {
+    color: var(--color-gold-primary) !important;
+}
+.Showcase-Gold {
+    background: var(--color-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.BG-Gold {
+    background: var(--color-gold-gradient) !important;
+    color: var(--color-obsidian) !important;
+}
+.div-black, .BG-Black {
+    background-color: var(--color-obsidian) !important;
+}
+.Attention-SizedText {
+    font-size: clamp(2.5rem, calc(2rem + 4vw), 4.5rem);
+    letter-spacing: 0.1em;
+}
+.Smaller-Attention-SizedText {
+    font-size: clamp(1.2rem, calc(1rem + 1.5vw), 2rem);
+    letter-spacing: 0.2em;
+}
 
+/* Custom form utility classes */
+.ToCenter {
+    margin-left: auto;
+    margin-right: auto;
+}
 
+/* Luxury details */
+.text-gold {
+    color: var(--color-gold-primary) !important;
+}
+.border-gold {
+    border-color: var(--color-gold-primary) !important;
+}
+.border-gold-subtle {
+    border-color: var(--color-border-gold) !important;
+}
+
+/* Focus and input resets */
 *:focus {
     outline: none !important;
     box-shadow: none !important;
-    outline: 1px solid rgba(255, 255, 255, 0.7) !important;
-    outline-offset: 4px;
+}
+input:focus, select:focus, textarea:focus {
+    border-color: var(--color-gold-primary) !important;
+    box-shadow: 0 0 10px var(--color-gold-glow) !important;
+}
+
+/* Custom Luxury Notifications */
+.alert-luxury-success {
+    background-color: var(--color-charcoal) !important;
+    border: 1px solid var(--color-border-gold) !important;
+    color: #D4AF37 !important;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.05em;
     border-radius: 6px !important;
-    transition: outline 0.5s ease, outline-offset 0.5s ease, border-radius 0.3s ease !important;
+    padding: 1rem 1.25rem !important;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.08);
 }
 
-.btnt {
-    transition: color 0.325s ease,background-color 0.325s ease,border-color 0.325s ease, border-radius 0.325s ease !important;
-
-    &:focus {
-        background-color: var(--color-ink-black);
-        border-color: white;
-    }
+.alert-luxury-error {
+    background-color: var(--color-charcoal) !important;
+    border: 1px solid rgba(163, 0, 0, 0.4) !important;
+    color: #A30000 !important;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    border-radius: 6px !important;
+    padding: 1rem 1.25rem !important;
+    box-shadow: 0 4px 15px rgba(163, 0, 0, 0.08);
 }
 
-.droplink {
-    margin: 1px;
-
-    &:hover {
-        margin: 0px;
-        background-color: var(--color-ink-black);
-        border-radius: 1rem;
-        border: 1px solid white;
-        color: dodgerblue;
-    }
+/* Global Golden Hover Effect for EVERY Card */
+.card, .card-luxury {
+    transition: border-color 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
 }
 
-.redlink {
-    margin: 1px;
-
-    &:hover {
-        margin: 0px;
-        background-color: var(--color-ink-black);
-        border-radius: 1rem;
-        border: 1px solid red;
-        color: dodgerblue;
-    }
-}
-
-.inputfocus:focus {
-    background-color: var(--color-ink-black);
-    border-color: white;
-}
-
-.dropfocus {
-    transition: opacity 0.3s ease, scale 0.3s ease;
-    opacity: 1;
-
-    &:enabled, &:active {
-        scale: 1.1;
-        opacity: 0.5;
-    }
-
-    &:hover {
-        opacity: 0.5;
-        cursor: pointer;
-    }
+.card:hover, .card-luxury:hover {
+    border-color: var(--color-gold-primary) !important;
+    box-shadow: 0 15px 45px rgba(212, 175, 55, 0.15) !important;
+    transform: translateY(-4px) !important;
 }
 
 /* 
  * ==========================================================================
- * 5. COMMON BİLEŞENLER
+ * 11. ADMIN PANEL PREMIUM REWRITE (SPECIFIC OVERRIDES)
  * ==========================================================================
  */
+.admin-container-luxury h2, 
+.admin-container-luxury h3, 
+.admin-container-luxury h4, 
+.admin-container-luxury h5 {
+    color: var(--color-gold-primary) !important;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.05em;
+}
 
+/* Style all tables in Admin Panel to look extremely luxury */
+.admin-container-luxury .table {
+    background-color: var(--color-charcoal) !important;
+    color: var(--color-pure-white) !important;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--color-border-gray) !important;
+    margin-top: 1.5rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
 
+.admin-container-luxury .table th {
+    background-color: var(--color-charcoal-light) !important;
+    color: var(--color-gold-primary) !important;
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid var(--color-border-gold) !important;
+    text-transform: uppercase;
+}
 
+.admin-container-luxury .table td {
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid var(--color-border-gray);
+    vertical-align: middle;
+    font-size: 0.85rem;
+    color: var(--color-pure-white) !important;
+}
 
-/* 
- * ==========================================================================
- * 6. BİLEŞENLER
- * ==========================================================================
- */
+.admin-container-luxury .table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-container-luxury .table tr:hover td {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Style ALL inputs in Admin Panel to be premium gold outline */
+.admin-container-luxury input[type="text"],
+.admin-container-luxury input[type="email"],
+.admin-container-luxury input[type="password"],
+.admin-container-luxury input[type="number"],
+.admin-container-luxury select,
+.admin-container-luxury textarea,
+.admin-container-luxury .form-control,
+.admin-container-luxury .form-select {
+    background-color: var(--color-charcoal) !important;
+    border: 1px solid var(--color-border-gold) !important;
+    color: var(--color-pure-white) !important;
+    border-radius: 6px !important;
+    padding: 0.85rem 1.1rem !important;
+    font-size: 0.9rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.admin-container-luxury input:focus,
+.admin-container-luxury select:focus,
+.admin-container-luxury textarea:focus,
+.admin-container-luxury .form-control:focus,
+.admin-container-luxury .form-select:focus {
+    border-color: var(--color-gold-primary) !important;
+    box-shadow: 0 0 12px var(--color-gold-glow) !important;
+    background-color: var(--color-charcoal-light) !important;
+}
+
+/* Style ALL buttons/links in Admin Panel to have Gold Outline by default */
+.admin-container-luxury button,
+.admin-container-luxury input[type="submit"],
+.admin-container-luxury .btn {
+    background: transparent !important;
+    color: var(--color-gold-primary) !important;
+    border: 1px solid var(--color-gold-primary) !important;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    border-radius: 4px !important;
+    padding: 0.75rem 1.75rem !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.05);
+    text-transform: uppercase;
+}
+
+.admin-container-luxury button:hover,
+.admin-container-luxury input[type="submit"]:hover,
+.admin-container-luxury .btn:hover {
+    background: var(--color-gold-gradient) !important;
+    color: var(--color-obsidian) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+}
+
+/* Danger / Delete button style overrides inside admin */
+.admin-container-luxury .btn-danger,
+.admin-container-luxury .btn-outline-danger {
+    background: transparent !important;
+    border: 1px solid #ff6b6b !important;
+    color: #ff6b6b !important;
+    box-shadow: none !important;
+}
+
+.admin-container-luxury .btn-danger:hover,
+.admin-container-luxury .btn-outline-danger:hover {
+    background: #ff6b6b !important;
+    color: var(--color-pure-white) !important;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2) !important;
+}
+
+/* Secondary / cancel button style overrides */
+.admin-container-luxury .btn-secondary,
+.admin-container-luxury .btn-outline-secondary {
+    background: transparent !important;
+    border: 1px solid var(--color-muted-gray) !important;
+    color: var(--color-muted-gray) !important;
+    box-shadow: none !important;
+}
+
+.admin-container-luxury .btn-secondary:hover,
+.admin-container-luxury .btn-outline-secondary:hover {
+    background: var(--color-muted-gray) !important;
+    color: var(--color-obsidian) !important;
+    box-shadow: 0 4px 15px rgba(160, 160, 165, 0.2) !important;
+}
+
+/* Style Search/Filter Forms that are outside cards */
+.admin-container-luxury > form,
+.admin-container-luxury form.BG-Menu,
+.admin-container-luxury form[method="get"] {
+    background: var(--color-charcoal) !important;
+    border: 1px solid var(--color-border-gray) !important;
+    border-radius: 12px !important;
+    padding: 2.25rem 2.5rem !important;
+    margin: 0 auto 3rem auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Forms inside cards should be borderless and flat */
+.admin-container-luxury .card-luxury form {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Modernize inputs and text inside search forms */
+.admin-container-luxury form.BG-Menu .FilterText,
+.admin-container-luxury form[method="get"] .FilterText {
+    color: var(--color-gold-primary) !important;
+    font-family: 'Cinzel', serif !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 0.75rem !important;
+}
+
+/* Make input group sleek and modern */
+.admin-container-luxury form.BG-Menu .input-group,
+.admin-container-luxury form[method="get"] .input-group {
+    border: 1px solid var(--color-border-gold) !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.05) !important;
+}
+
+.admin-container-luxury form.BG-Menu .input-group .form-control,
+.admin-container-luxury form[method="get"] .input-group .form-control {
+    background-color: var(--color-charcoal-light) !important;
+    border: none !important;
+    color: var(--color-pure-white) !important;
+    padding: 0.9rem 1.25rem !important;
+    font-size: 0.9rem !important;
+}
+
+.admin-container-luxury form.BG-Menu .input-group .btn,
+.admin-container-luxury form[method="get"] .input-group .btn {
+    border-radius: 0 !important;
+    border: none !important;
+    border-left: 1px solid var(--color-border-gold) !important;
+}
+
+/* Fix close margins and spacing inside search forms */
+.admin-container-luxury form .col-12,
+.admin-container-luxury form .col-md-3,
+.admin-container-luxury form .col-md-4 {
+    margin-bottom: 1.25rem !important;
+}
+
+/* Add custom styling for checklist containers in forms */
+.admin-container-luxury form div[style*="overflow-y"] {
+    background-color: var(--color-charcoal-light) !important;
+    border: 1px solid var(--color-border-gray) !important;
+    border-radius: 6px !important;
+    padding: 1.2rem !important;
+    max-height: 140px !important;
+}
+
+.admin-container-luxury form div[style*="overflow-y"]::-webkit-scrollbar {
+    width: 6px;
+}
+
+.admin-container-luxury form div[style*="overflow-y"]::-webkit-scrollbar-thumb {
+    background-color: var(--color-gold-primary);
+    border-radius: 3px;
+}

@@ -1,4 +1,4 @@
-﻿@using CarGalleryHub.Domain.Enum
+@using CarGalleryHub.Domain.Enum
 @using CarGalleryHub.Domain.Extensions
 @model CarGalleryHub.MVC.Models.DTOs.Advert.AdvertPageViewDto
 @{
@@ -92,7 +92,7 @@
 <br />
 <hr style="color: white !important; border-color: white !important;"/>
 <br />
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 w-75 h-100 flex-grow-1 overflow-auto" style="justify-self:center; align-self: center">
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 w-100 py-4 mx-auto">
     @if (Model.Dtos.Any())
     {
         foreach (var advert in Model.Dtos)

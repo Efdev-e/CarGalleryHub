@@ -1,37 +1,48 @@
-﻿@model CarGalleryHub.Application.DTOs.User.Profile.ProfileViewData
+@model CarGalleryHub.Application.DTOs.User.Profile.ProfileViewData
 @{
-    ViewData["Title"] = "Profil";
+    ViewData["Title"] = "Profil - Agarte";
 }
 
-<form asp-controller="Account" asp-action="ChangeProfile" method="post"
- class="w-100 d-flex justify-content-center align-items-center">
-    <div class="w-50 border border-1 border-primary-subtle rounded-1 p-5 d-flex flex-column gap-3">
-        <div class="ms-4 d-flex flex-column"
-             style="align-self: start">
-            <label class="QuickSand form-label Pure-White">Profil Resmi:</label>
-            <img src="@(Model?.ImageUrl ?? "https://ltrf.org/wp-content/uploads/2023/07/blank-profile-picture-973460-1-1-1024x1024-1-300x300.png")"
-                 width="350"
-                 height="350" class="rounded-5 " />
-            <div>
-                <label class="QuickSand form-label Pure-White" asp-for="ImageUrl">Resmi Değiştir:</label>
-                <input class="QuickSand form-control" asp-for="ImageUrl" type="text" accept=".jpeg,.jpg,.png,.webm" />
-            </div>
-        </div>
+<div class="d-flex justify-content-center align-items-center py-5">
+    <div class="card-luxury w-100" style="max-width: 560px;">
+        <h2 class="text-center mb-2 text-gold-gradient fw-bold" style="font-size: 1.8rem;">PROFİL BİLGİLERİ</h2>
+        <p class="text-center text-muted-gray small mb-4" style="letter-spacing: 0.1em;">HESAP DETAYLARINIZI GÜNCELLEYİN</p>
 
-        <div class="w-50 ms-4" style="align-self: start">
-            <label class="QuickSand form-label Pure-White" asp-for="FirstName">Adın:</label>
-            <input class="QuickSand form-control" asp-for="FirstName" type="text" value="@(Model?.FirstName ?? string.Empty)" placeholder="(Giriniz)" />
-        </div>
-        <div class="w-50 ms-4" style="align-self: start">
-            <label class="QuickSand form-label Pure-White" asp-for="LastName">Soyadın:</label>
-            <input class="QuickSand form-control" asp-for="LastName" type="text" value="@(Model?.LastName ?? string.Empty)" placeholder="(Giriniz)" />
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col-4 d-flex">
-                <input type="submit" value="Güncelle" class="form-control w-auto " />
-                <button type="button" onclick="history.back()" class="btn btn-secondary mt-2">Geri Dön</button>
+        <form asp-controller="Account" asp-action="ChangeProfile" method="post" class="d-flex flex-column gap-4">
+            <!-- Profil Resmi Gösterimi -->
+            <div class="d-flex flex-column align-items-center mb-2">
+                <div class="position-relative mb-3">
+                    <img src="@(string.IsNullOrWhiteSpace(Model?.ImageUrl) ? "https://th.bing.com/th/id/OIP.dDKYQqVBsG1tIt2uJzEJHwHaHa?w=199&h=199&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3" : Model.ImageUrl)"
+                         width="180" height="180" class="rounded-circle border border-2 border-gold shadow" style="object-fit: cover;" alt="Profil Resmi" />
+                </div>
+                
+                <div class="form-group w-100">
+                    <label class="form-label text-gold mb-2 fw-semibold small" style="letter-spacing: 0.05em;" asp-for="ImageUrl">PROFİL RESMİ URL</label>
+                    <input class="form-control form-control-luxury" asp-for="ImageUrl" type="text" placeholder="Görsel bağlantısını girin" />
+                </div>
             </div>
-        </div>
+
+            <!-- Ad Soyad Alanları -->
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label text-gold mb-2 fw-semibold small" style="letter-spacing: 0.05em;" asp-for="FirstName">ADINIZ</label>
+                    <input class="form-control form-control-luxury" asp-for="FirstName" type="text" value="@(Model?.FirstName ?? string.Empty)" placeholder="Adınızı girin" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label text-gold mb-2 fw-semibold small" style="letter-spacing: 0.05em;" asp-for="LastName">SOYADINIZ</label>
+                    <input class="form-control form-control-luxury" asp-for="LastName" type="text" value="@(Model?.LastName ?? string.Empty)" placeholder="Soyadınızı girin" />
+                </div>
+            </div>
+
+            <!-- Butonlar -->
+            <div class="d-flex flex-column gap-3 mt-3">
+                <button type="submit" class="btn btn-gold w-100 py-3 fw-bold">
+                    GÜNCELLE
+                </button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-gold w-100 py-3 fw-bold text-center d-flex align-items-center justify-content-center">
+                    GERİ DÖN
+                </a>
+            </div>
+        </form>
     </div>
-</form>
+</div>

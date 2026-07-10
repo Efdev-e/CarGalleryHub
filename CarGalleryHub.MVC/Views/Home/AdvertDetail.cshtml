@@ -1,31 +1,178 @@
 @model CarGalleryHub.Application.DTOs.Advert.AdvertDto
-
 @{
-    ViewData["Title"] = "İlan Detayı";
+    ViewData["Title"] = Model.AdvertTitle + " - Agarte";
 }
 
 <div class="container py-5">
-    <div class="card bg-dark text-white border-secondary shadow">
-        <div class="card-body">
-            <h2 class="mb-3">@Model.AdvertTitle</h2>
-            <p class="text-muted">@Model.Description</p>
-            <p class="fw-bold">Fiyat: @Model.UnitPrice ₺</p>
-            <p>Araba: @Model.CarName</p>
-            <p>Garanti: @(Model.Warranty ? "Var" : "Yok")</p>
+    <div class="row g-5">
+        <!-- Sol Kolon: Görseller ve Satın Alma -->
+        <div class="col-lg-6">
+            <!-- Ana Görsel -->
+            <div class="card-luxury p-2 mb-4 text-center">
+                @if (Model.Thumbnails != null && Model.Thumbnails.Any())
+                {
+                    <img src="@Model.Thumbnails.First().ImageUrl" class="img-fluid rounded" style="max-height: 400px; object-fit: cover; width: 100%;" alt="@Model.AdvertTitle" />
+                }
+                else
+                {
+                    <img src="https://via.placeholder.com/600x400?text=Agarte+Premium" class="img-fluid rounded" style="max-height: 400px; object-fit: cover; width: 100%;" alt="No image" />
+                }
+            </div>
 
-            @if (Model.Thumbnails != null && Model.Thumbnails.Any())
+            <!-- Küçük Resimler (Thumbnails) -->
+            @if (Model.Thumbnails != null && Model.Thumbnails.Count > 1)
             {
-                <div class="row g-3 mt-3">
-                    @foreach (var thumbnail in Model.Thumbnails)
+                <div class="row g-3">
+                    @foreach (var thumbnail in Model.Thumbnails.Skip(1))
                     {
-                        <div class="col-md-4">
-                            <img src="@thumbnail.ImageUrl" class="img-fluid rounded" alt="İlan görseli" />
+                        <div class="col-4">
+                            <div class="card-luxury p-1 h-100">
+                                <img src="@thumbnail.ImageUrl" class="img-fluid rounded" style="height: 80px; object-fit: cover; width: 100%;" alt="Galeri görseli" />
+                            </div>
                         </div>
                     }
                 </div>
             }
 
-            <a asp-action="Adverts" class="btn btn-outline-light mt-4">Geri Dön</a>
+            <!-- Sepete Ekle Butonu ve Geri Dön -->
+            <div class="d-flex flex-column gap-3 mt-4">
+                <form asp-controller="Home" asp-action="AddToCart" method="post" class="w-100">
+                    <input type="hidden" name="advertId" value="@Model.Id" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="btn btn-gold w-100 py-3 fw-bold fs-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart3 me-2" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                        </svg> SEPETE EKLE
+                    </button>
+                </form>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-gold w-100 py-3 fw-bold text-center d-flex align-items-center justify-content-center">
+                    GERİ DÖN
+                </a>
+            </div>
+        </div>
+
+        <!-- Sağ Kolon: İlan Bilgileri & Teknik Detay Grid -->
+        <div class="col-lg-6">
+            <span class="text-gold fw-bold mb-2 d-block" style="letter-spacing: 0.2em; font-size: 0.85rem;">@Model.CarName?.ToUpper()</span>
+            <h1 class="mb-3 fw-bold" style="font-family: 'Cinzel', serif;">@Model.AdvertTitle</h1>
+            
+            <div class="mb-4">
+                <span class="fs-2 fw-bold text-gold-gradient" style="font-family: 'Montserrat', sans-serif;">@Model.UnitPrice.ToString("N0") ₺</span>
+            </div>
+
+            <hr class="border-gold-subtle my-4" style="opacity: 0.15;" />
+
+            <h5 class="text-gold mb-3 fw-bold" style="letter-spacing: 0.05em;">AÇIKLAMA</h5>
+            <p class="Pure-Gray lh-lg mb-5" style="font-weight: 300;">@Model.Description</p>
+
+            <h5 class="text-gold mb-3 fw-bold" style="letter-spacing: 0.05em;">TEKNİK BİLGİLER</h5>
+            
+            <!-- Teknik Detay Grid Düzeni -->
+            <div class="row g-3">
+                <!-- Kilometre -->
+                <div class="col-6 col-md-4">
+                    <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#D4AF37" class="bi bi-speedometer2 mb-2" viewBox="0 0 16 16">
+                            <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4M3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707M2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10m9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5m-7-3a.5.5 0 0 1 .707 0l1.207 1.207a.5.5 0 1 1-.707.708L4.15 7.707a.5.5 0 0 1 0-.707"/>
+                            <path d="M14 10a6 6 0 1 1-12 0 6 6 0 0 1 12 0M1 10a7 7 0 1 0 14 0 7 7 0 0 0-14 0"/>
+                        </svg>
+                        <span class="text-gold small fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.1em;">KİLOMETRE</span>
+                        <span class="fw-bold mt-1 text-white" style="font-size: 0.9rem;">@Model.KM.ToString("N0") km</span>
+                    </div>
+                </div>
+
+                <!-- Model Yılı -->
+                <div class="col-6 col-md-4">
+                    <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#D4AF37" class="bi bi-calendar3 mb-2" viewBox="0 0 16 16">
+                            <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z"/>
+                            <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                        </svg>
+                        <span class="text-gold small fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.1em;">MODEL YILI</span>
+                        <span class="fw-bold mt-1 text-white" style="font-size: 0.9rem;">@Model.Year</span>
+                    </div>
+                </div>
+
+                <!-- Vites Tipi -->
+                <div class="col-6 col-md-4">
+                    <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#D4AF37" class="bi bi-gear-wide-connected mb-2" viewBox="0 0 16 16">
+                            <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.513l.225-.19c.73-.62 1.815.176 1.411 1.135l-.112.268a.96.96 0 0 0 .513 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.513 1.622l.19.225c.62.73-.176 1.815-1.135 1.411l-.268-.112a.96.96 0 0 0-1.622.513l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.513l-.225.19c-.73.62-1.815-.176-1.411-1.135l.112-.268a.96.96 0 0 0-.513-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .513-1.622l-.19-.225C3.391 1.771 4.383.687 5.342 1.09l.268.112a.96.96 0 0 0 1.622-.513zM16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
+                        </svg>
+                        <span class="text-gold small fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.1em;">VİTES</span>
+                        <span class="fw-bold mt-1 text-white" style="font-size: 0.9rem;">@Model.GearType</span>
+                    </div>
+                </div>
+
+                <!-- Yakıt Türü -->
+                <div class="col-6 col-md-4">
+                    <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#D4AF37" class="bi bi-fuel-pump mb-2" viewBox="0 0 16 16">
+                            <path d="M3 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5zM4 3v4h3V3zm8-1.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V15h8V2.5zm-5 11a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m2.5-3a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1M12 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m1.5 5.5A1.5 1.5 0 0 0 15 8V4.5a.5.5 0 0 0-1 0V8a.5.5 0 0 1-.5.5.5.5 0 0 0 0 1M13 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                        </svg>
+                        <span class="text-gold small fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.1em;">YAKIT</span>
+                        <span class="fw-bold mt-1 text-white" style="font-size: 0.9rem;">@Model.FuelType</span>
+                    </div>
+                </div>
+
+                <!-- Boya Durumu -->
+                <div class="col-6 col-md-4">
+                    <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#D4AF37" class="bi bi-brush mb-2" viewBox="0 0 16 16">
+                            <path d="M15.825.12a.5.5 0 0 1 .132.584c-.085.184-.244.38-.45.54a2.9 2.9 0 0 1-1.393.616c-.079.018-.17.034-.27.05.105.109.199.223.282.339.25.35.417.744.472 1.154.055.409-.002.821-.17 1.177-.163.347-.432.622-.75.779a.5.5 0 0 1-.728-.401 1.6 1.6 0 0 0-.244-.76c-.156-.25-.389-.47-.732-.696a4 4 0 0 0-.553-.31c-.053-.024-.11-.048-.166-.074.024.166.043.337.056.505.02.267-.007.537-.08.803a2.9 2.9 0 0 1-.703 1.347c-.307.308-.691.485-1.1.515a.5.5 0 0 1-.355-.875c.23-.223.39-.51.454-.862.064-.353.031-.718-.102-1.073a5 5 0 0 0-.334-.716 9 9 0 0 0-.655-.997L.58 10.43a1.5 1.5 0 0 0-.382 1.353l.654 2.945a.5.5 0 0 0 .848.289l1.885-1.886a.5.5 0 0 0-.708-.707L3 14.31l-.474-2.137a.5.5 0 0 1 .12-.454l7.979-7.979a2.9 2.9 0 0 1-1.258-.258 3 3 0 0 1-.94-.741.5.5 0 0 1 .43-.799c.307.013.611-.05.888-.184.278-.135.5-.343.649-.607.15-.264.212-.56.182-.857A1.5 1.5 0 0 0 10.02.126zM2 11.293V13h1.707z"/>
+                        </svg>
+                        <span class="text-gold small fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.1em;">BOYA DURUMU</span>
+                        <span class="fw-bold mt-1 text-white" style="font-size: 0.85rem;">@Model.PaintStatus</span>
+                    </div>
+                </div>
+
+                <!-- Motor Gücü -->
+                <div class="col-6 col-md-4">
+                    <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#D4AF37" class="bi bi-cpu mb-2" viewBox="0 0 16 16">
+                            <path d="M5 0a.5.5 0 0 1 .5.5V2h1V.5a.5.5 0 0 1 1 0V2h1V.5a.5.5 0 0 1 1 0V2h1V.5a.5.5 0 0 1 1 0V2h1V.5a.5.5 0 0 1 1 0V2h1a.5.5 0 0 1 .5.5v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1h1.5a.5.5 0 0 1 0 1H14v1a.5.5 0 0 1-.5.5H13v1h-1.5a.5.5 0 0 1 0-1H11v1h-1.5a.5.5 0 0 1 0-1H9v1h-1.5a.5.5 0 0 1 0-1H7v1h-1.5a.5.5 0 0 1 0-1H5v1a.5.5 0 0 1-.5-.5H4v-1H2.5a.5.5 0 0 1 0-1H3v-1H2.5a.5.5 0 0 1 0-1H3v-1H2.5a.5.5 0 0 1 0-1H3v-1H2.5a.5.5 0 0 1 0-1H3v-1H2.5a.5.5 0 0 1 0-1H3V3a.5.5 0 0 1 .5-.5H4V.5A.5.5 0 0 1 5 0m-.5 3v10h7V3z"/>
+                        </svg>
+                        <span class="text-gold small fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.1em;">MOTOR GÜCÜ</span>
+                        <span class="fw-bold mt-1 text-white" style="font-size: 0.9rem;">@Model.MotorPower</span>
+                    </div>
+                </div>
+
+                <!-- Renk -->
+                <div class="col-6 col-md-4">
+                    <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#D4AF37" class="bi bi-palette mb-2" viewBox="0 0 16 16">
+                            <path d="M8 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m4 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M5.5 7a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m.5 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                            <path d="M16 8c0 3.15-1.866 2.585-3.5 2.5-1.5-.077-3.237 1.09-4.885 2.43-.263.214-.513.42-.741.607-.46.377-.837.563-1.124.563C2.808 14 0 11.266 0 8c0-3.859 3.71-7 8-7s8 3.141 8 7m-1.21-1.293c-.007-.085-.015-.17-.027-.254-.109-.78-.663-1.43-1.429-1.688a17.4 17.4 0 0 0-1.847-.518 21.6 21.6 0 0 0-2.28-.314 22 22 0 0 0-3.328.026 21 21 0 0 0-2.203.284 17 17 0 0 0-1.745.45c-.752.26-1.285.918-1.378 1.706a14.7 14.7 0 0 0-.01 1.758c.094.78.647 1.417 1.402 1.666 1.834.606 3.65.656 4.965.176 1.25-.456 2.054-1.272 2.378-2.247.3-.902.13-1.921-.497-2.793a.5.5 0 1 1 .828-.56c.8.966.974 2.217.576 3.411-.37 1.112-1.306 2.062-2.735 2.585-1.576.575-3.664.498-5.719-.18a.5.5 0 0 1-.341-.476 13.7 13.7 0 0 1 .01-1.637"/>
+                        </svg>
+                        <span class="text-gold small fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.1em;">RENK</span>
+                        <span class="fw-bold mt-1 text-white" style="font-size: 0.9rem;">@Model.Color</span>
+                    </div>
+                </div>
+
+                <!-- Garanti Durumu -->
+                <div class="col-6 col-md-4">
+                    <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#D4AF37" class="bi bi-shield-check mb-2" viewBox="0 0 16 16">
+                            <path d="M5.338 1.59a61 61 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.117.724 7.22 1.841 8.733a10.4 10.4 0 0 0 2.228 2.306.186.186 0 0 0 .222 0 10.4 10.4 0 0 0 2.228-2.306c1.117-1.513 2.395-4.616 1.841-8.733a.48.48 0 0 0-.328-.39 61 61 0 0 0-2.837-.856.48.48 0 0 0-.222 0zm1.859-.443a62.2 62.2 0 0 1 3.3 1c.562.17.923.718.896 1.3-.224 4.887-1.892 8.44-3.522 10.51a1.89 1.89 0 0 1-2.91 0c-1.63-2.07-3.298-5.622-3.522-10.51a1.27 1.27 0 0 1 .896-1.3 62 62 0 0 1 3.3-1 1.2 1.2 0 0 1 .87 0z"/>
+                            <path d="M10.854 5.854a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                        </svg>
+                        <span class="text-gold small fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.1em;">GARANTİ</span>
+                        <span class="fw-bold mt-1 text-white" style="font-size: 0.9rem;">@(Model.Warranty ? "Mevcut" : "Yok")</span>
+                    </div>
+                </div>
+
+                <!-- Durum -->
+                <div class="col-6 col-md-4">
+                    <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#D4AF37" class="bi bi-info-circle mb-2" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                        </svg>
+                        <span class="text-gold small fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.1em;">DURUM</span>
+                        <span class="fw-bold mt-1 text-white" style="font-size: 0.9rem;">@Model.Status</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

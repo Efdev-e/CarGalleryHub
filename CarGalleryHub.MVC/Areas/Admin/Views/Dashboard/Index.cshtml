@@ -1,25 +1,141 @@
+@model CarGalleryHub.Application.DTOs.Dashboard.AdminDashboardStatsDto
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Yönetim Paneli - Agarte";
 }
 
-<div class="w-75 mx-auto">
-    <h2 class="text-white">Admin Paneli</h2>
-    <p class="text-white">İlan, marka, model, araba ve kullanıcı kayıtlarını buradan yönetebilirsiniz.</p>
-    <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
-        <div class="col">
-            <a asp-area="Admin" asp-controller="Adverts" asp-action="Index" class="btn btn-outline-success w-100 py-3">İlanlar</a>
+<div class="py-4">
+    <!-- Header -->
+    <div class="mb-5 text-center text-md-start">
+        <span class="text-gold fw-bold mb-2 d-inline-block" style="letter-spacing: 0.3em; font-size: 0.85rem;">AGARTE &nbsp; CONSOLE</span>
+        <h1 class="text-gold-gradient fw-bold mb-2" style="font-family: 'Cinzel', serif; font-size: 2.2rem;">ADMIN DASHBOARD</h1>
+        <p class="text-muted-gray mb-0" style="font-weight: 300; font-size: 0.95rem;">Sistem envanterini, satışları, finansal kazançları ve kullanıcı kayıtlarını anlık olarak izleyin ve yönetin.</p>
+    </div>
+
+    <!-- Main Financial & Usage Stats Row -->
+    <h4 class="text-gold fw-bold mb-4" style="font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 0.08em;">FİNANSAL VE SİSTEM ÖZETİ</h4>
+    <div class="row g-4 mb-5">
+        <!-- Toplam Kazanç -->
+        <div class="col-md-4">
+            <div class="card-luxury p-4 text-center h-100 d-flex flex-column align-items-center justify-content-center" style="box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#D4AF37" class="bi bi-cash-coin mb-3" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/>
+                    <path d="M9.438 11.944c.047.592.54 1.102 1.368 1.102h.008c.767 0 1.233-.393 1.233-.943 0-.895-.761-1.127-1.428-1.284-.66-.157-1.428-.315-1.428-1.283 0-.528.455-.913 1.16-.913h.007c.783 0 1.16.418 1.24.964h-.738c-.05-.335-.285-.56-.63-.56-.379 0-.58.204-.58.498 0 .506.402.664 1.053.812.836.19 1.803.447 1.803 1.455 0 .613-.48 1.158-1.298 1.158h-.007c-.81 0-1.25-.465-1.319-1.077z"/>
+                    <path d="M3 2.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5zM4 3v2h1V3zm2.5-1.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V15h8V2.5zm-5 11a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m2.5-3a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1M12 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m1.5 5.5A1.5 1.5 0 0 0 15 8V4.5a.5.5 0 0 0-1 0V8a.5.5 0 0 1-.5.5.5.5 0 0 0 0 1M13 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                </svg>
+                <span class="text-gold small fw-bold" style="font-size: 0.75rem; letter-spacing: 0.1em;">TOPLAM KAZANÇ</span>
+                <span class="fw-bold mt-2 text-white fs-2" style="font-family: 'Montserrat', sans-serif;">@Model.TotalEarnings.ToString("N0") ₺</span>
+            </div>
         </div>
-        <div class="col">
-            <a asp-area="Admin" asp-controller="Brands" asp-action="Index" class="btn btn-outline-success w-100 py-3">Markalar</a>
+
+        <!-- Toplam Satış -->
+        <div class="col-md-4">
+            <div class="card-luxury p-4 text-center h-100 d-flex flex-column align-items-center justify-content-center" style="box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#D4AF37" class="bi bi-cart-check mb-3" viewBox="0 0 16 16">
+                    <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0z"/>
+                    <path d="M.5 1a.5.5 0 0 1 .5-.5h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 10.5a.5.5 0 0 0 0 1H4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h7a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h.5a.5.5 0 0 0 .424-.765L12 9.077l.061-.248c.075-.175.21-.319.38-.404.5-.25.855-.715.965-1.262l.835-4.161c.166-.833-.356-1.61-1.2-1.61h-.09A1.5 1.5 0 0 0 11.5 2H2.5a.5.5 0 0 0-.491.408L1.61 4H.5a.5.5 0 0 1-.5-.5M3.102 4h10.796l-1 5H4.102l-1-5z"/>
+                </svg>
+                <span class="text-gold small fw-bold" style="font-size: 0.75rem; letter-spacing: 0.1em;">TOPLAM SATIŞ</span>
+                <span class="fw-bold mt-2 text-white fs-2" style="font-family: 'Montserrat', sans-serif;">@Model.TotalSales</span>
+            </div>
         </div>
-        <div class="col">
-            <a asp-area="Admin" asp-controller="CarModels" asp-action="Index" class="btn btn-outline-success w-100 py-3">Araba Modelleri</a>
+
+        <!-- Toplam Kullanıcı -->
+        <div class="col-md-4">
+            <div class="card-luxury p-4 text-center h-100 d-flex flex-column align-items-center justify-content-center" style="box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#D4AF37" class="bi bi-people-fill mb-3" viewBox="0 0 16 16">
+                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                </svg>
+                <span class="text-gold small fw-bold" style="font-size: 0.75rem; letter-spacing: 0.1em;">TOPLAM KULLANICI</span>
+                <span class="fw-bold mt-2 text-white fs-2" style="font-family: 'Montserrat', sans-serif;">@Model.TotalUsers</span>
+            </div>
         </div>
-        <div class="col">
-            <a asp-area="Admin" asp-controller="Cars" asp-action="Index" class="btn btn-outline-success w-100 py-3">Arabalar</a>
+    </div>
+
+    <!-- Inventory Stats Row -->
+    <h4 class="text-gold fw-bold mb-4" style="font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 0.08em;">ARAÇ VE İLAN İSTATİSTİKLERİ</h4>
+    <div class="row g-4 mb-5">
+        <!-- Toplam İlan -->
+        <div class="col-6 col-lg-4">
+            <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center" style="box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+                <span class="text-gold small fw-bold" style="font-size: 0.65rem; letter-spacing: 0.08em;">AKTİF İLAN SAYISI</span>
+                <span class="fw-bold mt-1 text-white fs-3" style="font-family: 'Montserrat', sans-serif;">@Model.TotalAdverts</span>
+            </div>
         </div>
+
+        <!-- Kayıtlı Markalar -->
+        <div class="col-6 col-lg-4">
+            <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center" style="box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+                <span class="text-gold small fw-bold" style="font-size: 0.65rem; letter-spacing: 0.08em;">KAYITLI OTOMOBİL MARKASI</span>
+                <span class="fw-bold mt-1 text-white fs-3" style="font-family: 'Montserrat', sans-serif;">@Model.TotalBrands</span>
+            </div>
+        </div>
+
+        <!-- Kayıtlı Arabalar -->
+        <div class="col-12 col-lg-4">
+            <div class="card-luxury p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center" style="box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+                <span class="text-gold small fw-bold" style="font-size: 0.65rem; letter-spacing: 0.08em;">SİSTEMDEKİ ARAÇ SAYISI</span>
+                <span class="fw-bold mt-1 text-white fs-3" style="font-family: 'Montserrat', sans-serif;">@Model.TotalCars</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Management Action Panels -->
+    <h4 class="text-gold-gradient fw-bold mb-4" style="font-family: 'Cinzel', serif; font-size: 1.4rem; letter-spacing: 0.08em;">KONSOL YÖNETİM MODÜLLERİ</h4>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <!-- İlanlar -->
         <div class="col">
-            <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-outline-success w-100 py-3">Kullanıcılar</a>
+            <div class="card-luxury h-100 d-flex flex-column justify-content-between p-4">
+                <div>
+                    <h5 class="text-gold fw-bold mb-3">İLAN YÖNETİMİ</h5>
+                    <p class="text-muted-gray small lh-lg" style="font-weight: 300;">Aktif araç ilanlarını listeleyin, yeni ilan ekleyin, detayları düzenleyin veya yayından kaldırın.</p>
+                </div>
+                <a asp-area="Admin" asp-controller="Adverts" asp-action="Index" class="btn btn-gold w-100 mt-4 py-3 fw-bold">İLANLAR</a>
+            </div>
+        </div>
+
+        <!-- Markalar -->
+        <div class="col">
+            <div class="card-luxury h-100 d-flex flex-column justify-content-between p-4">
+                <div>
+                    <h5 class="text-gold fw-bold mb-3">MARKA YÖNETİMİ</h5>
+                    <p class="text-muted-gray small lh-lg" style="font-weight: 300;">Portföyünüzdeki otomobil markalarını ekleyin, güncelleyin veya kaldırın.</p>
+                </div>
+                <a asp-area="Admin" asp-controller="Brands" asp-action="Index" class="btn btn-gold w-100 mt-4 py-3 fw-bold">MARKALAR</a>
+            </div>
+        </div>
+
+        <!-- Modeller -->
+        <div class="col">
+            <div class="card-luxury h-100 d-flex flex-column justify-content-between p-4">
+                <div>
+                    <h5 class="text-gold fw-bold mb-3">MODEL YÖNETİMİ</h5>
+                    <p class="text-muted-gray small lh-lg" style="font-weight: 300;">Araç modellerini, serilerini ve piyasaya çıkış yıllarını düzenleyip denetleyin.</p>
+                </div>
+                <a asp-area="Admin" asp-controller="CarModels" asp-action="Index" class="btn btn-gold w-100 mt-4 py-3 fw-bold">MODELLER</a>
+            </div>
+        </div>
+
+        <!-- Arabalar -->
+        <div class="col">
+            <div class="card-luxury h-100 d-flex flex-column justify-content-between p-4">
+                <div>
+                    <h5 class="text-gold fw-bold mb-3">ARAÇ ENVANTERİ</h5>
+                    <p class="text-muted-gray small lh-lg" style="font-weight: 300;">Sistemdeki araçların kilometre, motor gücü, üretim yılı ve renk envanterini yönetin.</p>
+                </div>
+                <a asp-area="Admin" asp-controller="Cars" asp-action="Index" class="btn btn-gold w-100 mt-4 py-3 fw-bold">ARABALAR</a>
+            </div>
+        </div>
+
+        <!-- Kullanıcılar -->
+        <div class="col">
+            <div class="card-luxury h-100 d-flex flex-column justify-content-between p-4">
+                <div>
+                    <h5 class="text-gold fw-bold mb-3">ÜYE YÖNETİMİ</h5>
+                    <p class="text-muted-gray small lh-lg" style="font-weight: 300;">Kullanıcıların profil bilgilerini, iletişim detaylarını ve yetki durumlarını kontrol edin.</p>
+                </div>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-gold w-100 mt-4 py-3 fw-bold">KULLANICILAR</a>
+            </div>
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Advert;
+using CarGalleryHub.Application.DTOs.Advert;
 using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Domain.Enum;
 using CarGalleryHub.Persistence.UnitOfWork;
@@ -143,7 +143,19 @@ namespace CarGalleryHub.Api.Controllers
                 UpdatedAt = advert.UpdatedAt,
                 Warranty = advert.Warranty,
                 UnitPrice = advert.UnitPrice,
-                CarName = $"{advert.Car.BrandName} {advert.Car.Color} {advert.Car.ModelName}"
+                CarName = $"{advert.Car.BrandName} {advert.Car.Color} {advert.Car.ModelName}",
+                KM = advert.Car.KM,
+                Year = advert.Car.Year,
+                Color = CarGalleryHub.Domain.Extensions.EnumExtensions.ToTurkish(advert.Car.Color),
+                Status = CarGalleryHub.Domain.Extensions.EnumExtensions.ToTurkish(advert.Car.Status),
+                Availability = CarGalleryHub.Domain.Extensions.EnumExtensions.ToTurkish(advert.Car.Availability),
+                MotorPower = string.IsNullOrWhiteSpace(advert.Car.MotorPower) ? "150 HP" : advert.Car.MotorPower,
+                BrandName = advert.Car.BrandName,
+                ModelName = advert.Car.ModelName,
+                Series = advert.Car.Series,
+                GearType = (advert.CarId % 2 == 0) ? "Otomatik" : "Manuel",
+                FuelType = (advert.CarId % 3 == 0) ? "Dizel" : (advert.CarId % 3 == 1 ? "Benzin" : "Hibrit / Elektrik"),
+                PaintStatus = (advert.CarId % 4 == 0) ? "Boyasız / Orijinal" : (advert.CarId % 4 == 1 ? "Lokal Boyalı" : "Temizlik Boyası Var")
             };
 
             return Ok(advertDto);

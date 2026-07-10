@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.Common.BaseDTOs;
+using CarGalleryHub.Application.Common.BaseDTOs;
 using CarGalleryHub.Application.DTOs.Car;
 using CarGalleryHub.Application.DTOs.Image;
 using CarGalleryHub.Application.DTOs.User.Other;
@@ -21,6 +21,18 @@ namespace CarGalleryHub.Application.DTOs.Advert
         public string? CarName { get; set; }
 
         // ----- //
+        public int KM { get; set; }
+        public int Year { get; set; }
+        public string? Color { get; set; }
+        public string? Status { get; set; }
+        public string? Availability { get; set; }
+        public string? MotorPower { get; set; }
+        public string? BrandName { get; set; }
+        public string? ModelName { get; set; }
+        public string? Series { get; set; }
+        public string? GearType { get; set; }
+        public string? FuelType { get; set; }
+        public string? PaintStatus { get; set; }
 
         // ----- //
 

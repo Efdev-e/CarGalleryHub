@@ -1,0 +1,53 @@
+@model CarGalleryHub.Application.DTOs.User.Other.AdminUserUpdateDto
+@{
+    ViewData["Title"] = "Kullanıcı Düzenle - Agarte";
+}
+
+<div class="d-flex justify-content-center align-items-center py-5">
+    <div class="card-luxury w-100" style="max-width: 560px;">
+        <h2 class="text-center mb-2 text-gold-gradient fw-bold" style="font-family: 'Cinzel', serif; font-size: 1.8rem; letter-spacing: 0.05em;">KULLANICI DÜZENLE</h2>
+        <p class="text-center text-muted-gray small mb-4" style="letter-spacing: 0.1em;">PROFİL BİLGİLERİNİ VE YETKİLERİ GÜNCELLEYİN</p>
+
+        <form asp-controller="Users" asp-action="Edit" method="post" class="d-flex flex-column gap-4">
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Ad -->
+            <div class="form-group">
+                <label class="form-label text-gold mb-2 fw-semibold small" style="letter-spacing: 0.05em;" asp-for="FirstName">AD</label>
+                <input class="form-control form-control-luxury" asp-for="FirstName" type="text" placeholder="Kullanıcı adını girin" />
+                <span asp-validation-for="FirstName" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <!-- Soyad -->
+            <div class="form-group">
+                <label class="form-label text-gold mb-2 fw-semibold small" style="letter-spacing: 0.05em;" asp-for="LastName">SOYAD</label>
+                <input class="form-control form-control-luxury" asp-for="LastName" type="text" placeholder="Kullanıcı soyadını girin" />
+                <span asp-validation-for="LastName" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <!-- E-posta -->
+            <div class="form-group">
+                <label class="form-label text-gold mb-2 fw-semibold small" style="letter-spacing: 0.05em;" asp-for="Email">E-POSTA ADRESİ</label>
+                <input class="form-control form-control-luxury" asp-for="Email" type="email" placeholder="Kullanıcı e-posta adresini girin" />
+                <span asp-validation-for="Email" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <!-- Rol -->
+            <div class="form-group">
+                <label class="form-label text-gold mb-2 fw-semibold small" style="letter-spacing: 0.05em;" asp-for="Role">YETKİ ROLÜ</label>
+                <select class="form-select form-control-luxury" asp-for="Role" asp-items="Html.GetEnumSelectList<CarGalleryHub.Domain.Enum.UserRoles>()"></select>
+                <span asp-validation-for="Role" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <!-- Butonlar -->
+            <div class="d-flex flex-column gap-3 mt-3">
+                <button type="submit" class="btn btn-gold w-100 py-3 fw-bold">
+                    KAYDET VE GÜNCELLE
+                </button>
+                <a asp-controller="Users" asp-action="Index" class="btn btn-outline-gold w-100 py-3 fw-bold text-center d-flex align-items-center justify-content-center">
+                    GERİ DÖN
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

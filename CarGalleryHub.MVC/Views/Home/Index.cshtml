@@ -1,11 +1,31 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Giriş";
 }
 
-<div class="text-center div-black">
-    <h1 class="Pure-White Attention-SizedText Text-Bold" style="font-family: 'Audiowide'; font-weight: 400; font-style: normal;">
-        AGARTE <br />
-        <p class="Pure-Gray Smaller-Attention-SizedText my-2">PREMIUM GALLERY FOR </p><b class="Showcase-Gold"><i style="padding-right: 5px;">THE RICH</i></b>
-    </h1>
-
+<div class="container-fluid py-5 my-md-5 div-black">
+    <div class="row align-items-center justify-content-center text-center">
+        <div class="col-lg-10">
+            <span class="text-gold fw-bold mb-3 d-inline-block" style="letter-spacing: 0.4em; font-size: 0.9rem;">A G A R T E &nbsp; G A L L E R Y</span>
+            
+            <h1 class="Attention-SizedText fw-light mb-4" style="line-height: 1.2;">
+                THE ART OF <br />
+                <span class="Showcase-Gold fw-bold">AUTOMOTIVE LUXURY</span>
+            </h1>
+            
+            <div class="ToCenter my-4" style="max-width: 600px;">
+                <p class="Pure-Gray fs-5 lh-lg" style="font-weight: 300;">
+                    Sadece en seçkin araçların bir araya geldiği, mükemmeliyetin ve prestijin buluşma noktası. Sınırları aşan bir sürüş deneyimine adım atın.
+                </p>
+            </div>
+            
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-5">
+                <a asp-controller="Home" asp-action="Adverts" class="btn btn-gold px-5 py-3 fw-bold">
+                    KOLEKSİYONU KEŞFET
+                </a>
+                <a asp-controller="Home" asp-action="About" class="btn btn-outline-gold px-5 py-3 fw-bold">
+                    HAKKIMIZDA
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

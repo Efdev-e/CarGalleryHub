@@ -37,5 +37,57 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             return View(new UserPageViewDto() { Users = response.Data });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (IsAdmin())
+                return RedirectToAction("Index", "Home", new { area = "" });
+
+            var response = await _apiclient.GetAsync<List<UserInfoDto>>("api/User/admin/list");
+            if (response == null || !response.Success || response.Data == null)
+            {
+                TempData["ErrorMessage"] = "Kullanıcı listesi alınamadı.";
+                return RedirectToAction("Index");
+            }
+
+            var user = response.Data.FirstOrDefault(x => x.Id == id);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "Kullanıcı bulunamadı.";
+                return RedirectToAction("Index");
+            }
+
+            var dto = new AdminUserUpdateDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName ?? "",
+                LastName = user.LastName ?? "",
+                Email = user.Email ?? "",
+                Role = user.Role
+            };
+
+            return View(dto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AdminUserUpdateDto dto)
+        {
+            if (IsAdmin())
+                return RedirectToAction("Index", "Home", new { area = "" });
+
+            if (!ModelState.IsValid)
+                return View(dto);
+
+            var response = await _apiclient.PostAsync<bool>("api/User/admin/update-user", dto);
+            if (response != null && response.Success && response.Data)
+            {
+                TempData["SuccessMessage"] = "Kullanıcı başarıyla güncellendi.";
+                return RedirectToAction("Index");
+            }
+
+            TempData["ErrorMessage"] = response?.Message ?? "Güncelleme başarısız oldu.";
+            return View(dto);
+        }
     }
 }

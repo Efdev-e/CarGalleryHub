@@ -1,44 +1,48 @@
-﻿@model CarGalleryHub.Application.DTOs.User.Security.UserSecurityPageView
+@model CarGalleryHub.Application.DTOs.User.Security.UserSecurityPageView
 @{
-    ViewData["Title"] = "Güvenlik Ayarları";
+    ViewData["Title"] = "Güvenlik - Agarte";
 }
 
-<form asp-controller="Account" asp-action="UpdateSecurity" method="post"
-      class="w-100 d-flex justify-content-center align-items-center">
+<div class="d-flex justify-content-center align-items-center py-5">
+    <div class="card-luxury w-100" style="max-width: 560px;">
+        <h2 class="text-center mb-2 text-gold-gradient fw-bold" style="font-size: 1.8rem;">GÜVENLİK AYARLARI</h2>
+        <p class="text-center text-muted-gray small mb-4" style="letter-spacing: 0.1em;">HESAP GÜVENLİĞİNİZİ GÜNCELLEYİN</p>
 
-    <div class="w-50 border border-1 border-primary-subtle rounded-1 p-5 d-flex flex-column gap-4">
-
-        <h4 class="QuickSand Pure-White mb-3">Güvenlik ve Hesap Ayarları</h4>
-
-        <div class="w-100 px-4">
-            <label class="QuickSand form-label Pure-White" asp-for="CurrentPassword">Mevcut Şifre (Değişiklikleri onaylamak için):</label>
-            <input class="QuickSand form-control" asp-for="CurrentPassword" type="password" placeholder="Mevcut şifrenizi giriniz" />
-            <span asp-validation-for="CurrentPassword" class="text-danger small"></span>
-        </div>
-
-        <hr class="border-secondary my-2" />
-
-        <div class="w-100 px-4">
-            <label class="QuickSand form-label Pure-White" asp-for="Email">Yeni E-posta Adresi:</label>
-            <input class="QuickSand form-control" asp-for="Email" type="email" placeholder="Yeni e-posta adresinizi giriniz" />
-            <span asp-validation-for="Email" class="text-danger small"></span>
-        </div>
-
-        <hr class="border-secondary my-2" />
-
-        <div class="w-100 px-4">
-            <label class="QuickSand form-label Pure-White" asp-for="NewPassword">Yeni Şifre:</label>
-            <input class="QuickSand form-control" asp-for="NewPassword" type="password" placeholder="Yeni şifre (Değiştirmek istemiyorsanız boş bırakın)" />
-            <span asp-validation-for="NewPassword" class="text-danger small"></span>
-        </div>
-
-
-        <div class="row justify-content-center mt-3">
-            <div class="col-6 d-flex justify-content-center gap-3">
-                <input type="submit" value="Ayarları Güncelle" class="btn btn-primary w-auto px-4" />
-                <button type="button" onclick="history.back()" class="btn btn-secondary px-4">Geri Dön</button>
+        <form asp-controller="Account" asp-action="UpdateSecurity" method="post" class="d-flex flex-column gap-4">
+            <!-- Mevcut Şifre -->
+            <div class="form-group">
+                <label class="form-label text-gold mb-2 fw-semibold small" style="letter-spacing: 0.05em;" asp-for="CurrentPassword">MEVCUT ŞİFRE (ONAY İÇİN GEREKLİ)</label>
+                <input class="form-control form-control-luxury" asp-for="CurrentPassword" type="password" placeholder="Mevcut şifrenizi girin" />
+                <span asp-validation-for="CurrentPassword" class="text-danger small mt-1 d-block"></span>
             </div>
-        </div>
 
+            <hr class="border-gold-subtle my-2" style="opacity: 0.15;" />
+
+            <!-- Yeni E-posta -->
+            <div class="form-group">
+                <label class="form-label text-gold mb-2 fw-semibold small" style="letter-spacing: 0.05em;" asp-for="Email">YENİ E-POSTA ADRESİ</label>
+                <input class="form-control form-control-luxury" asp-for="Email" type="email" placeholder="Yeni e-posta adresinizi girin" />
+                <span asp-validation-for="Email" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <hr class="border-gold-subtle my-2" style="opacity: 0.15;" />
+
+            <!-- Yeni Şifre -->
+            <div class="form-group">
+                <label class="form-label text-gold mb-2 fw-semibold small" style="letter-spacing: 0.05em;" asp-for="NewPassword">YENİ ŞİFRE</label>
+                <input class="form-control form-control-luxury" asp-for="NewPassword" type="password" placeholder="Yeni şifrenizi girin (değiştirmeyecekseniz boş bırakın)" />
+                <span asp-validation-for="NewPassword" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <!-- Butonlar -->
+            <div class="d-flex flex-column gap-3 mt-3">
+                <button type="submit" class="btn btn-gold w-100 py-3 fw-bold">
+                    AYARLARI GÜNCELLE
+                </button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-gold w-100 py-3 fw-bold text-center d-flex align-items-center justify-content-center">
+                    GERİ DÖN
+                </a>
+            </div>
+        </form>
     </div>
-</form>
+</div>

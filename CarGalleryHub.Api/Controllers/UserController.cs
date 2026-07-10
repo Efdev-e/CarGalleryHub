@@ -6,6 +6,9 @@ using CarGalleryHub.Application.Interfaces;
 using CarGalleryHub.Persistence.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using CarGalleryHub.Domain.Enum;
+using CarGalleryHub.Application.DTOs.Dashboard;
 
 namespace CarGalleryHub.Api.Controllers
 {
@@ -163,6 +166,56 @@ namespace CarGalleryHub.Api.Controllers
                 .ToList();
 
             return Ok(response);
+        }
+
+        [HttpGet("admin/stats")]
+        [Authorize]
+        public async Task<IActionResult> GetDashboardStats()
+        {
+            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
+
+            var totalAdverts = await unitOfWork.Adverts.Query().CountAsync(x => !x.IsDeleted);
+            var totalBrands = await unitOfWork.Brands.Query().CountAsync(x => !x.IsDeleted);
+            var totalCars = await unitOfWork.Cars.Query().CountAsync(x => !x.IsDeleted);
+            var totalUsers = await unitOfWork.Users.Query().CountAsync(x => !x.IsDeleted);
+            var totalSales = await unitOfWork.Payments.Query().CountAsync(x => x.Status == PaymentStatus.Success);
+            var totalEarnings = await unitOfWork.Payments.Query()
+                .Where(x => x.Status == PaymentStatus.Success)
+                .SumAsync(x => x.Amount);
+
+            var stats = new AdminDashboardStatsDto
+            {
+                TotalAdverts = totalAdverts,
+                TotalBrands = totalBrands,
+                TotalCars = totalCars,
+                TotalUsers = totalUsers,
+                TotalSales = totalSales,
+                TotalEarnings = totalEarnings
+            };
+
+            return Ok(stats);
+        }
+
+        [HttpPost("admin/update-user")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserForAdmin([FromBody] AdminUserUpdateDto dto)
+        {
+            if (!IsAdmin()) return Invalid("Yetkisiz Erişim");
+            if (dto is null) return Invalid("Geçersiz veri");
+
+            var user = await unitOfWork.Users.GetByIdAsync(dto.Id);
+            if (user is null || user.IsDeleted) return Invalid("Kullanıcı bulunamadı");
+
+            user.FirstName = dto.FirstName;
+            user.LastName = dto.LastName;
+            user.Email = dto.Email;
+            user.Role = dto.Role;
+            user.Updated();
+
+            unitOfWork.Users.Update(user);
+            await unitOfWork.SaveChangesAsync();
+
+            return Ok(true, "Kullanıcı güncellendi");
         }
     }
 }
