@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using static CarGalleryHub.MVC.Services.ApiClient;
 
@@ -14,9 +14,9 @@ namespace CarGalleryHub.MVC.Exceptions
         }
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-            _logger.LogError(exception, "Bir Hata Oluştu: {Message}",exception.Message);
+            _logger.LogError(exception, "Bir Hata Olustu: {Message}",exception.Message);
 
-            var ErrorResult = ApiResult<string>.Fail("Sistemde Beklenmedik Hata Oluştu");
+            var ErrorResult = ApiResult<string>.Fail("Sistemde Beklenmedik Hata Olustu");
 
             httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await httpContext.Response.WriteAsJsonAsync(ErrorResult, cancellationToken);

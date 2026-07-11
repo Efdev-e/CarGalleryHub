@@ -7,14 +7,13 @@
 
 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<form asp-controller="Home" asp-action="Adverts" method="get"
-      class="border border-secondary rounded-4 p-4 BG-ViolentBlack shadow-sm mb-4">
+<form asp-controller="Home" asp-action="Adverts" method="get" class="luxury-search-form">
     <div class="row g-3">
         <div class="col-12">
             <label for="name" class="form-label d-block FilterText">Arama Kutusu</label>
             <div class="input-group">
-                <input name="name" class="form-control bg-dark text-white border-secondary" placeholder="Örn: Audi" value="@Context.Request.Query["name"]" />
-                <button type="submit" class="btn btn-outline-light">Filtrele / Ara</button>
+                <input name="name" class="form-control bg-secondary text-white border-0" placeholder="Örn: Audi" value="@Context.Request.Query["name"]" />
+                <button type="submit" class="btn btn-success">Filtrele / Ara</button>
             </div>
         </div>
 
@@ -68,7 +67,7 @@
 
         <div class="col-md-3">
             <label for="categoryType" class="form-label d-block FilterText">Kategori</label>
-            <select name="categoryType" class="form-select bg-dark text-white border-secondary">
+            <select name="categoryType" class="form-select bg-secondary text-white border-0">
                 <option value="">Tüm Kategoriler</option>
                 @foreach (var cat in Enum.GetValues(typeof(CategoryType)))
                 {

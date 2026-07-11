@@ -25,13 +25,13 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var response = await _apiclient.GetAsync<List<UserInfoDto>>("api/User/admin/list");
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Yanıt Gelmedi";
+                TempData["errorMessage"] = "Yanıt Gelmedi";
                 return View(new UserPageViewDto());
             }
 
             if (!response.Success || response.Data is null)
             {
-                TempData["ErrorMessage"] = response.Message;
+                TempData["errorMessage"] = response.Message;
                 return View(new UserPageViewDto());
             }
 
@@ -47,14 +47,14 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var response = await _apiclient.GetAsync<List<UserInfoDto>>("api/User/admin/list");
             if (response == null || !response.Success || response.Data == null)
             {
-                TempData["ErrorMessage"] = "Kullanıcı listesi alınamadı.";
+                TempData["errorMessage"] = "Kullanıcı listesi alınamadı.";
                 return RedirectToAction("Index");
             }
 
             var user = response.Data.FirstOrDefault(x => x.Id == id);
             if (user == null)
             {
-                TempData["ErrorMessage"] = "Kullanıcı bulunamadı.";
+                TempData["errorMessage"] = "Kullanıcı bulunamadı.";
                 return RedirectToAction("Index");
             }
 
@@ -82,11 +82,11 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var response = await _apiclient.PostAsync<bool>("api/User/admin/update-user", dto);
             if (response != null && response.Success && response.Data)
             {
-                TempData["SuccessMessage"] = "Kullanıcı başarıyla güncellendi.";
+                TempData["successMessage"] = "Kullanıcı başarıyla güncellendi.";
                 return RedirectToAction("Index");
             }
 
-            TempData["ErrorMessage"] = response?.Message ?? "Güncelleme başarısız oldu.";
+            TempData["errorMessage"] = response?.Message ?? "Güncelleme başarısız oldu.";
             return View(dto);
         }
     }

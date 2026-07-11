@@ -1,8 +1,8 @@
-@if (TempData["SuccessMessage"] != null)
+@if (TempData["successMessage"] != null && !string.IsNullOrWhiteSpace(TempData["successMessage"]?.ToString()))
 {
-    <div class="alert-luxury-success mb-4 text-center">@TempData["SuccessMessage"]</div>
+    <div class="alert-luxury-success mb-4 text-center">@TempData["successMessage"]</div>
 }
-@if (TempData["ErrorMessage"] != null)
+@if (TempData["errorMessage"] != null && !string.IsNullOrWhiteSpace(TempData["errorMessage"]?.ToString()))
 {
-    <div class="alert-luxury-error mb-4 text-center">@TempData["ErrorMessage"]</div>
+    <div class="alert-luxury-error mb-4 text-center">@TempData["errorMessage"]</div>
 }

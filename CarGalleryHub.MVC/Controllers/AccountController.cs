@@ -91,7 +91,7 @@ namespace CarGalleryHub.MVC.Controllers
             HttpContext.Session.SetString("UserId", response.Data.UserId.ToString());
             HttpContext.Session.SetString("UserRole", response.Data.Role.ToString());
 
-
+            TempData["successMessage"] = "Giriş başarılı. Hoş geldiniz!";
             return Redirect("/");
         }
         #endregion
@@ -142,8 +142,7 @@ namespace CarGalleryHub.MVC.Controllers
             HttpContext.Session.SetString("UserId", response.Data.UserId.ToString());
             HttpContext.Session.SetString("UserRole", response.Data.Role.ToString());
 
-
-
+            TempData["successMessage"] = "Kayıt başarılı. Üyeliğiniz oluşturuldu!";
             return Redirect("/");
         }
         #endregion
@@ -154,6 +153,7 @@ namespace CarGalleryHub.MVC.Controllers
         public async Task<IActionResult> Logout()
         {
             HttpContext.Session.Clear();
+            TempData["successMessage"] = "Başarıyla çıkış yapıldı.";
             return Redirect("/login");
         }
         #endregion
@@ -170,13 +170,13 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null) 
             {
-                TempData["ErrorMessage"] = "Yanıt boş";
+                TempData["errorMessage"] = "Yanıt boş";
                 return ToMain();
             }
 
             if (!response.Success && response.Data is null) 
             {
-                TempData["ErrorMessage"] = "Başarısız";
+                TempData["errorMessage"] = "Başarısız";
                 return ToLogout();
             }
 
@@ -201,13 +201,13 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Yanıt boş";
+                TempData["errorMessage"] = "Yanıt boş";
                 return ToProfile();
             }
 
             if (!response.Success && response.Data is false)
             {
-                TempData["ErrorMessage"] = "Başarısız";
+                TempData["errorMessage"] = "Başarısız";
                 return ToProfile();
             }
             return ToProfile();
@@ -226,13 +226,13 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Yanıt boş";
+                TempData["errorMessage"] = "Yanıt boş";
                 return ToMain();
             }
 
             if (!response.Success)
             {
-                TempData["ErrorMessage"] = response.Message ?? "Adresler yüklenemedi.";
+                TempData["errorMessage"] = response.Message ?? "Adresler yüklenemedi.";
                 return ToMain();
             }
 
@@ -248,7 +248,7 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Adres bilgileri eksik veya hatalı.";
+                TempData["errorMessage"] = "Adres bilgileri eksik veya hatalı.";
                 return RedirectToAction(nameof(Address));
             }
 
@@ -256,11 +256,11 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = "Adres eklenemedi.";
+                TempData["errorMessage"] = "Adres eklenemedi.";
                 return RedirectToAction(nameof(Address));
             }
 
-            TempData["SuccessMessage"] = "Adres başarıyla eklendi.";
+            TempData["successMessage"] = "Adres başarıyla eklendi.";
             return RedirectToAction(nameof(Address));
         }
 
@@ -275,11 +275,11 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = "Adres silinemedi.";
+                TempData["errorMessage"] = "Adres silinemedi.";
                 return RedirectToAction(nameof(Address));
             }
 
-            TempData["SuccessMessage"] = "Adres silindi.";
+            TempData["successMessage"] = "Adres silindi.";
             return RedirectToAction(nameof(Address));
         }
         #endregion
@@ -296,13 +296,13 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Yanıt boş";
+                TempData["errorMessage"] = "Yanıt boş";
                 return ToMain();
             }
 
             if (!response.Success)
             {
-                TempData["ErrorMessage"] = response.Message ?? "Siparişler yüklenemedi.";
+                TempData["errorMessage"] = response.Message ?? "Siparişler yüklenemedi.";
                 return ToMain();
             }
 
@@ -322,13 +322,13 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Yanıt boş";
+                TempData["errorMessage"] = "Yanıt boş";
                 return ToMain();
             }
 
             if (!response.Success)
             {
-                TempData["ErrorMessage"] = response.Message ?? "Sepet yüklenemedi.";
+                TempData["errorMessage"] = response.Message ?? "Sepet yüklenemedi.";
                 return ToMain();
             }
 
@@ -344,7 +344,7 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (advertId <= 0 || quantity <= 0)
             {
-                TempData["ErrorMessage"] = "Geçersiz ilan veya miktar.";
+                TempData["errorMessage"] = "Geçersiz ilan veya miktar.";
                 return RedirectToAction(nameof(Cart));
             }
 
@@ -356,11 +356,11 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = response?.Message ?? "Ürün adedi artırılamadı.";
+                TempData["errorMessage"] = response?.Message ?? "Ürün adedi artırılamadı.";
                 return RedirectToAction(nameof(Cart));
             }
 
-            TempData["SuccessMessage"] = "Ürün adedi artırıldı.";
+            TempData["successMessage"] = "Ürün adedi artırıldı.";
             return RedirectToAction(nameof(Cart));
         }
 
@@ -375,11 +375,11 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = "Ürün sepetten çıkarılamadı.";
+                TempData["errorMessage"] = "Ürün sepetten çıkarılamadı.";
                 return RedirectToAction(nameof(Cart));
             }
 
-            TempData["SuccessMessage"] = "Ürün sepetten çıkarıldı.";
+            TempData["successMessage"] = "Ürün sepetten çıkarıldı.";
             return RedirectToAction(nameof(Cart));
         }
         #endregion
@@ -395,7 +395,7 @@ namespace CarGalleryHub.MVC.Controllers
             var cartResponse = await _apiclient.GetAsync<CartDto>("api/Cart/GetCart");
             if (cartResponse is null || !cartResponse.Success || cartResponse.Data == null || !cartResponse.Data.CartItems.Any())
             {
-                TempData["ErrorMessage"] = "Sepetiniz boş olduğu için ödeme adımına geçilemez.";
+                TempData["errorMessage"] = "Sepetiniz boş olduğu için ödeme adımına geçilemez.";
                 return RedirectToAction("Cart");
             }
 
@@ -421,7 +421,7 @@ namespace CarGalleryHub.MVC.Controllers
             var cartResponse = await _apiclient.GetAsync<CartDto>("api/Cart/GetCart");
             if (cartResponse is null || !cartResponse.Success || cartResponse.Data == null || !cartResponse.Data.CartItems.Any())
             {
-                TempData["ErrorMessage"] = "Sepetiniz boş.";
+                TempData["errorMessage"] = "Sepetiniz boş.";
                 return RedirectToAction("Cart");
             }
 
@@ -442,7 +442,7 @@ namespace CarGalleryHub.MVC.Controllers
                 string.IsNullOrWhiteSpace(model.ExpiryYear) ||
                 string.IsNullOrWhiteSpace(model.Cvv))
             {
-                TempData["ErrorMessage"] = "Lütfen tüm adres ve ödeme bilgilerini eksiksiz doldurun.";
+                TempData["errorMessage"] = "Lütfen tüm adres ve ödeme bilgilerini eksiksiz doldurun.";
                 return View(model);
             }
 
@@ -459,7 +459,7 @@ namespace CarGalleryHub.MVC.Controllers
             var orderResponse = await _apiclient.PostAsync<int>("api/Order/CreateOrder", createOrderDto);
             if (orderResponse is null || !orderResponse.Success || orderResponse.Data <= 0)
             {
-                TempData["ErrorMessage"] = orderResponse?.Message ?? "Sipariş oluşturulamadı.";
+                TempData["errorMessage"] = orderResponse?.Message ?? "Sipariş oluşturulamadı.";
                 return View(model);
             }
 
@@ -479,11 +479,13 @@ namespace CarGalleryHub.MVC.Controllers
             var paymentResponse = await _apiclient.PostAsync<PaymentResultDto>("api/Payment/pay", paymentRequestDto);
             if (paymentResponse is null || !paymentResponse.Success || paymentResponse.Data?.IsSuccess != true)
             {
-                TempData["ErrorMessage"] = paymentResponse?.Message ?? paymentResponse?.Data?.FailureReason ?? "Sipariş oluşturuldu fakat ödeme başarısız oldu. Siparişlerim sayfasından tekrar ödeme yapmayı deneyebilirsiniz.";
+                TempData["errorMessage"] = !string.IsNullOrWhiteSpace(paymentResponse?.Message) ? paymentResponse.Message :
+                                           (!string.IsNullOrWhiteSpace(paymentResponse?.Data?.FailureReason) ? paymentResponse.Data.FailureReason :
+                                           "Sipariş oluşturuldu fakat ödeme başarısız oldu. Siparişlerim sayfasından tekrar ödeme yapmayı deneyebilirsiniz.");
                 return RedirectToAction(nameof(Orders));
             }
 
-            TempData["SuccessMessage"] = "Siparişiniz başarıyla alındı ve ödemesi gerçekleştirildi!";
+            TempData["successMessage"] = "Siparişiniz başarıyla alındı ve ödemesi gerçekleştirildi!";
             return RedirectToAction(nameof(Orders));
         }
         #endregion
@@ -499,14 +501,14 @@ namespace CarGalleryHub.MVC.Controllers
             var orderResponse = await _apiclient.GetAsync<OrderInfoDto>($"api/Order/GetOrderById/{orderId}");
             if (orderResponse is null || !orderResponse.Success || orderResponse.Data == null)
             {
-                TempData["ErrorMessage"] = "Sipariş bulunamadı.";
+                TempData["errorMessage"] = "Sipariş bulunamadı.";
                 return RedirectToAction(nameof(Orders));
             }
 
             var order = orderResponse.Data;
             if (order.OrderStatus == Domain.Enum.OrderStatus.Paid || order.OrderStatus == Domain.Enum.OrderStatus.Completed)
             {
-                TempData["ErrorMessage"] = "Bu sipariş için zaten ödeme yapılmıştır.";
+                TempData["errorMessage"] = "Bu sipariş için zaten ödeme yapılmıştır.";
                 return RedirectToAction(nameof(Orders));
             }
 
@@ -533,7 +535,7 @@ namespace CarGalleryHub.MVC.Controllers
                 string.IsNullOrWhiteSpace(model.ExpiryYear) ||
                 string.IsNullOrWhiteSpace(model.Cvv))
             {
-                TempData["ErrorMessage"] = "Lütfen tüm kart bilgilerini eksiksiz doldurun.";
+                TempData["errorMessage"] = "Lütfen tüm kart bilgilerini eksiksiz doldurun.";
                 return View(model);
             }
 
@@ -550,11 +552,13 @@ namespace CarGalleryHub.MVC.Controllers
             var paymentResponse = await _apiclient.PostAsync<PaymentResultDto>("api/Payment/pay", paymentRequestDto);
             if (paymentResponse is null || !paymentResponse.Success || paymentResponse.Data?.IsSuccess != true)
             {
-                TempData["ErrorMessage"] = paymentResponse?.Message ?? paymentResponse?.Data?.FailureReason ?? "Ödeme işlemi başarısız oldu. Lütfen tekrar deneyin.";
+                TempData["errorMessage"] = !string.IsNullOrWhiteSpace(paymentResponse?.Message) ? paymentResponse.Message :
+                                           (!string.IsNullOrWhiteSpace(paymentResponse?.Data?.FailureReason) ? paymentResponse.Data.FailureReason :
+                                           "Ödeme işlemi başarısız oldu. Lütfen tekrar deneyin.");
                 return View(model);
             }
 
-            TempData["SuccessMessage"] = "Ödeme başarıyla gerçekleştirildi!";
+            TempData["successMessage"] = "Ödeme başarıyla gerçekleştirildi!";
             return RedirectToAction(nameof(Orders));
         }
         #endregion
@@ -577,13 +581,13 @@ namespace CarGalleryHub.MVC.Controllers
             var response = await _apiclient.GetAsync<List<AdvertView>>(query);
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Yanıt boş";
+                TempData["errorMessage"] = "Yanıt boş";
                 return ToMain();
             }
 
             if (!response.Success)
             {
-                TempData["ErrorMessage"] = response.Message ?? "İlanlar yüklenemedi.";
+                TempData["errorMessage"] = response.Message ?? "İlanlar yüklenemedi.";
                 return ToMain();
             }
 
@@ -623,7 +627,7 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (dto is null)
             {
-                TempData["ErrorMessage"] = "İlan bilgileri eksik.";
+                TempData["errorMessage"] = "İlan bilgileri eksik.";
                 return RedirectToAction(nameof(MyAdverts));
             }
 
@@ -658,11 +662,11 @@ namespace CarGalleryHub.MVC.Controllers
             var response = await _apiclient.PostAsync<bool>("api/Advert/create", advertDto);
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = response?.Message ?? "İlan oluşturulamadı.";
+                TempData["errorMessage"] = response?.Message ?? "İlan oluşturulamadı.";
                 return RedirectToAction(nameof(MyAdverts));
             }
 
-            TempData["SuccessMessage"] = "İlan başarıyla oluşturuldu.";
+            TempData["successMessage"] = "İlan başarıyla oluşturuldu.";
             return RedirectToAction(nameof(MyAdverts));
         }
 
@@ -675,7 +679,7 @@ namespace CarGalleryHub.MVC.Controllers
             var response = await _apiclient.GetAsync<AdvertDto>($"api/Advert/{id}");
             if (response is null || !response.Success || response.Data is null)
             {
-                TempData["ErrorMessage"] = "İlan bulunamadı.";
+                TempData["errorMessage"] = "İlan bulunamadı.";
                 return RedirectToAction(nameof(MyAdverts));
             }
 
@@ -719,11 +723,11 @@ namespace CarGalleryHub.MVC.Controllers
             var response = await _apiclient.PostAsync<bool>($"api/Advert/update/{id}", updateDto);
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = "İlan güncellenemedi.";
+                TempData["errorMessage"] = "İlan güncellenemedi.";
                 return View(model);
             }
 
-            TempData["SuccessMessage"] = "İlan başarıyla güncellendi.";
+            TempData["successMessage"] = "İlan başarıyla güncellendi.";
             return RedirectToAction(nameof(MyAdverts));
         }
 
@@ -737,11 +741,11 @@ namespace CarGalleryHub.MVC.Controllers
             var response = await _apiclient.DeleteAsync<bool>($"api/Advert/delete/{id}");
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = "İlan silinemedi.";
+                TempData["errorMessage"] = "İlan silinemedi.";
                 return RedirectToAction(nameof(MyAdverts));
             }
 
-            TempData["SuccessMessage"] = "İlan başarıyla silindi.";
+            TempData["successMessage"] = "İlan başarıyla silindi.";
             return RedirectToAction(nameof(MyAdverts));
         }
         #endregion
@@ -759,13 +763,13 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Yanıt boş";
+                TempData["errorMessage"] = "Yanıt boş";
                 return ToMain();
             }
 
             if (!response.Success && response.Data is null)
             {
-                TempData["ErrorMessage"] = "Başarısız";
+                TempData["errorMessage"] = "Başarısız";
                 return ToLogout();
             }
 
@@ -783,36 +787,36 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Yanıt boş";
+                TempData["errorMessage"] = "Yanıt boş";
                 return ToMain();
             }
 
             if (!response.Success && response.Data is null)
             {
-                TempData["ErrorMessage"] = "Başarısız";
+                TempData["errorMessage"] = "Başarısız";
                 return ToLogout();
             }
 
             switch (response.Data)
             {
                 case [true, true]:
-                    TempData["SuccessMessage"] = "Şifreniz ve e-posta adresiniz başarıyla güncellendi.";
+                    TempData["successMessage"] = "Şifreniz ve e-posta adresiniz başarıyla güncellendi.";
                     break;
 
                 case [false, true]:
-                    TempData["SuccessMessage"] = "Şifreniz güncellendi ancak e-posta güncellenmedi.";
+                    TempData["successMessage"] = "Şifreniz güncellendi ancak e-posta güncellenmedi.";
                     break;
 
                 case [true, false]:
-                    TempData["SuccessMessage"] = "E-posta adresiniz güncellendi ancak şifreniz güncellenmedi.";
+                    TempData["successMessage"] = "E-posta adresiniz güncellendi ancak şifreniz güncellenmedi.";
                     break;
 
                 case [false, false]:
-                    TempData["ErrorMessage"] = "Güncelleme işlemleri başarısız oldu. Mevcut şifrenizi kontrol edin.";
+                    TempData["errorMessage"] = "Güncelleme işlemleri başarısız oldu. Mevcut şifrenizi kontrol edin.";
                     return View(userSecurityPageView);
 
                 case null:
-                    TempData["ErrorMessage"] = "Sistemden geçersiz bir yanıt alındı.";
+                    TempData["errorMessage"] = "Sistemden geçersiz bir yanıt alındı.";
                     return ToMain();
             }
 

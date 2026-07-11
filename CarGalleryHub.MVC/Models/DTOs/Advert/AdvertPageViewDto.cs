@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Advert;
+using CarGalleryHub.Application.DTOs.Advert;
 
 namespace CarGalleryHub.MVC.Models.DTOs.Advert
 {

@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Car;
+using CarGalleryHub.Application.DTOs.Car;
 using CarGalleryHub.Application.DTOs.CarModel;
 
 namespace CarGalleryHub.MVC.Models.DTOs.CarModel

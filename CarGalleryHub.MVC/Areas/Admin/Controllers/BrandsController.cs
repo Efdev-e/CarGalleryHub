@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Advert;
+using CarGalleryHub.Application.DTOs.Advert;
 using CarGalleryHub.Application.DTOs.Brand;
 using CarGalleryHub.Application.DTOs.CarModel;
 using CarGalleryHub.MVC.Models.DTOs.Brand;
@@ -39,7 +39,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (response is null) 
             {
-                ModelState.AddModelError(string.Empty, "Yanıt boş");
+                ModelState.AddModelError(string.Empty, "Yanit bos");
                 return View(new BrandViewDto() { page = page ?? 1, Dtos = response?.Data ?? new List<BrandListDto>() });
             }
             if (!response.Success) 
@@ -77,16 +77,16 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (request is null) 
             {
-                ModelState.AddModelError(string.Empty, "Yanıt boş");
+                ModelState.AddModelError(string.Empty, "Yanit bos");
                 return View(brandInfoDto);
             }
             if (!request.Success || request.Data is false)
             {
-                TempData["ErrorMessage"] = "Başarısız";
+                TempData["errorMessage"] = "Basarisiz";
                 return View(brandInfoDto);
             }
 
-            TempData["SuccessMessage"] = "Marka Oluşturuldu";
+            TempData["successMessage"] = "Marka Olusturuldu";
             return RedirectToAction("Index");
         }
         #endregion
@@ -103,12 +103,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var list = await _apiclient.GetAsync<BrandInfoDto>($"api/Brand/{id}");
             if (list is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!list.Success || list.Data is null)
             {
-                TempData["ErrorMessage"] = "Marka bulunamadı";
+                TempData["errorMessage"] = "Marka bulunamadi";
                 return RedirectToAction("Index");
             }
 
@@ -135,16 +135,16 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var list = await _apiclient.PostAsync<bool>($"api/Brand/update/{id}",new BrandInfoDto() { BrandName = dto.BrandName});
             if (list is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return View(dto);
             }
             if (!list.Success || list.Data is false)
             {
-                TempData["ErrorMessage"] = "Marka Güncellenemedi";
+                TempData["errorMessage"] = "Marka G�ncellenemedi";
                 return View(dto);
             }
 
-            TempData["SuccessMessage"] = "Marka Güncellendi";
+            TempData["successMessage"] = "Marka G�ncellendi";
             return RedirectToAction("Index");
         }
         #endregion
@@ -160,15 +160,15 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var list = await _apiclient.DeleteAsync<bool>($"api/Brand/delete/{id}");
             if (list is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!list.Success || list.Data is false)
             {
-                TempData["ErrorMessage"] = "Marka Silinemedi";
+                TempData["errorMessage"] = "Marka Silinemedi";
                 return RedirectToAction("Index");
             }
-            TempData["SuccessMessage"] = "marka silindi";
+            TempData["successMessage"] = "marka silindi";
             return RedirectToAction("Index");
         }
         #endregion
@@ -184,12 +184,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var list = await _apiclient.GetAsync<BrandInfoDto>($"api/Brand/{id}");
             if (list is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!list.Success || list.Data is null)
             {
-                TempData["ErrorMessage"] = "Marka bulunamadı";
+                TempData["errorMessage"] = "Marka bulunamadi";
                 return RedirectToAction("Index");
             }
 
@@ -203,12 +203,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (brandlist is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!brandlist.Success || brandlist.Data is null)
             {
-                TempData["ErrorMessage"] = "Bu Markanın Araba Modeli bulunamadı";
+                TempData["errorMessage"] = "Bu Markanin Araba Modeli bulunamadi";
                 return View(new BrandCarModelView() { id = id, BrandName = list.Data.BrandName, Dtos = new List<BasicCarModelData>() });
             }
 
@@ -234,25 +234,25 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var list = await _apiclient.GetAsync<BrandInfoDto>($"api/Brand/{id}");
             if (list is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!list.Success || list.Data is null)
             {
-                TempData["ErrorMessage"] = "Marka bulunamadı";
+                TempData["errorMessage"] = "Marka bulunamadi";
                 return RedirectToAction("Index");
             }
 
-            var brandlist = await _apiclient.GetAsync<List<CarModelData>>($"api/CarModel/GetAllmodels/{1}");
+            var brandlist = await _apiclient.GetAsync<List<CarModelData>>($"api/CarModel/GetAllModels");
 
             if (brandlist is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!brandlist.Success || brandlist.Data is null)
             {
-                TempData["ErrorMessage"] = "Araba Modelleri bulunamadı";
+                TempData["errorMessage"] = "Araba Modelleri bulunamadi";
                 return RedirectToAction("Index");
             }
 
@@ -277,15 +277,15 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var list = await _apiclient.PostNoBodyAsync<bool>($"api/Brand/addModel/{carModelId},{id}");
             if (list is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!list.Success || list.Data is false)
             {
-                TempData["ErrorMessage"] = "Marka bulunamadı";
+                TempData["errorMessage"] = "Marka bulunamadi";
                 return RedirectToAction("Index");
             }
-            TempData["SuccessMessage"] = "Model Eklendi";
+            TempData["successMessage"] = "Model Eklendi";
             return RedirectToAction("Index");
         }
         #endregion
@@ -301,12 +301,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var list = await _apiclient.GetAsync<BrandInfoDto>($"api/Brand/{id}");
             if (list is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!list.Success || list.Data is null)
             {
-                TempData["ErrorMessage"] = "Marka bulunamadı";
+                TempData["errorMessage"] = "Marka bulunamadi";
                 return RedirectToAction("Index");
             }
 
@@ -314,12 +314,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (brandlist is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!brandlist.Success || brandlist.Data is null)
             {
-                TempData["ErrorMessage"] = "Modeller bulunamadı";
+                TempData["errorMessage"] = "Modeller bulunamadi";
                 return RedirectToAction("Index");
             }
 
@@ -344,16 +344,16 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var list = await _apiclient.PostNoBodyAsync<bool>($"api/Brand/removeModel/{id},{carModelId}");
             if (list is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!list.Success || list.Data is false)
             {
-                TempData["ErrorMessage"] = "Marka bulunamadı";
+                TempData["errorMessage"] = "Marka bulunamadi";
                 return RedirectToAction("Index");
             }
 
-            TempData["SuccessMessage"] = "Model Silindi";
+            TempData["successMessage"] = "Model Silindi";
             return RedirectToAction("Index");
         }
         #endregion

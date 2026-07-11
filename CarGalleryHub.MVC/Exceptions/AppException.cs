@@ -1,4 +1,4 @@
-﻿namespace CarGalleryHub.MVC.Exceptions
+namespace CarGalleryHub.MVC.Exceptions
 {
     public class AppException : Exception
     {

@@ -1,4 +1,4 @@
-﻿using Azure;
+using Azure;
 using CarGalleryHub.Application.DTOs.Brand;
 using CarGalleryHub.Application.DTOs.Car;
 using CarGalleryHub.Application.DTOs.CarModel;
@@ -43,7 +43,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (response is null)
             {
-                ModelState.AddModelError(string.Empty, "Yanıt boş");
+                ModelState.AddModelError(string.Empty, "Yanit bos");
                 return View(new CarModelPageView() { page = page ?? 1, Dtos = response?.Data ?? new List<CarModelPageData>() });
             }
             if (!response.Success)
@@ -67,12 +67,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var response_one = await _apiclient.GetAsync<CarModelInspectDto>($"api/CarModel/Inspect/{id}");
             if (response_one is null)
             {
-                ModelState.AddModelError(string.Empty, "Yanıt boş");
+                ModelState.AddModelError(string.Empty, "Yanit bos");
                 return RedirectToAction("Index");
             }
             if (!response_one.Success || response_one.Data is null)
             {
-                TempData["ErrorMessage"] = "Model Bulunamadı";
+                TempData["errorMessage"] = "Model Bulunamadi";
                 return RedirectToAction("Index");
             }
 
@@ -93,12 +93,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (response is null)
             {
-                ModelState.AddModelError(string.Empty, "Yanıt boş");
+                ModelState.AddModelError(string.Empty, "Yanit bos");
                 return View(new CarModelCreateView() { Brands =  new List<BrandListDto>(), CarModelData = new CarModelDataCreate() });
             }
             if (!response.Success || response.Data is null)
             {
-                TempData["ErrorMessage"] = "Markalar Listelenemedi";
+                TempData["errorMessage"] = "Markalar Listelenemedi";
                 return View(new CarModelCreateView() { Brands = response?.Data ?? new List<BrandListDto>(), CarModelData = new CarModelDataCreate() });
             }
 
@@ -128,16 +128,16 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (response is null)
             {
-                ModelState.AddModelError(string.Empty, "Yanıt boş");
+                ModelState.AddModelError(string.Empty, "Yanit bos");
                 return RedirectToAction("Create");
             }
             if (!response.Success )
             {
-                TempData["ErrorMessage"] = "Model Oluşturulamadı";
+                TempData["errorMessage"] = "Model Olusturulamadi";
                 return RedirectToAction("Create");
             }
 
-            TempData["SuccessMessage"] = "Araba Modeli Oluşturuldu";
+            TempData["successMessage"] = "Araba Modeli Olusturuldu";
             return RedirectToAction("Index");
         }
         #endregion
@@ -154,16 +154,16 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (response is null)
             {
-                TempData["SuccessMessage"] = "Yanıt Boş";
+                TempData["successMessage"] = "Yanit Bos";
                 return RedirectToAction("Index");
             }
             if (!response.Success)
             {
-                TempData["ErrorMessage"] = "Model Silinemedi";
+                TempData["errorMessage"] = "Model Silinemedi";
                 return RedirectToAction("Index");
             }
 
-            TempData["SuccessMessage"] = "Model Silindi";
+            TempData["successMessage"] = "Model Silindi";
             return RedirectToAction("Index");
         }
         #endregion
@@ -182,12 +182,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
                 var list = await _apiclient.GetAsync<CarModelDto>($"api/CarModel/{id}");
                 if (list is null)
                 {
-                    ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                    ModelState.AddModelError(string.Empty, "Bos Yanit");
                     return RedirectToAction("Index");
                 }
                 if (!list.Success || list.Data is null)
                 {
-                    TempData["ErrorMessage"] = "Model bulunamadı";
+                    TempData["errorMessage"] = "Model bulunamadi";
                     return RedirectToAction("Index");
                 }
 
@@ -206,12 +206,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Boş Yanıt";
+                TempData["errorMessage"] = "Bos Yanit";
                 return RedirectToAction("Index");
             }
             if (!response.Success || response.Data is null)
             {
-                TempData["ErrorMessage"] = "Markalar Listelenemedi";
+                TempData["errorMessage"] = "Markalar Listelenemedi";
                 return RedirectToAction("Index");
             }
 
@@ -244,17 +244,17 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             });
             if (list is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return View(view);
 
             }
             if (!list.Success || list.Data is false)
             {
-                TempData["ErrorMessage"] = "Model Güncellenemedi";
+                TempData["errorMessage"] = "Model G�ncellenemedi";
                 return View(view);
             }
 
-            TempData["SuccessMessage"] = "Model Güncellendi";
+            TempData["successMessage"] = "Model G�ncellendi";
             return RedirectToAction("Index");
         }
 
@@ -271,12 +271,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var list = await _apiclient.GetAsync<CarModelDto>($"api/CarModel/{id}");
             if (list is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!list.Success || list.Data is null)
             {
-                TempData["ErrorMessage"] = "Model bulunamadı";
+                TempData["errorMessage"] = "Model bulunamadi";
                 return RedirectToAction("Index");
             }
 
@@ -286,12 +286,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (carlist is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return RedirectToAction("Index");
             }
             if (!carlist.Success || carlist.Data is null)
             {
-                TempData["ErrorMessage"] = "Arabalar bulunamadı";
+                TempData["errorMessage"] = "Arabalar bulunamadi";
                 return RedirectToAction("Index");
             }
 
@@ -306,7 +306,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (!ModelState.IsValid) 
             {
-                TempData["ErrorMessage"] = "Veri Kabul edilmedi";
+                TempData["errorMessage"] = "Veri Kabul edilmedi";
                 return View(view.carDataModel);
             }
 
@@ -314,17 +314,17 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Boş Yanıt";
+                TempData["errorMessage"] = "Bos Yanit";
                 return View(view.carDataModel);
             }
             if (!response.Success || response.Data is false)
             {
-                TempData["ErrorMessage"] = "Araba Eklenemedi";
+                TempData["errorMessage"] = "Araba Eklenemedi";
                 return View(view.carDataModel);
             }
 
 
-            TempData["SuccessMessage"] = "Araba Eklendi.";
+            TempData["successMessage"] = "Araba Eklendi.";
             return RedirectToAction("Index");
         }
 

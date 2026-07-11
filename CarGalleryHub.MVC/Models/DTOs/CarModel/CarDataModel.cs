@@ -1,4 +1,4 @@
-﻿namespace CarGalleryHub.MVC.Models.DTOs.CarModel
+namespace CarGalleryHub.MVC.Models.DTOs.CarModel
 {
     public class CarDataModel
     {

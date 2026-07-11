@@ -16,7 +16,7 @@ namespace CarGalleryHub.Api.Controllers
     public class CarModelController : BaseApiController
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly int ModelPage = 10;
+        private readonly int ModelPage = 9;
         public CarModelController(IUnitOfWork work)
         {
             unitOfWork = work;

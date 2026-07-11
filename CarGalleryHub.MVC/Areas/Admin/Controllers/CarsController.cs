@@ -47,13 +47,13 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var response = await _apiclient.GetAsync<List<CarInfoDto>>(query);
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Yanıt Gelmedi";
+                TempData["errorMessage"] = "Yanıt Gelmedi";
                 return View(new CarPageViewDto() { page = currentPage });
             }
 
             if (!response.Success || response.Data is null)
             {
-                TempData["ErrorMessage"] = response.Message;
+                TempData["errorMessage"] = response.Message;
                 return View(new CarPageViewDto() { page = currentPage });
             }
 
@@ -69,7 +69,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var response = await _apiclient.GetAsync<CarDto>($"api/Car/{id}");
             if (response is null || !response.Success || response.Data is null)
             {
-                TempData["ErrorMessage"] = "Araba bulunamadı";
+                TempData["errorMessage"] = "Araba bulunamadı";
                 return RedirectToAction("Index");
             }
 
@@ -97,7 +97,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var model = await _apiclient.GetAsync<CarModelInspectDto>($"api/CarModel/Inspect/{car.CarModelId}");
             if (model is null || !model.Success || model.Data is null)
             {
-                TempData["ErrorMessage"] = "Model bilgisi alınamadı";
+                TempData["errorMessage"] = "Model bilgisi alınamadı";
                 return View(await SetupForm(car));
             }
 
@@ -118,11 +118,11 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var response = await _apiclient.PostAsync<bool>("api/Car/create", dto);
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = response?.Message ?? "Araba oluşturulamadı";
+                TempData["errorMessage"] = response?.Message ?? "Araba oluşturulamadı";
                 return View(await SetupForm(car));
             }
 
-            TempData["SuccessMessage"] = "Araba oluşturuldu";
+            TempData["successMessage"] = "Araba oluşturuldu";
             return RedirectToAction("Index");
         }
 
@@ -135,7 +135,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var response = await _apiclient.GetAsync<CarDto>($"api/Car/{id}");
             if (response is null || !response.Success || response.Data is null)
             {
-                TempData["ErrorMessage"] = "Araba bulunamadı";
+                TempData["errorMessage"] = "Araba bulunamadı";
                 return RedirectToAction("Index");
             }
 
@@ -176,11 +176,11 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var response = await _apiclient.PostAsync<bool>($"api/Car/update/{id}", dto);
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = response?.Message ?? "Araba güncellenemedi";
+                TempData["errorMessage"] = response?.Message ?? "Araba güncellenemedi";
                 return View(await SetupForm(car, id));
             }
 
-            TempData["SuccessMessage"] = "Araba güncellendi";
+            TempData["successMessage"] = "Araba güncellendi";
             return RedirectToAction("Index");
         }
 
@@ -193,11 +193,11 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var response = await _apiclient.DeleteAsync<bool>($"api/Car/delete/{id}");
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = response?.Message ?? "Araba silinemedi";
+                TempData["errorMessage"] = response?.Message ?? "Araba silinemedi";
                 return RedirectToAction("Index");
             }
 
-            TempData["SuccessMessage"] = "Araba silindi";
+            TempData["successMessage"] = "Araba silindi";
             return RedirectToAction("Index");
         }
 

@@ -1,4 +1,4 @@
-﻿using Azure;
+using Azure;
 using CarGalleryHub.MVC.Exceptions;
 using System.Runtime.Serialization;
 using System.Text;
@@ -130,17 +130,17 @@ namespace CarGalleryHub.MVC.Services
             {
                 return httpResponse.IsSuccessStatusCode
                     ? ApiResult<T>.CreateSuccess()
-                    : ApiResult<T>.Fail($"Http {(int)httpResponse.StatusCode}:İşlem basarısız ");
+                    : ApiResult<T>.Fail($"Http {(int)httpResponse.StatusCode}:Islem basarisiz ");
             }
 
             try 
             {
                 var result = JsonSerializer.Deserialize<ApiResult<T>>(json, JsonOptions);
-                return result ?? ApiResult<T>.Fail("Yanıt Ayrıştırılamadı");
+                return result ?? ApiResult<T>.Fail("Yanit Ayristirilamadi");
             }
             catch 
             {
-                return ApiResult<T>.Fail($"Http {(int)httpResponse.StatusCode}:İşlem basarısız ");
+                return ApiResult<T>.Fail($"Http {(int)httpResponse.StatusCode}:Islem basarisiz ");
             }
         }
     }

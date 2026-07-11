@@ -14,7 +14,7 @@ namespace CarGalleryHub.Api.Controllers
     public class AdvertController : BaseApiController
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly int SayfaBoyut = 10;
+        private readonly int SayfaBoyut = 9;
         public AdvertController(IUnitOfWork work)
         {
             unitOfWork = work;

@@ -16,7 +16,7 @@ namespace CarGalleryHub.Api.Controllers
     public class BrandController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly int BrandPage = 10;
+        private readonly int BrandPage = 9;
 
         public BrandController(IUnitOfWork work)
         {

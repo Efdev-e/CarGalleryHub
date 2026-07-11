@@ -37,7 +37,7 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (advertId <= 0 || quantity <= 0)
             {
-                TempData["ErrorMessage"] = "Geçersiz ilan veya miktar.";
+                TempData["errorMessage"] = "Geçersiz ilan veya miktar.";
                 return RedirectToAction(nameof(Adverts));
             }
 
@@ -49,11 +49,11 @@ namespace CarGalleryHub.MVC.Controllers
 
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = response?.Message ?? "İlan sepete eklenemedi.";
+                TempData["errorMessage"] = response?.Message ?? "İlan sepete eklenemedi.";
                 return RedirectToAction(nameof(Adverts));
             }
 
-            TempData["SuccessMessage"] = "İlan sepete eklendi.";
+            TempData["successMessage"] = "İlan sepete eklendi.";
             return RedirectToAction(nameof(Adverts));
         }
 
@@ -76,7 +76,7 @@ namespace CarGalleryHub.MVC.Controllers
             var response = await _apiclient.GetAsync<List<AdvertView>>(query);
             if (response is null || !response.Success)
             {
-                TempData["ErrorMessage"] = response?.Message ?? "İlanlar yüklenemedi.";
+                TempData["errorMessage"] = response?.Message ?? "İlanlar yüklenemedi.";
                 return View(new AdvertPageViewDto { page = page ?? 1, Dtos = new List<AdvertView>() });
             }
 
@@ -89,7 +89,7 @@ namespace CarGalleryHub.MVC.Controllers
             var response = await _apiclient.GetAsync<AdvertDto>($"api/Advert/{id}");
             if (response is null || !response.Success || response.Data is null)
             {
-                TempData["ErrorMessage"] = response?.Message ?? "İlan detayı yüklenemedi.";
+                TempData["errorMessage"] = response?.Message ?? "İlan detayı yüklenemedi.";
                 return RedirectToAction(nameof(Adverts));
             }
 

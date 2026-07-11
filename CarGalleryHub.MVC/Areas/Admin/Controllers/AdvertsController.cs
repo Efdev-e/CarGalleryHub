@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Advert;
+using CarGalleryHub.Application.DTOs.Advert;
 using CarGalleryHub.Application.DTOs.Car;
 using CarGalleryHub.Application.DTOs.Image;
 using CarGalleryHub.Domain.Enum;
@@ -42,12 +42,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var response = await _apiclient.GetAsync<List<AdvertView>>(query);
             if (response is null)
             {
-                TempData["ErrorMessage"] = "Yanıt Gelmedi";
+                TempData["errorMessage"] = "Yanit Gelmedi";
                 return View(new AdvertPageViewDto() { page = page ?? 1, Dtos = response?.Data ?? new List<AdvertView>() });
             }
             if (!response.Success || response.Data is null) 
             {
-                TempData["ErrorMessage"] = "Hata";
+                TempData["errorMessage"] = "Hata";
                 return View(new AdvertPageViewDto() { page = page ?? 1, Dtos = response.Data ?? new List<AdvertView>() });
             }
 
@@ -67,12 +67,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             var list = await _apiclient.GetAsync<AdvertDto>($"api/Advert/{id}");
             if (list is null) { 
-                ModelState.AddModelError(string.Empty,"Veri boş");
+                ModelState.AddModelError(string.Empty,"Veri bos");
                 return View(id);
             }
             if (!list.Success || list.Data is null)
             {
-                ModelState.AddModelError(string.Empty, "İlan bulunamadı.");
+                ModelState.AddModelError(string.Empty, "Ilan bulunamadi.");
                 return View(id);
             }
 
@@ -103,12 +103,12 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var list = await _apiclient.GetAsync<AdvertDto>($"api/Advert/{id}");
             if (list is null)
             {
-                ModelState.AddModelError(string.Empty, "Boş Yanıt");
+                ModelState.AddModelError(string.Empty, "Bos Yanit");
                 return View(id);
             }
             if (!list.Success || list.Data is null)
             {
-                ModelState.AddModelError(string.Empty, "İlan bulunamadı.");
+                ModelState.AddModelError(string.Empty, "Ilan bulunamadi.");
                 return View(id);
             }
 
@@ -154,18 +154,18 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (advertUpdate is null)
             {
-                ModelState.AddModelError(string.Empty, "Cevap boş");
+                ModelState.AddModelError(string.Empty, "Cevap bos");
                 return View(new AdvertViewDto() { Id = id, updateAdvert = updateAdvert! });
             }
 
             if (!advertUpdate.Success)
             {
-                ModelState.AddModelError(string.Empty, $"İşlem Başarısız \n\n Mesaj: {advertUpdate.Message}");
+                ModelState.AddModelError(string.Empty, $"Islem Basarisiz \n\n Mesaj: {advertUpdate.Message}");
 
                 return View(new AdvertViewDto() { Id = id, updateAdvert = updateAdvert! });
             }
 
-            TempData["SuccessMessage"] = "İlan Başarıyla Güncellendi!";
+            TempData["successMessage"] = "Ilan Basariyla G�ncellendi!";
             return RedirectToAction("Index");
         }
 
@@ -188,7 +188,7 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
                 return View("Index");
             }
 
-            TempData["SuccessMessage"] = "İlan Başarıyla Silindi!";
+            TempData["successMessage"] = "Ilan Basariyla Silindi!";
             return RedirectToAction("Index");
         }
         //
@@ -254,19 +254,19 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
             var createAdvert = await _apiclient.PostAsync<bool>("api/Advert/create", newAdvert);
             if (createAdvert is null) 
             {
-                ModelState.AddModelError(string.Empty,"Boş yanıt");
+                ModelState.AddModelError(string.Empty,"Bos yanit");
                 var data = await Setup(dto);
                 return View(data);
             }
             
             if (!createAdvert.Success) 
             {
-                ModelState.AddModelError(string.Empty, "Başarısız İşlem");
+                ModelState.AddModelError(string.Empty, "Basarisiz Islem");
                 var data = await Setup(dto);
                 return View(data);
             }
 
-            TempData["SuccessMessage"] = "İlan Başarıyla Oluşturuldu!";
+            TempData["successMessage"] = "Ilan Basariyla Olusturuldu!";
             return RedirectToAction("Index");       
         }
 

@@ -1,4 +1,4 @@
-﻿namespace CarGalleryHub.MVC.Models.DTOs.Brand
+namespace CarGalleryHub.MVC.Models.DTOs.Brand
 {
     public class BasicCarModelData
     {

@@ -98,19 +98,17 @@
         foreach (var advert in Model.Dtos)
         {
             <div class="col">
-                <div class="card bg-dark border-1 border-white rounded-1 h-100">
-                    <img src="@advert.ImageUrl" class="card-img-top" />
-                    <div class="card-body bg-dark d-flex flex-col flex-column justify-content-between">
-
-                        <h5 class="card-title" style="color: white !important;">@advert.AdvertTitle</h5>
-                        <p class="card-text" style="color: white !important;">@advert.Description</p>
-                        <p class="card-text" style="color: white !important;">@advert.UnitPrice ₺</p>
+                <div class="card h-100 border border-secondary rounded-4 overflow-hidden BG-ViolentBlack">
+                    <img src="@(string.IsNullOrWhiteSpace(advert.ImageUrl) ? "https://via.placeholder.com/600x400?text=Agarte" : advert.ImageUrl)" class="card-img-top" style="height: 220px; object-fit: cover;" />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="Pure-White mb-2">@advert.AdvertTitle</h5>
+                        <p class="Pure-Gray small mb-3">@advert.Description</p>
+                        <p class="Showcase-Gold Text-Bold mb-3">@advert.UnitPrice ₺</p>
                         <div class="d-flex flex-column gap-2 mt-auto">
                             <a asp-action="Advert" asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-success">İncele</a>
                             <a asp-action="Update" asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-success">Değiştir</a>
                             <a asp-action="Delete" asp-controller="Adverts" asp-route-id="@advert.Id" class="btn btn-outline-danger">Sil</a>
                         </div>
-
                     </div>
                 </div>
             </div>

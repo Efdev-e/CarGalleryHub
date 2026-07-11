@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Brand;
+using CarGalleryHub.Application.DTOs.Brand;
 
 namespace CarGalleryHub.MVC.Models.DTOs.Brand
 {
