@@ -66,7 +66,7 @@
                 <a asp-action="Index" asp-controller="Brands" asp-route-page="@(Model.page - 1)" class="btn btn-outline-success">@(Model.page - 1)</a>
             }
             <a asp-action="Index" asp-controller="Brands" asp-route-page="@Model.page" class="btn btn-success">@Model.page</a>
-            @if (Model.Dtos.Any() && Model.Dtos.Count >= 10)
+            @if (Model.Dtos.Any() && Model.Dtos.Count >= 9)
             {
                 <a asp-action="Index" asp-controller="Brands" asp-route-page="@(Model.page + 1)" class="btn btn-outline-success">@(Model.page + 1)</a>
             }

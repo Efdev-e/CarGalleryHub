@@ -66,6 +66,7 @@ namespace CarGalleryHub.Persistence.Services
                 }).ToList<OrderItem>(),
                 
             };
+            
             Console.WriteLine(cart.CartItems.Count);
             Console.WriteLine(cart);
             aorder.EnsureTotalCost();
@@ -95,20 +96,25 @@ namespace CarGalleryHub.Persistence.Services
 
         public async Task<List<OrderSimpleInfoDto>> GetAllOrders()
         {
-            var orders = await unitOfWork.Orders.GetAllAsync();
+            var orders = await unitOfWork.Orders.GetAllAsync(x => x.User);
             if (orders is null) throw new NotFound("Orders");
+
 
             var orderDto = orders.Select(x => new OrderSimpleInfoDto()
             {
-                FullAddress = x.FullAddress,
                 Id = x.Id,
+                FullAddress = x.FullAddress,
+                FullName = x.User != null ? $"{x.User.FirstName} {x.User.LastName}" : "Bilinmeyen Kullanıcı",
                 OrderNumber = x.OrderNumber,
                 OrderStatus = x.OrderStatus,
-                UserId = x.UserId
-            });
+                UserId = x.UserId,
+                CreatedAt = x.CreatedAt,
+                UpdatedAt = x.UpdatedAt,
+                Email = x.User?.Email ?? string.Empty,
+                Phone = x.User?.PhoneNumber ?? string.Empty
+            }).ToList(); 
 
-            return orderDto.ToList();
-            
+            return orderDto;
         }
 
         public async Task<OrderInfoDto> GetOrderById(int userId, int orderId)
@@ -151,8 +157,59 @@ namespace CarGalleryHub.Persistence.Services
                         ImageType = x.Thumbnail.ImageType,
                         ImageData = x.Thumbnail.ImageData
                     },
+                    CreatedAt = x.CreatedAt,
+                    UpdatedAt = x.UpdatedAt
+                }).ToList(),
+                CreatedAt = order.CreatedAt,
+                UpdatedAt = order.UpdatedAt
+            };
+            return orderDto;
+        }
 
-                }).ToList()
+        public async Task<OrderInfoDto> GetOrderByIdForAdmin(int orderId)
+        {
+            var order = await unitOfWork.Orders.Query().Include(x => x.OrderItems).ThenInclude(x => x.Thumbnail).FirstOrDefaultAsync(x => x.Id == orderId);
+            if (order is null) throw new NotFound("Order");
+            order.EnsureTotalCost();
+            var orderDto = new OrderInfoDto() 
+            {
+                AddressCity = order.AddressCity,
+                AddressDistrict = order.AddressDistrict,
+                AddressFullName = order.AddressFullName,
+                AddressPostalCode = order.AddressPostalCode,
+                FullAddress = order.FullAddress,
+                UserEmail = order.UserEmail,
+                UserFullName = order.UserFullName,
+                UserPhone = order.UserPhone,
+                OrderStatus = order.OrderStatus,
+                OrderNumber = order.OrderNumber,
+                UserId = order.UserId,
+                Id = order.Id,
+                OrderItems = order.OrderItems.Select(x => new OrderItemDto()     
+                {
+                    AdvertId = x.AdvertId,
+                    Quantity = x.Quantity,
+                    OrderId = x.OrderId,
+                    BrandName = x.BrandName,
+                    CarColor = x.CarColor,
+                    CarKM = x.CarKM,
+                    CarYear = x.CarYear,
+                    Id = x.Id,
+                    ItemName = x.ItemName,
+                    UnitPrice = x.UnitPrice,
+                    ImageId = x.ImageId,
+                    ModelName = x.ModelName,
+                    Thumbnail = x.Thumbnail == null ? null : new ImageDto()
+                    {
+                        ImageUrl = x.Thumbnail.ImageUrl,
+                        ImageType = x.Thumbnail.ImageType,
+                        ImageData = x.Thumbnail.ImageData
+                    },
+                    CreatedAt = x.CreatedAt,
+                    UpdatedAt = x.UpdatedAt
+                }).ToList(),
+                CreatedAt = order.CreatedAt,
+                UpdatedAt = order.UpdatedAt
             };
             return orderDto;
         }
@@ -198,8 +255,12 @@ namespace CarGalleryHub.Persistence.Services
                             ImageUrl = x.Thumbnail.ImageUrl,
                             ImageType = x.Thumbnail.ImageType,
                             ImageData = x.Thumbnail.ImageData
-                        }
-                    }).ToList()
+                        },
+                        CreatedAt = x.CreatedAt,
+                        UpdatedAt = x.UpdatedAt
+                    }).ToList(),
+                    CreatedAt = y.CreatedAt,
+                    UpdatedAt = y.UpdatedAt
                 }).ToListAsync();
         }
 

@@ -206,6 +206,11 @@ namespace CarGalleryHub.Api.Controllers
             var user = await unitOfWork.Users.GetByIdAsync(dto.Id);
             if (user is null || user.IsDeleted) return Invalid("Kullanıcı bulunamadı");
 
+            if (dto.Id == GetUserId() && dto.Role != user.Role)
+            {
+                return Invalid("Kendi rütbeni düşüremezsin.");
+            }
+
             user.FirstName = dto.FirstName;
             user.LastName = dto.LastName;
             user.Email = dto.Email;

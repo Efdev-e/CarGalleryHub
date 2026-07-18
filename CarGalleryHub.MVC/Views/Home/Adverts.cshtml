@@ -13,7 +13,7 @@
             <label for="name" class="form-label d-block FilterText">Arama Kutusu</label>
             <div class="input-group">
                 <input name="name" class="form-control bg-secondary text-white border-0" placeholder="Örn: Audi" value="@Context.Request.Query["name"]" />
-                <button type="submit" class="btn btn-success">Filtrele / Ara</button>
+                <button type="submit" class="btn btn-outline-gold">Filtrele / Ara</button>
             </div>
         </div>
 
@@ -119,7 +119,7 @@
         <a asp-action="Adverts" asp-route-page="@(Model.page - 1)" class="btn btn-outline-light">@(Model.page - 1)</a>
     }
     <a asp-action="Adverts" asp-route-page="@Model.page" class="btn btn-light">@Model.page</a>
-    @if (Model.Dtos.Any() && Model.Dtos.Count >= 10)
+    @if (Model.Dtos.Any() && Model.Dtos.Count >= 9)
     {
         <a asp-action="Adverts" asp-route-page="@(Model.page + 1)" class="btn btn-outline-light">@(Model.page + 1)</a>
     }

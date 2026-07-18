@@ -69,6 +69,8 @@ namespace CarGalleryHub.Api.Controllers
                 query = query.Where(x => EF.Functions.Like(x.AdvertTitle, $"%{Name}%"));
             }
 
+            var totalCount = await query.CountAsync();
+
             var adverts = await query
                 .Skip((PageNumber - 1) * SayfaBoyut)
                 .Take(SayfaBoyut)
@@ -103,6 +105,8 @@ namespace CarGalleryHub.Api.Controllers
             {
                 query = query.Where(x => EF.Functions.Like(x.AdvertTitle, $"%{Name}%"));
             }
+
+            var totalCountMy = await query.CountAsync();
 
             var adverts = await query
                 .Include(x => x.Thumbnails)

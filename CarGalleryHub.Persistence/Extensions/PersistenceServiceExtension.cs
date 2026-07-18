@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
+﻿using CarGalleryHub.Application.Interfaces;
 using CarGalleryHub.Persistence.Context;
-using Microsoft.EntityFrameworkCore;
-using CarGalleryHub.Persistence.UnitOfWork;
-using CarGalleryHub.Application.Interfaces;
 using CarGalleryHub.Persistence.Services;
+using CarGalleryHub.Persistence.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace CarGalleryHub.Persistence.Extensions
 {
@@ -17,14 +18,7 @@ namespace CarGalleryHub.Persistence.Extensions
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                if (!string.IsNullOrWhiteSpace(connectionString) && connectionString.Contains("Server=", StringComparison.OrdinalIgnoreCase))
-                {
-                    options.UseSqlServer(connectionString);
-                }
-                else
-                {
-                    options.UseSqlite(sqliteConnectionString);
-                }
+                options.UseSqlServer(connectionString);
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();

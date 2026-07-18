@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Brand;
+using CarGalleryHub.Application.DTOs.Brand;
 using CarGalleryHub.Application.DTOs.Car;
 using CarGalleryHub.Application.DTOs.CarModel;
 using CarGalleryHub.Application.DTOs.User.Address;
@@ -58,7 +58,7 @@ namespace CarGalleryHub.Api.Controllers
                 query = query.Where(x => EF.Functions.Like(x.Model, $"%{name}%"));
             }
             query = query.Where(x => x.IsDeleted == false);
-
+            var totalCount = await query.CountAsync();
 
             var models = await query.Include(u => u.Brand).OrderBy(x => x.Id)
                 .Skip((page - 1) * ModelPage)
@@ -76,7 +76,7 @@ namespace CarGalleryHub.Api.Controllers
                 FullName = $"{x.Model} {x.Series}",
                 BrandName = $"{x.Brand?.BrandName ?? ""}",
                 ReleaseDate = x.ReleaseDate.ToString("ddMMyyyy")
-            });
+            }).ToList();
 
             return Ok(list);
         }

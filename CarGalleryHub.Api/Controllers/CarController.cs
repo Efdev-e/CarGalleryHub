@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Advert;
+using CarGalleryHub.Application.DTOs.Advert;
 using CarGalleryHub.Application.DTOs.Car;
 using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Domain.Enum;
@@ -75,14 +75,13 @@ namespace CarGalleryHub.Api.Controllers
             }
 
 
+            var totalCount = await query.CountAsync();
+
             var cars = await query
                 .OrderBy(x => x.Id)
                 .Skip((Page - 1) * PageNumber)
                 .Take(PageNumber)
                 .ToListAsync();
-
-            if (!cars.Any())
-                return Invalid("Araba Yok");
 
             var dto = cars.Select(x => new CarInfoDto()
             {
@@ -96,7 +95,7 @@ namespace CarGalleryHub.Api.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetCarsCreatedByUser() 
+        public async Task<IActionResult> GetCarsCreatedByUser()
         {
             var Cars = await unitOfWork.Cars.FindAsync(x => x.UserIds.Contains(GetUserId()), x => x.UserIds);
             if (Cars is null) 

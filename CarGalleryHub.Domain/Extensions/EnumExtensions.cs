@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Domain.Enum;
+using CarGalleryHub.Domain.Enum;
 
 namespace CarGalleryHub.Domain.Extensions
 {
@@ -47,6 +47,18 @@ namespace CarGalleryHub.Domain.Extensions
             CategoryType.HighestPrice => "Pahalı'dan Ucuz'a",
             CategoryType.LowestPrice => "Ucuz'dan Pahalı'ya",
             _ => type.ToString()
+        };
+
+        public static string ToTurkish(this OrderStatus status) => status switch
+        {
+            OrderStatus.WaitingPayment => "Ödeme Bekliyor",
+            OrderStatus.Pending => "Hazırlanıyor",
+            OrderStatus.Completed => "Teslim Edildi",
+            OrderStatus.Cancelled => "İptal Edildi",
+            OrderStatus.Refunded => "İade Edildi",
+            OrderStatus.Paid => "Ödendi",
+            OrderStatus.PaymentFailed => "Ödeme Başarısız",
+            _ => status.ToString()
         };
     }
 }

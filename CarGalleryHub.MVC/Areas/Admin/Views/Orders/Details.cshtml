@@ -1,0 +1,121 @@
+@using CarGalleryHub.Domain.Extensions
+@model CarGalleryHub.Application.DTOs.Order.OrderInfoDto
+@{
+    ViewData["Title"] = "Sipariş Detayı - Agarte";
+}
+
+<div class="mb-5 text-center text-md-start">
+    <span class="text-gold fw-bold mb-2 d-inline-block" style="letter-spacing: 0.3em; font-size: 0.85rem;">KONSOL &nbsp; MODÜLÜ</span>
+    <h1 class="text-gold-gradient fw-bold mb-2" style="font-family: 'Cinzel', serif; font-size: 2.2rem;">SİPARİŞ DETAYI</h1>
+    <p class="text-muted-gray mb-0" style="font-weight: 300; font-size: 0.95rem;">Sipariş numarası: <span class="text-white fw-bold">#@Model.OrderNumber</span></p>
+</div>
+
+<div class="row g-4">
+    <!-- Sol Sütun: Sipariş & Müşteri Bilgileri -->
+    <div class="col-lg-5">
+        <div class="card-luxury p-4 mb-4">
+            <h4 class="text-gold mb-4" style="font-family: 'Cinzel', serif; font-size: 1.25rem; letter-spacing: 0.05em;">SİPARİŞ ÖZETİ</h4>
+            
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex justify-content-between border-bottom border-secondary pb-2">
+                    <span class="text-muted-gray">Sipariş No</span>
+                    <span class="text-white fw-bold">#@Model.OrderNumber</span>
+                </div>
+                <div class="d-flex justify-content-between border-bottom border-secondary pb-2">
+                    <span class="text-muted-gray">Tarih</span>
+                    <span class="text-white">@Model.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</span>
+                </div>
+                <div class="d-flex justify-content-between border-bottom border-secondary pb-2">
+                    <span class="text-muted-gray">Durum</span>
+                    <span>
+                        @if (Model.OrderStatus == CarGalleryHub.Domain.Enum.OrderStatus.Completed || Model.OrderStatus == CarGalleryHub.Domain.Enum.OrderStatus.Paid)
+                        {
+                            <span class="badge bg-success text-white px-3 py-1 fw-bold" style="letter-spacing: 0.05em; border-radius: 4px;">@Model.OrderStatus.ToTurkish().ToUpper()</span>
+                        }
+                        else if (Model.OrderStatus == CarGalleryHub.Domain.Enum.OrderStatus.Cancelled || Model.OrderStatus == CarGalleryHub.Domain.Enum.OrderStatus.PaymentFailed || Model.OrderStatus == CarGalleryHub.Domain.Enum.OrderStatus.Refunded)
+                        {
+                            <span class="badge bg-danger text-white px-3 py-1 fw-bold" style="letter-spacing: 0.05em; border-radius: 4px;">@Model.OrderStatus.ToTurkish().ToUpper()</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark px-3 py-1 fw-bold" style="letter-spacing: 0.05em; border-radius: 4px;">@Model.OrderStatus.ToTurkish().ToUpper()</span>
+                        }
+                    </span>
+                </div>
+                <div class="d-flex justify-content-between pt-2">
+                    <span class="text-muted-gray fs-5">Toplam Tutar</span>
+                    <span class="text-gold fw-bold fs-5">@Model.TotalCost ₺</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-luxury p-4">
+            <h4 class="text-gold mb-4" style="font-family: 'Cinzel', serif; font-size: 1.25rem; letter-spacing: 0.05em;">TESLİMAT & MÜŞTERİ BİLGİLERİ</h4>
+            
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex flex-column border-bottom border-secondary pb-2">
+                    <span class="text-muted-gray small">Müşteri Adı</span>
+                    <span class="text-white fw-bold mt-1">@Model.AddressFullName</span>
+                </div>
+                <div class="d-flex flex-column border-bottom border-secondary pb-2">
+                    <span class="text-muted-gray small">E-posta</span>
+                    <span class="text-white mt-1">@Model.UserEmail</span>
+                </div>
+                <div class="d-flex flex-column border-bottom border-secondary pb-2">
+                    <span class="text-muted-gray small">Telefon</span>
+                    <span class="text-white mt-1">@(string.IsNullOrWhiteSpace(Model.UserPhone) ? "-" : Model.UserPhone)</span>
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="text-muted-gray small">Adres</span>
+                    <span class="text-white mt-1">
+                        @Model.FullAddress <br />
+                        @Model.AddressDistrict / @Model.AddressCity <br />
+                        Posta Kodu: @Model.AddressPostalCode
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sağ Sütun: Sipariş Edilen Ürünler -->
+    <div class="col-lg-7">
+        <div class="card-luxury p-4 h-100 d-flex flex-column">
+            <h4 class="text-gold mb-4" style="font-family: 'Cinzel', serif; font-size: 1.25rem; letter-spacing: 0.05em;">SİPARİŞ İÇERİĞİ</h4>
+            
+            <div class="table-responsive flex-grow-1">
+                <table class="table table-dark table-hover align-middle border-secondary" style="--bs-table-bg: transparent;">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">GÖRSEL</th>
+                            <th>ARAÇ DETAYI</th>
+                            <th style="text-align: right;">BİRİM FİYAT</th>
+                            <th style="text-align: center; width: 80px;">ADET</th>
+                            <th style="text-align: right; width: 140px;">TOPLAM</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@(string.IsNullOrWhiteSpace(item.Thumbnail?.ImageUrl) ? "https://via.placeholder.com/300x200?text=Agarte" : item.Thumbnail.ImageUrl)" class="rounded border border-secondary" style="width: 80px; height: 50px; object-fit: cover;" />
+                                </td>
+                                <td>
+                                    <div class="text-white fw-bold">@item.ItemName</div>
+                                    <div class="text-muted-gray small">@item.BrandName @item.ModelName | @item.CarYear | @item.CarColor</div>
+                                </td>
+                                <td style="text-align: right;">@item.UnitPrice ₺</td>
+                                <td style="text-align: center;">@item.Quantity</td>
+                                <td style="text-align: right;" class="text-gold fw-bold">@(item.UnitPrice * item.Quantity) ₺</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4 pt-3 border-top border-secondary d-flex justify-content-between align-items-center">
+                <a asp-action="Index" class="btn btn-outline-gold fw-bold" style="font-size: 0.8rem; padding: 0.6rem 1.5rem !important;">GERİ DÖN</a>
+            </div>
+        </div>
+    </div>
+</div>

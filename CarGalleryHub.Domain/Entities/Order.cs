@@ -35,6 +35,7 @@ namespace CarGalleryHub.Domain.Entities
         public Order()
         {
             EnsureTotalCost();
+            SetCreatedAt();
         }
 
         public void EnsureTotalCost()

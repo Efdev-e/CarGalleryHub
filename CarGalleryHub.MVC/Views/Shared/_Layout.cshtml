@@ -38,7 +38,7 @@
                 </button>
 
                 <div class="navbar-collapse bg-transparent collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1 d-md-flex align-items-center gap-2 justify-content-start">
+                    <ul class="navbar-nav d-md-flex align-items-center gap-2 justify-content-start">
                         <li class="nav-item">
                             <a class="nav-link nav-link-luxury" asp-area="" asp-controller="Home" asp-action="Adverts">İLANLAR</a>
                         </li>
@@ -49,7 +49,7 @@
                             <a class="nav-link nav-link-luxury" asp-area="" asp-controller="Home" asp-action="Contact">İLETİŞİM</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav flex-grow-1 d-md-flex align-items-center justify-content-end gap-2">
+                    <ul class="navbar-nav ms-auto d-md-flex align-items-center justify-content-end gap-2">
                         @if (!string.IsNullOrEmpty(userName))
                         {
                             <li class="nav-item dropdown">

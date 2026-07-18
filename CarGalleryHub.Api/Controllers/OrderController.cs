@@ -29,6 +29,17 @@ namespace CarGalleryHub.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetOrderByIdForAdmin/{orderId}")]
+        [Authorize]
+        public async Task<IActionResult> GetOrderByIdForAdmin(int orderId)
+        {
+            if (!IsAdmin()) return BadRequest();
+            var result = await orderService.GetOrderByIdForAdmin(orderId);
+            if (result is null) return BadRequest();
+
+            return Ok(result);
+        }
+
         [HttpPost("[action]")]
         [Authorize]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto createOrderDto) 

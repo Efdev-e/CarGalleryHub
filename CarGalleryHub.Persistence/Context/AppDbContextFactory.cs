@@ -18,17 +18,9 @@ namespace CarGalleryHub.Persistence.Context
                 .Build();
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            var sqliteConnectionString = configuration.GetConnectionString("SqliteConnection") ?? "Data Source=cargalleryhub.db";
 
             var optionsbuilder = new DbContextOptionsBuilder<AppDbContext>();
-            if (!string.IsNullOrWhiteSpace(connectionString) && connectionString.Contains("Server=", StringComparison.OrdinalIgnoreCase))
-            {
-                optionsbuilder.UseSqlServer(connectionString);
-            }
-            else
-            {
-                optionsbuilder.UseSqlite(sqliteConnectionString);
-            }
+            optionsbuilder.UseSqlServer(connectionString);
 
             return new AppDbContext(optionsbuilder.Options);
         }

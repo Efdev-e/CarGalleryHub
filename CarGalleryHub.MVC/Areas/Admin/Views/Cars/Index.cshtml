@@ -127,7 +127,7 @@
             <a href="@pageUrl(Model.page - 1)" class="btn btn-outline-success">@(Model.page - 1)</a>
         }
         <a href="@pageUrl(Model.page)" class="btn btn-success">@Model.page</a>
-        @if (Model.Dtos.Any() && Model.Dtos.Count >= 10)
+        @if (Model.Dtos.Any() && Model.Dtos.Count >= 9)
         {
             <a href="@pageUrl(Model.page + 1)" class="btn btn-outline-success">@(Model.page + 1)</a>
         }

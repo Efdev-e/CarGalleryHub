@@ -35,7 +35,16 @@
             <!-- Rol -->
             <div class="form-group">
                 <label class="form-label text-gold mb-2 fw-semibold small" style="letter-spacing: 0.05em;" asp-for="Role">YETKİ ROLÜ</label>
-                <select class="form-select form-control-luxury" asp-for="Role" asp-items="Html.GetEnumSelectList<CarGalleryHub.Domain.Enum.UserRoles>()"></select>
+                @if (ViewBag.IsSelfEdit == true)
+                {
+                    <select class="form-select form-control-luxury text-muted" asp-for="Role" asp-items="Html.GetEnumSelectList<CarGalleryHub.Domain.Enum.UserRoles>()" disabled></select>
+                    <input type="hidden" asp-for="Role" />
+                    <span class="text-warning small mt-1 d-block">Kendi rütbenizi değiştiremezsiniz.</span>
+                }
+                else
+                {
+                    <select class="form-select form-control-luxury" asp-for="Role" asp-items="Html.GetEnumSelectList<CarGalleryHub.Domain.Enum.UserRoles>()"></select>
+                }
                 <span asp-validation-for="Role" class="text-danger small mt-1 d-block"></span>
             </div>
 

@@ -1,4 +1,4 @@
-﻿using CarGalleryHub.Application.DTOs.Brand;
+using CarGalleryHub.Application.DTOs.Brand;
 using CarGalleryHub.Application.DTOs.CarModel;
 using CarGalleryHub.Domain.Entities;
 using CarGalleryHub.Domain.Enum;
@@ -46,11 +46,14 @@ namespace CarGalleryHub.Api.Controllers
             if (!string.IsNullOrEmpty(name))
                 query = query.Where(x => EF.Functions.Like(x.BrandName, $"%{name}%"));
 
+            query = query.Where(x => x.IsDeleted == false);
+            var totalCount = await query.CountAsync();
+
             var brands = await query.OrderBy(x => x.BrandName)
                 .Skip((page - 1) * BrandPage)
                 .Take(BrandPage)
                 .ToListAsync();
-            query = query.Where(x => x.IsDeleted == false);
+
             if (brands is null || !brands.Any()) 
             {
                 return Invalid("Brand bulunamadı.");
@@ -60,7 +63,7 @@ namespace CarGalleryHub.Api.Controllers
             {
                 Id = x.Id,
                 BrandName = x.BrandName
-            });
+            }).ToList();
 
             return Ok(list);
         }

@@ -58,6 +58,9 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
+            var currentUserId = HttpContext.Session.GetString("UserId");
+            ViewBag.IsSelfEdit = user.Id.ToString() == currentUserId;
+
             var dto = new AdminUserUpdateDto
             {
                 Id = user.Id,
@@ -78,6 +81,15 @@ namespace CarGalleryHub.MVC.Areas.Admin.Controllers
 
             if (!ModelState.IsValid)
                 return View(dto);
+
+            var currentUserId = HttpContext.Session.GetString("UserId");
+            var currentUserRole = HttpContext.Session.GetString("UserRole");
+
+            if (dto.Id.ToString() == currentUserId && dto.Role.ToString() != currentUserRole)
+            {
+                TempData["errorMessage"] = "Kendi rütbeni düşüremezsin.";
+                return View(dto);
+            }
 
             var response = await _apiclient.PostAsync<bool>("api/User/admin/update-user", dto);
             if (response != null && response.Success && response.Data)

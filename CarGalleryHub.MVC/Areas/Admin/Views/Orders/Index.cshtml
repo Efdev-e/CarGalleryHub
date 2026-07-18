@@ -1,0 +1,66 @@
+@using CarGalleryHub.Domain.Extensions
+@model List<CarGalleryHub.Application.DTOs.Order.OrderSimpleInfoDto>
+@{
+    ViewData["Title"] = "Sipariş Yönetimi - Agarte";
+    int index = 1;
+}
+
+<div class="mb-5 text-center text-md-start">
+    <span class="text-gold fw-bold mb-2 d-inline-block" style="letter-spacing: 0.3em; font-size: 0.85rem;">KONSOL &nbsp; MODÜLÜ</span>
+    <h1 class="text-gold-gradient fw-bold mb-2" style="font-family: 'Cinzel', serif; font-size: 2.2rem;">SİPARİŞ YÖNETİMİ</h1>
+    <p class="text-muted-gray mb-0" style="font-weight: 300; font-size: 0.95rem;">Sistem üzerinden verilen siparişleri ve durumlarını takip edin.</p>
+</div>
+
+<div class="table-responsive w-100 mx-auto">
+    <table class="table table-dark table-hover align-middle border-secondary" style="--bs-table-bg: transparent;">
+        <thead>
+            <tr>
+                <th style="width: 80px;">#</th>
+                <th>MÜŞTERİ ADI</th>
+                <th>E-POSTA</th>
+                <th>TELEFON</th>
+                <th style="width: 180px;">SİPARİŞ DURUMU</th>
+                <th style="width: 180px;">SİPARİŞ TARİHİ</th>
+                <th style="width: 120px; text-align: center;">İŞLEMLER</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@(index++)</td>
+                        <td class="fw-semibold text-white">@order.FullName</td>
+                        <td>@order.Email</td>
+                        <td>@(string.IsNullOrWhiteSpace(order.Phone) ? "-" : order.Phone)</td>
+                        <td>
+                            @if (order.OrderStatus == CarGalleryHub.Domain.Enum.OrderStatus.Completed || order.OrderStatus == CarGalleryHub.Domain.Enum.OrderStatus.Paid)
+                            {
+                                <span class="badge bg-success text-white px-3 py-2 fw-bold" style="letter-spacing: 0.05em; border-radius: 4px;">@order.OrderStatus.ToTurkish().ToUpper()</span>
+                            }
+                            else if (order.OrderStatus == CarGalleryHub.Domain.Enum.OrderStatus.Cancelled || order.OrderStatus == CarGalleryHub.Domain.Enum.OrderStatus.PaymentFailed || order.OrderStatus == CarGalleryHub.Domain.Enum.OrderStatus.Refunded)
+                            {
+                                <span class="badge bg-danger text-white px-3 py-2 fw-bold" style="letter-spacing: 0.05em; border-radius: 4px;">@order.OrderStatus.ToTurkish().ToUpper()</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark px-3 py-2 fw-bold" style="letter-spacing: 0.05em; border-radius: 4px;">@order.OrderStatus.ToTurkish().ToUpper()</span>
+                            }
+                        </td>
+                        <td>@order.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                        <td style="text-align: center;">
+                            <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-outline-gold fw-bold" style="font-size: 0.75rem; padding: 0.35rem 1rem !important; letter-spacing: 0.05em;">DETAY</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center py-4 text-muted-gray">Sistemde kayıtlı sipariş bulunmuyor.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
